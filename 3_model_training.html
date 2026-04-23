@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Model Training — Grid Search MLP · RNN · LSTM &#8212; Sigma-Cast</title>
+    <title>🧠 Model Training — Grid Search MLP · RNN · LSTM &#8212; Sigma-Cast</title>
   
   
   
@@ -66,8 +66,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="canonical" href="/sigma-cast-book/3_model_training.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Model Evaluation — MLP · RNN · LSTM" href="4_model_evaluation.html" />
-    <link rel="prev" title="Feature Engineering &amp; Cross-Validation Split" href="2_features_engineering.html" />
+    <link rel="next" title="📊 Model Evaluation — MLP · RNN · LSTM" href="4_model_evaluation.html" />
+    <link rel="prev" title="⚙️ Feature Engineering &amp; Cross-Validation Split" href="2_features_engineering.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -169,11 +169,10 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_eda_volatility_final.html">BTC Volatility — Multi-Resolution EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_features_engineering.html">Feature Engineering &amp; Cross-Validation Split</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Model Training — Grid Search MLP · RNN · LSTM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_model_evaluation.html">Model Evaluation — MLP · RNN · LSTM</a></li>
-
+<li class="toctree-l1"><a class="reference internal" href="1_eda_volatility_final.html">🔬 BTC Volatility — Multi-Resolution EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_features_engineering.html">⚙️ Feature Engineering &amp; Cross-Validation Split</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">🧠 Model Training — Grid Search MLP · RNN · LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_model_evaluation.html">📊 Model Evaluation — MLP · RNN · LSTM</a></li>
 </ul>
 
     </div>
@@ -312,7 +311,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Model Training — Grid Search MLP · RNN · LSTM</h1>
+    <h1>🧠 Model Training — Grid Search MLP · RNN · LSTM</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -323,19 +322,18 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-del-entorno-tensorflow-y-verificacion-de-hardware">Configuración del entorno TensorFlow y verificación de hardware</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-librerias-y-configuracion-de-reproducibilidad">Importación de librerías y configuración de reproducibilidad</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-del-artefacto-features-pkl-y-seleccion-de-configuracion-para-grid-search">1. Carga del artefacto features.pkl y selección de configuración para grid search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-funciones-de-evaluacion-y-test-de-no-linealidad-de-bds">2. Definición de funciones de evaluación y test de no linealidad de BDS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-espacio-de-busqueda-para-grid-search-de-arquitectura-mlp">3. Definición del espacio de búsqueda para grid search de arquitectura MLP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-constructores-de-arquitecturas-neuronales-mlp-rnn-y-lstm">4. Definición de constructores de arquitecturas neuronales (MLP, RNN y LSTM)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-del-grid-search-con-reanudacion-y-checkpoints">5. Implementación del grid search con reanudación y checkpoints</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extraccion-y-escalado-de-datos-para-el-grid-search-lag-14-fold-0">6. Extracción y escalado de datos para el grid search (lag=14, fold=0)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-search-con-checkpointing-y-reanudacion-automatica-para-mlp-rnn-y-lstm">7. Grid search con checkpointing y reanudación automática para MLP, RNN y LSTM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-mejores-configuraciones-por-tipo-de-modelo">8. Selección de mejores configuraciones por tipo de modelo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-completa-de-las-mejores-configuraciones-por-modelo-y-lag">9. Validación cruzada completa de las mejores configuraciones por modelo y lag</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consolidacion-de-resultados-y-generacion-de-tablas-comparativas">10. Consolidación de resultados y generación de tablas comparativas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-del-mejor-modelo-global-y-exportacion-para-despliegue-en-produccion">11. Selección del mejor modelo global y exportación para despliegue en producción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-gpu">0. Verificación de GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-features-pkl">1. Cargar features.pkl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-y-bds-test">2. Metricas y BDS test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-del-grid-search">3. Configuracion del grid search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructores-mlp-rnn-lstm">4. Constructores — MLP · RNN · LSTM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-grid-search">5. Funcion de grid search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparar-datos-fold-0-lag-14d">6. Preparar datos — fold 0, lag=14d</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-search-con-checkpoints">7. Grid search con checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-automatica-de-arquitecturas">8. Seleccion automatica de arquitecturas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-completa-5-folds-4-lags-3-modelos">9. Evaluacion completa — 5 folds × 4 lags × 3 modelos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-y-tablas-por-fold">10. Tabla comparativa y tablas por fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-mejor-modelo">11. Guardar mejor modelo</a></li>
 </ul>
             </nav>
         </div>
@@ -348,7 +346,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="model-training-grid-search-mlp-rnn-lstm">
-<h1>Model Training — Grid Search MLP · RNN · LSTM<a class="headerlink" href="#model-training-grid-search-mlp-rnn-lstm" title="Permalink to this heading">#</a></h1>
+<h1>🧠 Model Training — Grid Search MLP · RNN · LSTM<a class="headerlink" href="#model-training-grid-search-mlp-rnn-lstm" title="Permalink to this heading">#</a></h1>
 <section id="deep-learning-project-bitcoin-volatility-forecasting">
 <h2>Deep Learning Project | Bitcoin Volatility Forecasting<a class="headerlink" href="#deep-learning-project-bitcoin-volatility-forecasting" title="Permalink to this heading">#</a></h2>
 <p><strong>Estrategia:</strong> Grid search sobre fold 0, lag=14d para seleccionar arquitectura por tipo.<br />
@@ -382,9 +380,8 @@ La ganadora se evalúa en los <strong>5 folds completos</strong> con las métric
 </table>
 </div>
 </section>
-<section id="configuracion-del-entorno-tensorflow-y-verificacion-de-hardware">
-<h2>Configuración del entorno TensorFlow y verificación de hardware<a class="headerlink" href="#configuracion-del-entorno-tensorflow-y-verificacion-de-hardware" title="Permalink to this heading">#</a></h2>
-<p>Se configura el entorno de TensorFlow para el entrenamiento del modelo, estableciendo el nivel de verbosidad mínimo para suprimir mensajes informativos y de advertencia no críticos. Se imprime la versión de TensorFlow instalada y se listan todos los dispositivos físicos detectados (CPU, GPU, TPU disponibles en el sistema). Se verifica específicamente la presencia de GPUs: si se detecta al menos una, se reporta su nombre y cantidad; en caso contrario, se advierte al usuario que el entrenamiento se ejecutará en CPU, lo que implicará tiempos de procesamiento significativamente mayores (especialmente durante la búsqueda de hiperparámetros o grid search). Se solicita confirmación al usuario para continuar sin GPU, evitando ejecuciones accidentales que podrían extenderse por varias horas. Si el usuario no confirma, se cancela la ejecución del programa.</p>
+<section id="verificacion-de-gpu">
+<h2>0. Verificación de GPU<a class="headerlink" href="#verificacion-de-gpu" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -398,17 +395,17 @@ La ganadora se evalúa en los <strong>5 folds completos</strong> con las métric
 <span class="n">devices</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dispositivos detectados:&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">gpus</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GPU ACTIVA — </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gpus</span><span class="p">)</span><span class="si">}</span><span class="s2"> dispositivo(s):&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ GPU ACTIVA — </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">gpus</span><span class="p">)</span><span class="si">}</span><span class="s2"> dispositivo(s):&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">gpus</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">g</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sin GPU detectada — corriendo en CPU&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Si tienes DirectML instalado, verifica que el kernel sea &#39;Deep Learning (GPU)&#39;&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; El grid search tardará varias horas en CPU.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">⚠️  Sin GPU detectada — corriendo en CPU&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   Si tienes DirectML instalado, verifica que el kernel sea &#39;Deep Learning (GPU)&#39;&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   El grid search tardará varias horas en CPU.&quot;</span><span class="p">)</span>
     <span class="n">respuesta</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">¿Deseas continuar de todas formas? (s/n): &quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">respuesta</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="s2">&quot;Ejecución cancelada. Configura la GPU antes de continuar.&quot;</span><span class="p">)</span>
@@ -430,10 +427,6 @@ Dispositivos detectados:
 </div>
 </div>
 </div>
-</section>
-<section id="importacion-de-librerias-y-configuracion-de-reproducibilidad">
-<h2>Importación de librerías y configuración de reproducibilidad<a class="headerlink" href="#importacion-de-librerias-y-configuracion-de-reproducibilidad" title="Permalink to this heading">#</a></h2>
-<p>Se importan las librerías necesarias para el entrenamiento, evaluación y persistencia del modelo MLP, incluyendo <code class="docutils literal notranslate"><span class="pre">pickle</span></code> para carga de artefactos, <code class="docutils literal notranslate"><span class="pre">joblib</span></code> para serialización eficiente de modelos entrenados, y <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> para pruebas estadísticas sobre residuos. Se fijan las semillas aleatorias tanto de TensorFlow como de NumPy con el valor 42, garantizando la reproducibilidad total de los experimentos (resultados idénticos en ejecuciones sucesivas). Se suprimen mensajes de advertencia no críticos para mantener la salida limpia durante el entrenamiento. Finalmente, se crean los directorios <code class="docutils literal notranslate"><span class="pre">results/</span></code> (para almacenar métricas, gráficos y logs de entrenamiento) y <code class="docutils literal notranslate"><span class="pre">app/</span></code> (para exportar modelos y artefactos destinados al despliegue en producción), verificando que existan sin errores si ya están creados.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span><span class="o">,</span><span class="w"> </span><span class="nn">itertools</span>
@@ -451,7 +444,7 @@ Dispositivos detectados:
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Imports completos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Imports completos&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -462,9 +455,8 @@ Dispositivos detectados:
 </div>
 </div>
 </section>
-<section id="carga-del-artefacto-features-pkl-y-seleccion-de-configuracion-para-grid-search">
-<h2>1. Carga del artefacto features.pkl y selección de configuración para grid search<a class="headerlink" href="#carga-del-artefacto-features-pkl-y-seleccion-de-configuracion-para-grid-search" title="Permalink to this heading">#</a></h2>
-<p>Se carga el artefacto <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> previamente generado y se extraen sus componentes principales: los splits de validación temporal para cada lag (<code class="docutils literal notranslate"><span class="pre">splits</span></code>), la lista de rezagos evaluados (<code class="docutils literal notranslate"><span class="pre">LAGS_LIST</span></code>), el horizonte de predicción (<code class="docutils literal notranslate"><span class="pre">N_STEPS_FORECAST</span></code>), el nombre de la columna objetivo (<code class="docutils literal notranslate"><span class="pre">TARGET_COL</span></code>), la serie temporal completa de volatilidad (<code class="docutils literal notranslate"><span class="pre">time_series</span></code>) y las fechas asociadas (<code class="docutils literal notranslate"><span class="pre">dates</span></code>). Se define una configuración específica para realizar la búsqueda de hiperparámetros (grid search): se selecciona el lag de 14 días como compromiso entre contexto temporal suficiente y tamaño muestral adecuado, y el fold 0 como partición representativa para el ajuste inicial. Esta selección permite explorar el espacio de hiperparámetros de manera eficiente sin ejecutar el grid search sobre todas las combinaciones de lag y fold, reduciendo drásticamente el tiempo de cómputo. Finalmente, se imprime un resumen de la configuración seleccionada.</p>
+<section id="cargar-features-pkl">
+<h2>1. Cargar features.pkl<a class="headerlink" href="#cargar-features-pkl" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;features.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -480,7 +472,7 @@ Dispositivos detectados:
 <span class="n">GRID_LAG</span>  <span class="o">=</span> <span class="mi">14</span>
 <span class="n">GRID_FOLD</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lags: </span><span class="si">{</span><span class="n">LAGS_LIST</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lags     : </span><span class="si">{</span><span class="n">LAGS_LIST</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Horizonte: </span><span class="si">{</span><span class="n">N_STEPS_FORECAST</span><span class="si">}</span><span class="s2"> dias&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grid search: lag=</span><span class="si">{</span><span class="n">GRID_LAG</span><span class="si">}</span><span class="s2">d, fold=</span><span class="si">{</span><span class="n">GRID_FOLD</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
@@ -495,9 +487,8 @@ Grid search: lag=14d, fold=0
 </div>
 </div>
 </section>
-<section id="definicion-de-funciones-de-evaluacion-y-test-de-no-linealidad-de-bds">
-<h2>2. Definición de funciones de evaluación y test de no linealidad de BDS<a class="headerlink" href="#definicion-de-funciones-de-evaluacion-y-test-de-no-linealidad-de-bds" title="Permalink to this heading">#</a></h2>
-<p>Se implementan las funciones necesarias para la evaluación del modelo y el análisis de residuos. Se definen cuatro métricas de error fundamentales: MAPE (Error Absoluto Porcentual Medio), MAE (Error Absoluto Medio), RMSE (Raíz del Error Cuadrático Medio) y MSE (Error Cuadrático Medio). Adicionalmente, se crea la función <code class="docutils literal notranslate"><span class="pre">metrics_per_horizon</span></code> que desagrega estas métricas para cada uno de los 7 días del horizonte de predicción (h1 a h7), calculando también promedios globales para resumir el desempeño general del modelo. Finalmente, se implementa el test de Brock-Dechert-Scheinkman (BDS), una prueba estadística no lineal que evalúa si los residuos del modelo son independientes e idénticamente distribuidos (i.i.d.) contra la alternativa de estructura no lineal remanente. El test se calcula para dimensiones de embebido de 2 a 4, utilizando una escala del umbral (epsilon) igual a 0.7 veces la desviación estándar de los residuos, y reporta tanto el estadístico como el p-valor para cada dimensión. Estas métricas y tests permitirá diagnosticar la calidad del ajuste y detectar si el MLP logra capturar adecuadamente la dependencia temporal presente en la volatilidad de Bitcoin.</p>
+<section id="metricas-y-bds-test">
+<h2>2. Metricas y BDS test<a class="headerlink" href="#metricas-y-bds-test" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mape</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
@@ -543,7 +534,7 @@ Grid search: lag=14d, fold=0
                       <span class="s1">&#39;p_value&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">stat</span><span class="p">)))),</span><span class="mi">4</span><span class="p">)}</span>
     <span class="k">return</span> <span class="n">results</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Metricas y BDS listos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Metricas y BDS listos&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -554,9 +545,8 @@ Grid search: lag=14d, fold=0
 </div>
 </div>
 </section>
-<section id="definicion-del-espacio-de-busqueda-para-grid-search-de-arquitectura-mlp">
-<h2>3. Definición del espacio de búsqueda para grid search de arquitectura MLP<a class="headerlink" href="#definicion-del-espacio-de-busqueda-para-grid-search-de-arquitectura-mlp" title="Permalink to this heading">#</a></h2>
-<p>Se define el espacio de hiperparámetros a explorar en la búsqueda sistemática de la mejor arquitectura de red neuronal. Se especifican cuatro tamaños de capa oculta posibles (32, 64, 128 y 256 neuronas), con un máximo de 3 capas ocultas, generando todas las combinaciones posibles de arquitecturas (desde una sola capa de 32 neuronas hasta tres capas con 256 neuronas cada una). Se establece una tasa de dropout fija del 30% para regularización, aunque se exploran todas las combinaciones posibles de aplicación de dropout por capa (por ejemplo, aplicar dropout solo en la primera capa, solo en la segunda, en todas o en ninguna). Se fijan hiperparámetros de entrenamiento constantes para toda la búsqueda: 50 épocas como máximo, tamaño de lote de 32 muestras, y paciencia de 10 épocas para early stopping. Se calcula el tamaño total del espacio de búsqueda: el número de arquitecturas únicas multiplicado por las configuraciones de dropout por arquitectura, multiplicado por 3 tipos de optimizadores o funciones de pérdida a evaluar (a definir posteriormente), resultando en el número total de entrenamientos que se ejecutarán durante el grid search.</p>
+<section id="configuracion-del-grid-search">
+<h2>3. Configuracion del grid search<a class="headerlink" href="#configuracion-del-grid-search" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">neuronas</span>     <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">]</span>
@@ -590,105 +580,9 @@ Total grid (3 tipos) : 1752 entrenamientos
 </div>
 </div>
 </div>
-<p><strong>Desglose del espacio de búsqueda</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Nivel</p></th>
-<th class="head"><p>Cantidad</p></th>
-<th class="head"><p>Explicación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Arquitecturas únicas</strong></p></td>
-<td><p>84</p></td>
-<td><p>Combinaciones de capas ocultas con neuronas {32,64,128,256} y 1-3 capas</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Configuraciones con dropout</strong></p></td>
-<td><p>584</p></td>
-<td><p>84 arquitecturas × (2^capas) combinaciones de dropout</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Total entrenamientos</strong></p></td>
-<td><p>1,752</p></td>
-<td><p>584 × 3 (tipos adicionales a definir)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr class="docutils" />
-<p><strong>Composición de las 84 arquitecturas por número de capas</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Capas</p></th>
-<th class="head"><p>Combinaciones</p></th>
-<th class="head"><p>Ejemplos</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1 capa</p></td>
-<td><p>4</p></td>
-<td><p>(32), (64), (128), (256)</p></td>
-</tr>
-<tr class="row-odd"><td><p>2 capas</p></td>
-<td><p>4×4 = 16</p></td>
-<td><p>(32,32), (32,64), …, (256,256)</p></td>
-</tr>
-<tr class="row-even"><td><p>3 capas</p></td>
-<td><p>4×4×4 = 64</p></td>
-<td><p>(32,32,32), (32,32,64), …, (256,256,256)</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Total</strong></p></td>
-<td><p><strong>84</strong></p></td>
-<td><p>Verificado</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Por tamaño de arquitectura:</strong></p>
-<ul class="simple">
-<li><p><strong>Pequeñas</strong> (≤64 neuronas/capa): ~40 configuraciones</p></li>
-<li><p><strong>Medianas</strong> (128 neuronas/capa): ~25 configuraciones</p></li>
-<li><p><strong>Grandes</strong> (256 neuronas/capa): ~19 configuraciones</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Expansión por dropout (584 configuraciones)</strong></p>
-<p>Para una arquitectura con <code class="docutils literal notranslate"><span class="pre">n</span></code> capas, existen <code class="docutils literal notranslate"><span class="pre">2^n</span></code> formas de aplicar dropout (cada capa puede tener dropout o no).</p>
-<p><strong>Desglose por arquitectura:</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Capas</p></th>
-<th class="head"><p>Arquitecturas</p></th>
-<th class="head"><p>Dropout por arq.</p></th>
-<th class="head"><p>Total dropout configs</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1 capa</p></td>
-<td><p>4</p></td>
-<td><p>2^1 = 2</p></td>
-<td><p>4 × 2 = 8</p></td>
-</tr>
-<tr class="row-odd"><td><p>2 capas</p></td>
-<td><p>16</p></td>
-<td><p>2^2 = 4</p></td>
-<td><p>16 × 4 = 64</p></td>
-</tr>
-<tr class="row-even"><td><p>3 capas</p></td>
-<td><p>64</p></td>
-<td><p>2^3 = 8</p></td>
-<td><p>64 × 8 = 512</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Total</strong></p></td>
-<td><p>84</p></td>
-<td><p>—</p></td>
-<td><p><strong>584</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
 </section>
-<section id="definicion-de-constructores-de-arquitecturas-neuronales-mlp-rnn-y-lstm">
-<h2>4. Definición de constructores de arquitecturas neuronales (MLP, RNN y LSTM)<a class="headerlink" href="#definicion-de-constructores-de-arquitecturas-neuronales-mlp-rnn-y-lstm" title="Permalink to this heading">#</a></h2>
-<p>Se implementan tres funciones constructoras que permiten instanciar dinámicamente diferentes tipos de arquitecturas de redes neuronales durante el grid search. La función <code class="docutils literal notranslate"><span class="pre">build_mlp</span></code> construye un perceptrón multicapa estándar con capas densas completamente conectadas, activación ReLU y dropout opcional por capa, finalizando con una capa de salida de dimensión igual al horizonte de predicción (7 días). La función <code class="docutils literal notranslate"><span class="pre">build_rnn</span></code> implementa una red recurrente simple (RNN) que procesa secuencias temporales respetando el orden de los rezagos, con capacidad para retener información de corto plazo y opción de dropout para regularización. La función <code class="docutils literal notranslate"><span class="pre">build_lstm</span></code> construye una red Long Short-Term Memory, una variante avanzada de RNN que incorpora compuertas de olvido y memoria celular, permitiendo capturar dependencias temporales de largo plazo sin sufrir el problema de desvanecimiento del gradiente. Las tres funciones comparten la misma interfaz: reciben la arquitectura (lista de neuronas por capa), una máscara de dropout (indicando qué capas aplican dropout), las dimensiones de entrada y salida (para MLP) o el número de timesteps (para RNN/LSTM), y compilan el modelo con optimizador Adam, función de pérdida MSE y la métrica RMSE para monitoreo durante el entrenamiento. Estos constructores serán invocados iterativamente durante el grid search para evaluar sistemáticamente las 1,752 configuraciones definidas previamente.</p>
+<section id="constructores-mlp-rnn-lstm">
+<h2>4. Constructores — MLP · RNN · LSTM<a class="headerlink" href="#constructores-mlp-rnn-lstm" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_mlp</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">dmask</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">):</span>
@@ -733,7 +627,7 @@ Total grid (3 tipos) : 1752 entrenamientos
                   <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">RootMeanSquaredError</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;rmse&#39;</span><span class="p">)])</span>
     <span class="k">return</span> <span class="n">model</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Constructores listos: MLP / RNN / LSTM&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ Constructores listos: MLP / RNN / LSTM&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -744,9 +638,8 @@ Total grid (3 tipos) : 1752 entrenamientos
 </div>
 </div>
 </section>
-<section id="implementacion-del-grid-search-con-reanudacion-y-checkpoints">
-<h2>5. Implementación del grid search con reanudación y checkpoints<a class="headerlink" href="#implementacion-del-grid-search-con-reanudacion-y-checkpoints" title="Permalink to this heading">#</a></h2>
-<p>Se implementa la función principal <code class="docutils literal notranslate"><span class="pre">run_grid_search</span></code> que ejecuta la búsqueda sistemática de hiperparámetros sobre todas las configuraciones definidas (arquitectura × máscara de dropout × tipo de modelo). La función recibe como parámetros el tipo de modelo (MLP, RNN o LSTM), los conjuntos de entrenamiento y validación (features y target), la dimensión de entrada (lag) y salida (horizonte de 7 días), y parámetros de checkpointing. Internamente, genera una lista plana de todas las configuraciones a evaluar y soporta reanudación automática en caso de interrupción, utilizando un índice de inicio calculado a partir de resultados parciales previamente guardados. Para cada configuración, se limpia la sesión de TensorFlow (previniendo fugas de memoria), se fija la semilla aleatoria, se construye el modelo mediante los constructores definidos, y se entrena con early stopping (paciencia de 10 épocas). Se registran métricas clave: el mejor RMSE de validación, el RMSE final de entrenamiento, la brecha (gap) entre ambos, el número de épocas ejecutadas, y las curvas completas de entrenamiento y validación. Cada cierto número de configuraciones (por defecto cada 10), se guarda un checkpoint atómico: primero se escribe un archivo temporal, luego se reemplaza el archivo final mediante <code class="docutils literal notranslate"><span class="pre">os.replace</span></code>, garantizando que el checkpoint nunca quede corrupto incluso si el proceso se interrumpe durante la escritura. Se reporta el progreso en tiempo real con métricas de rendimiento (configuraciones por segundo). Finalmente, se retorna un DataFrame con todos los resultados para su análisis posterior. Esta implementación robusta permite ejecutar grid searches de gran escala (hasta 1,752 entrenamientos) de manera segura, reanudable y eficiente en memoria.</p>
+<section id="funcion-de-grid-search">
+<h2>5. Funcion de grid search<a class="headerlink" href="#funcion-de-grid-search" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">gc</span>
@@ -754,7 +647,12 @@ Total grid (3 tipos) : 1752 entrenamientos
 <span class="k">def</span><span class="w"> </span><span class="nf">run_grid_search</span><span class="p">(</span><span class="n">model_type</span><span class="p">,</span> <span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">input_lag</span><span class="p">,</span> <span class="n">output_dim</span><span class="p">,</span>
                     <span class="n">checkpoint_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">partial_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">checkpoint_every</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Grid search con reanudacion y checkpoint incremental atomico.</span>
 
+<span class="sd">    - partial_results: lista de dicts ya evaluados. Se reanuda en len(partial_results).</span>
+<span class="sd">    - checkpoint_file / checkpoint_key: si se proveen, persiste cada checkpoint_every.</span>
+<span class="sd">    - checkpoint_every: cada cuantas configs reportar progreso y guardar checkpoint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Lista plana de configs: se indexa por posicion para reanudar facil.</span>
     <span class="n">all_configs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">arch</span><span class="p">,</span> <span class="n">dmask</span><span class="p">)</span>
                    <span class="k">for</span> <span class="n">arch</span> <span class="ow">in</span> <span class="n">arquitecturas</span>
@@ -857,7 +755,7 @@ Total grid (3 tipos) : 1752 entrenamientos
 
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">resultados</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Funcion grid search lista (con reanudacion + checkpoint atómico)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\u2705</span><span class="s2"> Funcion grid search lista (con reanudacion + checkpoint atomico)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -868,9 +766,8 @@ Total grid (3 tipos) : 1752 entrenamientos
 </div>
 </div>
 </section>
-<section id="extraccion-y-escalado-de-datos-para-el-grid-search-lag-14-fold-0">
-<h2>6. Extracción y escalado de datos para el grid search (lag=14, fold=0)<a class="headerlink" href="#extraccion-y-escalado-de-datos-para-el-grid-search-lag-14-fold-0" title="Permalink to this heading">#</a></h2>
-<p>Se extraen los conjuntos de entrenamiento y validación correspondientes a la configuración seleccionada para el grid search: lag de 14 días y fold 0. Se obtienen los datos crudos de features (<code class="docutils literal notranslate"><span class="pre">X_tr_raw</span></code>, <code class="docutils literal notranslate"><span class="pre">X_val_raw</span></code>) y targets (<code class="docutils literal notranslate"><span class="pre">y_tr_raw</span></code>, <code class="docutils literal notranslate"><span class="pre">y_val_raw</span></code>) a partir de la estructura <code class="docutils literal notranslate"><span class="pre">splits</span></code>. Se inicializan dos instancias de <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>: una para las features de entrada y otra para la variable objetivo. Cada escalador se ajusta (fit) <strong>exclusivamente</strong> sobre los datos de entrenamiento, respetando el principio de que la información del conjunto de validación no debe influir en el preprocesamiento para evitar fuga de datos. Posteriormente, se transforman tanto los conjuntos de entrenamiento como de validación utilizando los escaladores ya ajustados. Finalmente, se imprimen las dimensiones resultantes de los conjuntos preprocesados, verificando que las formas sean consistentes: features de entrada de dimensión (muestras, lag=14) y targets de dimensión (muestras, horizonte=7). Estos datos escalados serán utilizados como entrada para el grid search sobre las arquitecturas MLP, RNN y LSTM.</p>
+<section id="preparar-datos-fold-0-lag-14d">
+<h2>6. Preparar datos — fold 0, lag=14d<a class="headerlink" href="#preparar-datos-fold-0-lag-14d" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sp</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">GRID_LAG</span><span class="p">]</span>
@@ -886,8 +783,8 @@ Total grid (3 tipos) : 1752 entrenamientos
 <span class="n">y_tr_s</span>  <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_tr_raw</span><span class="p">)</span>
 <span class="n">y_val_s</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_val_raw</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train: </span><span class="si">{</span><span class="n">X_tr_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">y_tr_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val: </span><span class="si">{</span><span class="n">X_val_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">y_val_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train : </span><span class="si">{</span><span class="n">X_tr_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">y_tr_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val   : </span><span class="si">{</span><span class="n">X_val_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">y_val_s</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -898,108 +795,9 @@ Val   : (58, 14) -&gt; (58, 7)
 </div>
 </div>
 </div>
-<p><strong>Features de entrada (X)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Conjunto</p></th>
-<th class="head"><p>Muestras</p></th>
-<th class="head"><p>Features por muestra</p></th>
-<th class="head"><p>Significado</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Train</p></td>
-<td><p>175</p></td>
-<td><p>14</p></td>
-<td><p>14 días consecutivos de volatilidad realizada</p></td>
-</tr>
-<tr class="row-odd"><td><p>Val</p></td>
-<td><p>58</p></td>
-<td><p>14</p></td>
-<td><p>14 días consecutivos (ventana deslizante independiente)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Interpretación de las 14 features:</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[Día t-13, t-12, ..., t-1, t] → 14 valores de RV_15m
-</pre></div>
-</div>
-<hr class="docutils" />
-<p><strong>Target de salida (y)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Conjunto</p></th>
-<th class="head"><p>Muestras</p></th>
-<th class="head"><p>Horizonte</p></th>
-<th class="head"><p>Significado</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Train</p></td>
-<td><p>175</p></td>
-<td><p>7</p></td>
-<td><p>Próximos 7 días de volatilidad</p></td>
-</tr>
-<tr class="row-odd"><td><p>Val</p></td>
-<td><p>58</p></td>
-<td><p>7</p></td>
-<td><p>Próximos 7 días (validación)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Interpretación de las 7 salidas:</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[Día t+1, t+2, t+3, t+4, t+5, t+6, t+7] → 7 valores de RV_15m a predecir
-</pre></div>
-</div>
-<hr class="docutils" />
-<p><strong>Relación temporal entre entrada y salida</strong></p>
-<p>Para cada muestra <code class="docutils literal notranslate"><span class="pre">i</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Entrada</span> <span class="p">(</span><span class="n">X</span><span class="p">):</span>  <span class="p">[</span><span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">13</span><span class="p">),</span> <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">12</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span>
-<span class="n">Salida</span> <span class="p">(</span><span class="n">y</span><span class="p">):</span>   <span class="p">[</span><span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span>  <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span>  <span class="o">...</span><span class="p">,</span> <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">6</span><span class="p">),</span>  <span class="n">RV</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">7</span><span class="p">)]</span>
-</pre></div>
-</div>
-<p><strong>Ventana total cubierta por muestra:</strong> 14 (entrada) + 7 (salida) = <strong>21 días consecutivos</strong></p>
-<hr class="docutils" />
-<p><strong>Verificación de consistencia con tabla previa</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Métrica</p></th>
-<th class="head"><p>Valor esperado (tabla lag=14)</p></th>
-<th class="head"><p>Valor real</p></th>
-<th class="head"><p>Verificación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Train samples (fold 0)</p></td>
-<td><p>175</p></td>
-<td><p>175</p></td>
-<td><p>Coincide</p></td>
-</tr>
-<tr class="row-odd"><td><p>Val samples (fold 0)</p></td>
-<td><p>58</p></td>
-<td><p>58</p></td>
-<td><p>Coincide</p></td>
-</tr>
-<tr class="row-even"><td><p>Features (lag)</p></td>
-<td><p>14</p></td>
-<td><p>14</p></td>
-<td><p>Correcto</p></td>
-</tr>
-<tr class="row-odd"><td><p>Horizonte</p></td>
-<td><p>7</p></td>
-<td><p>7</p></td>
-<td><p>Correcto</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Estado:</strong> Los datos están correctamente extraídos, escalados y dimensionados para iniciar el grid search en la configuración lag=14, fold=0.</p>
 </section>
-<section id="grid-search-con-checkpointing-y-reanudacion-automatica-para-mlp-rnn-y-lstm">
-<h2>7. Grid search con checkpointing y reanudación automática para MLP, RNN y LSTM<a class="headerlink" href="#grid-search-con-checkpointing-y-reanudacion-automatica-para-mlp-rnn-y-lstm" title="Permalink to this heading">#</a></h2>
-<p>Se ejecuta la búsqueda sistemática de hiperparámetros sobre los tres tipos de arquitecturas neuronales (MLP, RNN y LSTM) utilizando el mecanismo de checkpointing atómico para garantizar la reanudación segura en caso de interrupciones. Se define un archivo de checkpoint (<code class="docutils literal notranslate"><span class="pre">grid_results_checkpoint.pkl</span></code>) donde se almacena el progreso parcial de cada modelo. Se implementan funciones auxiliares para verificar si un modelo está completo y para extraer resultados parciales. Al iniciar, se carga el checkpoint existente y se reporta el estado de cada modelo. Para MLP, se carga directamente un resultado previamente obtenido (arquitectura (256,128,128) con val_rmse=0.56112), evitando reentrenar esta configuración. Para RNN y LSTM, se ejecuta el grid search con reanudación automática: si existe un progreso parcial, se continúa desde donde se interrumpió; en caso contrario, se comienza desde cero. Para LSTM, se forza explícitamente el uso de CPU (<code class="docutils literal notranslate"><span class="pre">/CPU:0</span></code>) debido a que DirectML (backend de GPU en Windows) no implementa las operaciones CudnnRNN necesarias para LSTM, lo que generaría errores si se ejecutara en GPU. Una vez completado cada modelo, se marcan como completos en el checkpoint, se guarda un respaldo en CSV (excluyendo las curvas completas de entrenamiento para reducir tamaño), y se identifica la mejor configuración según el criterio <code class="docutils literal notranslate"><span class="pre">gap_ratio</span> <span class="pre">&lt;</span> <span class="pre">0.15</span></code> (brecha relativa entre entrenamiento y validación) y el menor RMSE de validación. Finalmente, se reconstruye un diccionario <code class="docutils literal notranslate"><span class="pre">grid_results</span></code> con los DataFrames de resultados de los tres modelos para su análisis posterior. Este flujo permite ejecutar el grid search de manera robusta, reanudable y con trazabilidad completa de resultados.</p>
+<section id="grid-search-con-checkpoints">
+<h2>7. Grid search con checkpoints<a class="headerlink" href="#grid-search-con-checkpoints" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
@@ -1032,29 +830,29 @@ Val   : (58, 14) -&gt; (58, 7)
         <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="c1"># Cargar checkpoint existente y reportar estado</span>
+<span class="c1"># --- Cargar checkpoint existente y reportar estado</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">CHECKPOINT_FILE</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CHECKPOINT_FILE</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checkpoint cargado. Estado por modelo:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\u2705</span><span class="s2"> Checkpoint cargado. Estado por modelo:&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="s1">&#39;RNN&#39;</span><span class="p">,</span> <span class="s1">&#39;LSTM&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="n">m</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">checkpoint</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: no existe&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: no existe&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">n</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="p">[]))</span>
                 <span class="n">st</span> <span class="o">=</span> <span class="s1">&#39;COMPLETO&#39;</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;PARCIAL&#39;</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> configs)&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">st</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> configs)&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: legacy DataFrame (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas), completo&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s2">4s</span><span class="si">}</span><span class="s2">: legacy DataFrame (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2"> filas) </span><span class="se">\u2192</span><span class="s2"> completo&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">checkpoint</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No hay checkpoint. Empezando desde cero.&quot;</span><span class="p">)</span>
 
-<span class="c1"># MLP: hardcodeado del run anterior (NO se reentrena)</span>
+<span class="c1"># --- MLP: hardcodeado del run anterior (NO se reentrena)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_complete</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s1">&#39;MLP&#39;</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">MLP, cargando resultado conocido del run anterior...&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">MLP </span><span class="se">\u2014</span><span class="s2"> cargando resultado conocido del run anterior...&quot;</span><span class="p">)</span>
     <span class="n">mlp_row</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;model_type&#39;</span><span class="p">:</span>      <span class="s1">&#39;MLP&#39;</span><span class="p">,</span>
         <span class="s1">&#39;arquitectura&#39;</span><span class="p">:</span>    <span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
@@ -1068,24 +866,24 @@ Val   : (58, 14) -&gt; (58, 7)
     <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;MLP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">mlp_row</span><span class="p">],</span> <span class="s1">&#39;complete&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
     <span class="n">_save_cp_atomic</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
     <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">mlp_row</span><span class="p">])</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;results/grid_MLP.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; MLP cargado: arch=(256,128,128) | val_rmse=0.56112 | gap_ratio=0.071&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; CSV: results/grid_MLP.csv&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  MLP cargado: arch=(256,128,128) | val_rmse=0.56112 | gap_ratio=0.071&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  CSV: results/grid_MLP.csv&quot;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">MLP ya completo, skipping.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">MLP ya completo </span><span class="se">\u2014</span><span class="s2"> skipping.&quot;</span><span class="p">)</span>
 
-<span class="c1">#  RNN y LSTM con reanudacion automatica</span>
+<span class="c1"># --- RNN y LSTM con reanudacion automatica</span>
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;RNN&#39;</span><span class="p">,</span> <span class="s1">&#39;LSTM&#39;</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">_is_complete</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">mtype</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> ya completo, skipping.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> ya completo </span><span class="se">\u2014</span><span class="s2"> skipping.&quot;</span><span class="p">)</span>
         <span class="k">continue</span>
 
     <span class="n">partial</span> <span class="o">=</span> <span class="n">_get_partial</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">mtype</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">partial</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GRID SEARCH </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> (reanudando desde </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">partial</span><span class="p">)</span><span class="si">}</span><span class="s2">/584)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  GRID SEARCH </span><span class="se">\u2014</span><span class="s2"> </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">  (reanudando desde </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">partial</span><span class="p">)</span><span class="si">}</span><span class="s2">/584)&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GRID SEARCH </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> (empezando desde 0/584)&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  GRID SEARCH </span><span class="se">\u2014</span><span class="s2"> </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">  (empezando desde 0/584)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">mtype</span> <span class="o">==</span> <span class="s1">&#39;LSTM&#39;</span><span class="p">:</span>
@@ -1110,25 +908,25 @@ Val   : (58, 14) -&gt; (58, 7)
     <span class="n">checkpoint</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">),</span> <span class="s1">&#39;complete&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
     <span class="n">_save_cp_atomic</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
 
-    <span class="c1"># CSV de respaldo</span>
+    <span class="c1"># CSV de respaldo (sin curvas para que sea legible en Notion/Excel)</span>
     <span class="n">df_csv</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train_curve&#39;</span><span class="p">,</span> <span class="s1">&#39;val_curve&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
     <span class="n">df_csv</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/grid_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">candidatos</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gap_ratio&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.15</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;best_val_rmse&#39;</span><span class="p">)</span>
     <span class="n">best</span> <span class="o">=</span> <span class="n">candidatos</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidatos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> \
            <span class="k">else</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;best_val_rmse&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> completo en </span><span class="si">{</span><span class="n">elapsed</span><span class="o">/</span><span class="mi">60</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> min CSV: results/grid_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Mejor </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">: arch=</span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;arquitectura&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="se">\u2705</span><span class="s2"> </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> completo en </span><span class="si">{</span><span class="n">elapsed</span><span class="o">/</span><span class="mi">60</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> min </span><span class="se">\u2014</span><span class="s2"> CSV: results/grid_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mejor </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2">: arch=</span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;arquitectura&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
           <span class="sa">f</span><span class="s2">&quot;dropout=</span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;dropout_mask&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | &quot;</span>
           <span class="sa">f</span><span class="s2">&quot;val_rmse=</span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;best_val_rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> | gap_ratio=</span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;gap_ratio&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Reconstruir grid_results como DataFrames (para seccion 8 siguiente)</span>
+<span class="c1"># --- Reconstruir grid_results como DataFrames (para seccion 8 siguiente)</span>
 <span class="n">grid_results</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;MLP&#39;</span><span class="p">,</span> <span class="s1">&#39;RNN&#39;</span><span class="p">,</span> <span class="s1">&#39;LSTM&#39;</span><span class="p">]:</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span>
     <span class="n">grid_results</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">v</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Grid search completo para los 3 modelos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\u2705</span><span class="s2"> Grid search completo para los 3 modelos&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1167,125 +965,9 @@ RNN ya completo — skipping.
 </div>
 </div>
 </div>
-<p><strong>Estado de los modelos al cargar checkpoint</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>Estado</p></th>
-<th class="head"><p>Configuraciones</p></th>
-<th class="head"><p>Implicancia</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>MLP</strong></p></td>
-<td><p>Completo (legacy)</p></td>
-<td><p>1 fila</p></td>
-<td><p>Cargado desde resultado previo, no reentrenado</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>RNN</strong></p></td>
-<td><p>Completo</p></td>
-<td><p>584 configs</p></td>
-<td><p>Grid search ya finalizado en ejecución anterior</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>LSTM</strong></p></td>
-<td><p>Parcial</p></td>
-<td><p>470/584 (80%)</p></td>
-<td><p>Reanudación automática desde punto de interrupción</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Ventaja del checkpointing:</strong> El sistema detectó que LSTM estaba incompleto y reanudó automáticamente desde la configuración 470, evitando perder 470 entrenamientos ya realizados.</p>
-<hr class="docutils" />
-<p><strong>Análisis de la mejor configuración LSTM</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Aspecto</p></th>
-<th class="head"><p>Valor</p></th>
-<th class="head"><p>Evaluación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Arquitectura</p></td>
-<td><p>(32,)</p></td>
-<td><p>Una sola capa LSTM con 32 unidades</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dropout</p></td>
-<td><p>(True,)</p></td>
-<td><p>Dropout aplicado (tasa 30% por configuración previa)</p></td>
-</tr>
-<tr class="row-even"><td><p>Val RMSE</p></td>
-<td><p>0.56483</p></td>
-<td><p>Similar al MLP (0.56112)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Gap ratio</p></td>
-<td><p><strong>0.444</strong></p></td>
-<td><p><strong>Muy alto</strong> — señal de problema</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Problema identificado - Gap ratio elevado (0.444):</strong></p>
-<p>El gap ratio mide la diferencia relativa entre el RMSE final de entrenamiento y el mejor RMSE de validación:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gap_ratio</span> <span class="o">=</span> <span class="o">|</span><span class="n">last_train_rmse</span> <span class="o">-</span> <span class="n">best_val_rmse</span><span class="o">|</span> <span class="o">/</span> <span class="n">best_val_rmse</span>
-</pre></div>
-</div>
-<p><strong>Interpretación del gap_ratio=0.444:</strong></p>
-<ul class="simple">
-<li><p>El mejor RMSE en validación fue ~0.565.</p></li>
-<li><p>El RMSE final en entrenamiento fue significativamente mejor (~0.391).</p></li>
-<li><p><strong>Indica sobreajuste severo</strong> o que el early stopping no funcionó correctamente.</p></li>
-</ul>
-<p><strong>Posibles causas:</strong></p>
-<ol class="arabic simple">
-<li><p>El modelo continuó mejorando en entrenamiento mientras empeoraba en validación.</p></li>
-<li><p>La paciencia de 10 épocas fue insuficiente para detener el entrenamiento.</p></li>
-<li><p>La arquitectura (32,) + dropout no es suficiente regularización para LSTM.</p></li>
-</ol>
-<hr class="docutils" />
-<p><strong>Comparativa MLP vs LSTM (mejores configuraciones)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Métrica</p></th>
-<th class="head"><p>MLP (256,128,128)</p></th>
-<th class="head"><p>LSTM (32,)</p></th>
-<th class="head"><p>Diferencia</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Val RMSE</p></td>
-<td><p>0.56112</p></td>
-<td><p>0.56483</p></td>
-<td><p>+0.66% (peor)</p></td>
-</tr>
-<tr class="row-odd"><td><p>Gap ratio</p></td>
-<td><p><strong>0.071</strong></p></td>
-<td><p><strong>0.444</strong></p></td>
-<td><p>+525%</p></td>
-</tr>
-<tr class="row-even"><td><p>Parámetros</p></td>
-<td><p>~41,000</p></td>
-<td><p>~6,500</p></td>
-<td><p>MLP es 6× más grande</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dropout</p></td>
-<td><p>Ninguno</p></td>
-<td><p>Sí</p></td>
-<td><p>LSTM usa dropout</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Hallazgo sorprendente:</strong> El MLP con 41,000 parámetros y <strong>sin dropout</strong> tuvo <strong>menor sobreajuste</strong> (gap_ratio 0.071) que el LSTM pequeño con dropout (gap_ratio 0.444). Esto sugiere que:</p>
-<ol class="arabic simple">
-<li><p>El LSTM podría necesitar más regularización o ajuste de hiperparámetros.</p></li>
-<li><p>Para esta tarea (predicción de volatilidad con lag=14), el MLP es suficiente.</p></li>
-<li><p>La complejidad adicional del LSTM no aporta beneficio.</p></li>
-</ol>
 </section>
-<section id="seleccion-de-mejores-configuraciones-por-tipo-de-modelo">
-<h2>8. Selección de mejores configuraciones por tipo de modelo<a class="headerlink" href="#seleccion-de-mejores-configuraciones-por-tipo-de-modelo" title="Permalink to this heading">#</a></h2>
-<p>Se identifican las arquitecturas óptimas para cada uno de los tres modelos evaluados (MLP, RNN y LSTM) a partir de los resultados del grid search. Para cada tipo de modelo, se filtra el DataFrame de resultados seleccionando aquellas configuraciones que cumplen con un criterio de estabilidad: <code class="docutils literal notranslate"><span class="pre">gap_ratio</span> <span class="pre">&lt;</span> <span class="pre">0.15</span></code> (brecha relativa entre el RMSE final de entrenamiento y el mejor RMSE de validación inferior al 15%), indicando que el modelo no presenta sobreajuste severo. Entre los candidatos que superan este filtro, se selecciona aquel con el menor <code class="docutils literal notranslate"><span class="pre">best_val_rmse</span></code> (mejor desempeño en validación). Si ningún candidato cumple el criterio de gap_ratio (caso potencial de LSTM), se selecciona directamente la configuración con menor RMSE de validación sin aplicar el filtro. Para cada modelo, se registran la arquitectura (lista de neuronas por capa), la máscara de dropout (indicando qué capas aplican regularización), el RMSE de validación alcanzado y el gap_ratio asociado. Finalmente, se imprime un resumen comparativo de las tres mejores configuraciones seleccionadas, permitiendo contrastar la complejidad, estabilidad y desempeño de cada arquitectura antes de proceder a la validación cruzada completa y evaluación en test.</p>
+<section id="seleccion-automatica-de-arquitecturas">
+<h2>8. Seleccion automatica de arquitecturas<a class="headerlink" href="#seleccion-automatica-de-arquitecturas" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_configs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1319,187 +1001,9 @@ RNN ya completo — skipping.
 </div>
 </div>
 </div>
-<p>**MLP (256, 128, 128) - <strong>Modelo campeón</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Característica</p></th>
-<th class="head"><p>Valor</p></th>
-<th class="head"><p>Interpretación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Capas ocultas</p></td>
-<td><p>3</p></td>
-<td><p>Profundidad moderada</p></td>
-</tr>
-<tr class="row-odd"><td><p>Neuronas totales</p></td>
-<td><p>512 (256+128+128)</p></td>
-<td><p>Alta capacidad expresiva</p></td>
-</tr>
-<tr class="row-even"><td><p>Parámetros estimados</p></td>
-<td><p>~41,000</p></td>
-<td><p>Grande pero manejable</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dropout</p></td>
-<td><p>Ninguno</p></td>
-<td><p>No requirió regularización explícita</p></td>
-</tr>
-<tr class="row-even"><td><p>Val RMSE</p></td>
-<td><p>0.56112</p></td>
-<td><p>Mejor desempeño absoluto</p></td>
-</tr>
-<tr class="row-odd"><td><p>Gap ratio</p></td>
-<td><p><strong>0.071</strong></p></td>
-<td><p><strong>Sobreajuste prácticamente inexistente</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Fortalezas:</strong></p>
-<ul class="simple">
-<li><p>Mejor precisión predictiva (RMSE más bajo).</p></li>
-<li><p>Máxima estabilidad (gap_ratio &lt; 10%).</p></li>
-<li><p>Arquitectura profunda captura relaciones complejas.</p></li>
-<li><p>Sin dropout → convergencia más rápida.</p></li>
-</ul>
-<p><strong>Debilidades:</strong></p>
-<ul class="simple">
-<li><p>Mayor tamaño del modelo (~41k parámetros).</p></li>
-<li><p>Potencialmente más lento en inferencia (aún insignificante).</p></li>
-</ul>
-<hr class="docutils" />
-<p>**RNN (64, 32, 64) - <strong>Modelo intermedio</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Característica</p></th>
-<th class="head"><p>Valor</p></th>
-<th class="head"><p>Interpretación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Capas recurrentes</p></td>
-<td><p>3</p></td>
-<td><p>Profundidad similar a MLP</p></td>
-</tr>
-<tr class="row-odd"><td><p>Neuronas</p></td>
-<td><p>64→32→64</p></td>
-<td><p>Patrón de cuello de botella interesante</p></td>
-</tr>
-<tr class="row-even"><td><p>Dropout</p></td>
-<td><p>Solo en primera capa</p></td>
-<td><p>Regularización selectiva</p></td>
-</tr>
-<tr class="row-odd"><td><p>Val RMSE</p></td>
-<td><p>0.58023</p></td>
-<td><p><strong>+3.4% peor que MLP</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>Gap ratio</p></td>
-<td><p>0.148</p></td>
-<td><p>Aceptable (cerca del límite 0.15)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observaciones:</strong></p>
-<ul class="simple">
-<li><p>El patrón (64→32→64) es inusual (expande al final).</p></li>
-<li><p>Gap ratio en el límite superior de aceptación.</p></li>
-<li><p>Podría beneficiarse de más regularización, aunque requeriría más tiempo de computo.</p></li>
-</ul>
-<p><strong>Comparación con MLP:</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RNMSE_MLP</span> <span class="o">=</span> <span class="mf">0.56112</span>
-<span class="n">RNMSE_RNN</span> <span class="o">=</span> <span class="mf">0.58023</span>
-<span class="n">Diferencia</span> <span class="o">=</span> <span class="o">+</span><span class="mf">0.01911</span> <span class="p">(</span><span class="o">+</span><span class="mf">3.4</span><span class="o">%</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>El MLP supera claramente al RNN en precisión.</p>
-<hr class="docutils" />
-<p>**LSTM (32,) - <strong>Modelo problemático</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Característica</p></th>
-<th class="head"><p>Valor</p></th>
-<th class="head"><p>Interpretación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Capas recurrentes</p></td>
-<td><p>1</p></td>
-<td><p>Arquitectura muy simple</p></td>
-</tr>
-<tr class="row-odd"><td><p>Neuronas</p></td>
-<td><p>32</p></td>
-<td><p>Capacidad limitada</p></td>
-</tr>
-<tr class="row-even"><td><p>Dropout</p></td>
-<td><p>Sí</p></td>
-<td><p>Regularización presente</p></td>
-</tr>
-<tr class="row-odd"><td><p>Val RMSE</p></td>
-<td><p>0.56483</p></td>
-<td><p><strong>+0.66% peor que MLP</strong> (cercano)</p></td>
-</tr>
-<tr class="row-even"><td><p>Gap ratio</p></td>
-<td><p><strong>0.444</strong></p></td>
-<td><p><strong>Sobreajuste severo (44.4%)</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Problemas identificados:</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Síntoma</p></th>
-<th class="head"><p>Explicación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Gap ratio 0.444</p></td>
-<td><p>El modelo memorizó entrenamiento pero no generalizó</p></td>
-</tr>
-<tr class="row-odd"><td><p>Arquitectura simple</p></td>
-<td><p>Una sola capa LSTM puede ser insuficiente</p></td>
-</tr>
-<tr class="row-even"><td><p>Val RMSE cercano a MLP</p></td>
-<td><p>Aún con sobreajuste, predicción razonable</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Posibles causas del sobreajuste:</strong></p>
-<ol class="arabic simple">
-<li><p><strong>Early stopping insuficiente:</strong> patience=10 pudo ser demasiado.</p></li>
-<li><p><strong>Tasa de dropout baja (0.3):</strong> Puede necesitar 0.5 para LSTM.</p></li>
-<li><p><strong>Arquitectura demasiado simple:</strong> Una capa no captura complejidad temporal.</p></li>
-<li><p><strong>Muestras limitadas:</strong> 175 muestras de entrenamiento para LSTM es muy poco.</p></li>
-</ol>
-<hr class="docutils" />
-<p><strong>MLP gana en ambas dimensiones:</strong></p>
-<ul class="simple">
-<li><p>Menor error (mejor precisión).</p></li>
-<li><p>Mayor estabilidad (menor sobreajuste).</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Análisis de la arquitectura RNN (64,32,64)</strong></p>
-<p>El patrón de neuronas <strong>64 → 32 → 64</strong> merece atención:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Capa</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">64</span> <span class="n">unidades</span> <span class="p">(</span><span class="n">expansión</span> <span class="n">desde</span> <span class="nb">input</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">Capa</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">32</span> <span class="n">unidades</span> <span class="p">(</span><span class="n">cuello</span> <span class="n">de</span> <span class="n">botella</span><span class="p">,</span> <span class="n">compresión</span><span class="p">)</span>
-<span class="n">Capa</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">64</span> <span class="n">unidades</span> <span class="p">(</span><span class="n">expansión</span> <span class="n">antes</span> <span class="n">de</span> <span class="n">salida</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><strong>Interpretación:</strong> La red aprende a:</p>
-<ol class="arabic simple">
-<li><p>Expandir la información (14 → 64).</p></li>
-<li><p>Comprimir a una representación latente (64 → 32).</p></li>
-<li><p>Expandir nuevamente para la salida multi-step (32 → 64 → 7).</p></li>
-</ol>
-<p><strong>Patrón similar a un autoencoder</strong>, lo cual es interesante pero no logró superar al MLP.</p>
-<hr class="docutils" />
-<p><strong>Conclusión final:</strong> El <strong>MLP con arquitectura (256, 128, 128)</strong> es el modelo seleccionado para la fase de validación cruzada completa y posterior despliegue en producción. Supera a RNN y LSTM tanto en precisión como en estabilidad, demostrando que para esta tarea específica (predicción de volatilidad de Bitcoin con horizonte de 7 días y lag de 14 días), un perceptrón multicapa profundo es suficiente y más robusto que arquitecturas recurrentes más complejas.</p>
 </section>
-<section id="validacion-cruzada-completa-de-las-mejores-configuraciones-por-modelo-y-lag">
-<h2>9. Validación cruzada completa de las mejores configuraciones por modelo y lag<a class="headerlink" href="#validacion-cruzada-completa-de-las-mejores-configuraciones-por-modelo-y-lag" title="Permalink to this heading">#</a></h2>
-<p>Se realiza una validación exhaustiva de las tres mejores configuraciones seleccionadas (MLP, RNN y LSTM) a través de todas las combinaciones de lags temporales (7, 14, 21, 28 días) y folds de validación cruzada (0 a 4). Para cada combinación de modelo, lag y fold, se ejecuta el siguiente pipeline: extracción de los splits correspondientes (entrenamiento, validación y prueba); escalado de features y target utilizando <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> ajustado exclusivamente sobre el conjunto de entrenamiento; construcción del modelo con la arquitectura óptima previamente identificada y su máscara de dropout asociada; entrenamiento con early stopping (paciencia de 10 épocas) y restauración de los mejores pesos; predicción sobre los conjuntos de entrenamiento, validación y prueba con desescalado inverso a la escala original; cálculo de métricas por horizonte (MAPE, MAE, RMSE, MSE) sobre el conjunto de prueba; aplicación del test de BDS sobre los residuos del primer horizonte (día t+1) para evaluar la presencia de no linealidad residual no capturada por el modelo. Para el modelo LSTM, se fuerza explícitamente la ejecución en CPU (<code class="docutils literal notranslate"><span class="pre">/CPU:0</span></code>) debido a limitaciones de compatibilidad con DirectML. Todos los resultados (métricas, predicciones, residuos y valores reales) se almacenan en un diccionario anidado <code class="docutils literal notranslate"><span class="pre">results_all</span></code> indexado por modelo, lag y fold, y se guarda un checkpoint (<code class="docutils literal notranslate"><span class="pre">results_all_checkpoint.pkl</span></code>) para su posterior análisis y visualización. Esta validación cruzada completa permite evaluar la robustez de cada configuración a través de diferentes períodos temporales y tamaños de ventana, identificando degradaciones de desempeño en condiciones específicas.</p>
+<section id="evaluacion-completa-5-folds-4-lags-3-modelos">
+<h2>9. Evaluacion completa — 5 folds × 4 lags × 3 modelos<a class="headerlink" href="#evaluacion-completa-5-folds-4-lags-3-modelos" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
@@ -1511,7 +1015,7 @@ RNN ya completo — skipping.
     <span class="n">dmask</span>  <span class="o">=</span> <span class="n">best_configs</span><span class="p">[</span><span class="n">mtype</span><span class="p">][</span><span class="s1">&#39;dropout_mask&#39;</span><span class="p">]</span>
     <span class="n">_device</span> <span class="o">=</span> <span class="s1">&#39;/CPU:0&#39;</span> <span class="k">if</span> <span class="n">mtype</span> <span class="o">==</span> <span class="s1">&#39;LSTM&#39;</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="n">results_all</span><span class="p">[</span><span class="n">mtype</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> — arch=</span><span class="si">{</span><span class="n">arch</span><span class="si">}</span><span class="s2"> | dropout=</span><span class="si">{</span><span class="n">dmask</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="se">\n</span><span class="s2">  </span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s2"> — arch=</span><span class="si">{</span><span class="n">arch</span><span class="si">}</span><span class="s2"> | dropout=</span><span class="si">{</span><span class="n">dmask</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">LAGS_LIST</span><span class="p">:</span>
         <span class="n">sp</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag</span><span class="p">]</span>
@@ -1579,7 +1083,7 @@ RNN ya completo — skipping.
 <span class="c1"># Guardar checkpoint de resultados finales</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;results_all_checkpoint.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results_all</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Evaluacion completa — checkpoint guardado en results_all_checkpoint.pkl&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ Evaluacion completa — checkpoint guardado en results_all_checkpoint.pkl&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1661,309 +1165,9 @@ RNN ya completo — skipping.
 </div>
 </div>
 </div>
-<p><strong>Resumen general de resultados</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>Rango RMSE (test)</p></th>
-<th class="head"><p>Rango MAPE</p></th>
-<th class="head"><p>BDS test (p&gt;0.05)</p></th>
-<th class="head"><p>Estabilidad</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>MLP</strong></p></td>
-<td><p>0.1934 - 0.5105</p></td>
-<td><p>38.5% - 68.0%</p></td>
-<td><p>100% OK</p></td>
-<td><p><strong>Buena</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>RNN</strong></p></td>
-<td><p>0.2060 - 0.5323</p></td>
-<td><p>39.4% - 59.5%</p></td>
-<td><p>100% OK</p></td>
-<td><p><strong>Buena</strong></p></td>
-</tr>
-<tr class="row-even"><td><p><strong>LSTM</strong></p></td>
-<td><p>0.1896 - 0.5142</p></td>
-<td><p>41.1% - 62.2%</p></td>
-<td><p>100% OK</p></td>
-<td><p><strong>Buena</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Hallazgo clave:</strong> Todos los modelos pasan el test de BDS en todas las configuraciones (p &gt; 0.05), indicando que los residuos no presentan estructura no lineal remanente significativa.</p>
-<hr class="docutils" />
-<p><strong>Lag = 7 días (ventana corta)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE promedio</p></th>
-<th class="head"><p>MAPE promedio</p></th>
-<th class="head"><p>Mejor fold</p></th>
-<th class="head"><p>Peor fold</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>MLP</p></td>
-<td><p>0.2483</p></td>
-<td><p>41.80%</p></td>
-<td><p>fold3 (0.2267)</p></td>
-<td><p>fold4 (0.2646)</p></td>
-</tr>
-<tr class="row-odd"><td><p>RNN</p></td>
-<td><p>0.2511</p></td>
-<td><p>42.14%</p></td>
-<td><p>fold3 (0.2307)</p></td>
-<td><p>fold1 (0.2611)</p></td>
-</tr>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.2475</p></td>
-<td><p>43.00%</p></td>
-<td><p>fold3 (0.2265)</p></td>
-<td><p>fold1 (0.2573)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observaciones lag=7:</strong></p>
-<ul class="simple">
-<li><p>Los tres modelos tienen desempeño muy similar (RMSE ~0.25).</p></li>
-<li><p>MLP ligeramente mejor en MAPE (41.8% vs 42.1% vs 43.0%).</p></li>
-<li><p>Consistencia entre folds: desviación baja.</p></li>
-<li><p>Recomendado para predicción a corto plazo.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Lag = 14 días (ventana media - óptimo aparente)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE promedio</p></th>
-<th class="head"><p>MAPE promedio</p></th>
-<th class="head"><p>Mejor fold</p></th>
-<th class="head"><p>Peor fold</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>MLP</strong></p></td>
-<td><p><strong>0.2245</strong></p></td>
-<td><p><strong>45.34%</strong></p></td>
-<td><p>fold0 (0.1971)</p></td>
-<td><p>fold4 (0.2773)</p></td>
-</tr>
-<tr class="row-odd"><td><p>RNN</p></td>
-<td><p>0.2339</p></td>
-<td><p>44.75%</p></td>
-<td><p>fold0 (0.2060)</p></td>
-<td><p>fold4 (0.2751)</p></td>
-</tr>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.2200</p></td>
-<td><p>43.78%</p></td>
-<td><p>fold0 (0.1947)</p></td>
-<td><p>fold4 (0.2681)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observaciones lag=14:</strong></p>
-<ul class="simple">
-<li><p>Mejor desempeño absoluto para los tres modelos.</p></li>
-<li><p>LSTM tiene RMSE más bajo (0.2200), MLP segundo (0.2245).</p></li>
-<li><p>Mayor variabilidad entre folds (fold4 consistentemente peor).</p></li>
-<li><p>Configuración recomendada para despliegue.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Lag = 21 días (ventana larga)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE promedio</p></th>
-<th class="head"><p>MAPE promedio</p></th>
-<th class="head"><p>Mejor fold</p></th>
-<th class="head"><p>Peor fold</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>MLP</p></td>
-<td><p>0.2323</p></td>
-<td><p>41.39%</p></td>
-<td><p>fold4 (0.1934)</p></td>
-<td><p>fold3 (0.2513)</p></td>
-</tr>
-<tr class="row-odd"><td><p>RNN</p></td>
-<td><p>0.2449</p></td>
-<td><p>45.23%</p></td>
-<td><p>fold4 (0.2192)</p></td>
-<td><p>fold3 (0.2648)</p></td>
-</tr>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.2279</p></td>
-<td><p>42.31%</p></td>
-<td><p>fold4 (0.1896)</p></td>
-<td><p>fold3 (0.2547)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observaciones lag=21:</strong></p>
-<ul class="simple">
-<li><p>Desempeño aún sólido, solo ligeramente peor que lag=14.</p></li>
-<li><p>MLP tiene MAPE más bajo (41.39% - ¡mejor que lag=14!).</p></li>
-<li><p>fold4 consistentemente mejor, fold3 peor (sesgo temporal).</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Lag = 28 días (ventana muy larga)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE promedio</p></th>
-<th class="head"><p>MAPE promedio</p></th>
-<th class="head"><p>Mejor fold</p></th>
-<th class="head"><p>Peor fold</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>MLP</p></td>
-<td><p>0.3786</p></td>
-<td><p>51.92%</p></td>
-<td><p>fold0 (0.2854)</p></td>
-<td><p>fold3 (0.5105)</p></td>
-</tr>
-<tr class="row-odd"><td><p>RNN</p></td>
-<td><p>0.3941</p></td>
-<td><p>51.65%</p></td>
-<td><p>fold0 (0.2917)</p></td>
-<td><p>fold3 (0.5323)</p></td>
-</tr>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.3772</p></td>
-<td><p>49.53%</p></td>
-<td><p>fold4 (0.2844)</p></td>
-<td><p>fold3 (0.5142)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observaciones lag=28:</strong></p>
-<ul class="simple">
-<li><p>Degradación significativa vs lags menores.</p></li>
-<li><p>Alta variabilidad entre folds (fold3 especialmente malo).</p></li>
-<li><p>MAPE supera 50% en promedio.</p></li>
-<li><p>No recomendado para producción.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Comparativa por modelo (mejor lag=14)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Métrica</p></th>
-<th class="head"><p>MLP</p></th>
-<th class="head"><p>RNN</p></th>
-<th class="head"><p>LSTM</p></th>
-<th class="head"><p>Ganador</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>RMSE promedio</p></td>
-<td><p>0.2245</p></td>
-<td><p>0.2339</p></td>
-<td><p><strong>0.2200</strong></p></td>
-<td><p><strong>LSTM</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>MAPE promedio</p></td>
-<td><p>45.34%</p></td>
-<td><p>44.75%</p></td>
-<td><p><strong>43.78%</strong></p></td>
-<td><p><strong>LSTM</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>Mejor RMSE (fold0)</p></td>
-<td><p>0.1971</p></td>
-<td><p>0.2060</p></td>
-<td><p><strong>0.1947</strong></p></td>
-<td><p><strong>LSTM</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>Peor RMSE (fold4)</p></td>
-<td><p>0.2773</p></td>
-<td><p>0.2751</p></td>
-<td><p><strong>0.2681</strong></p></td>
-<td><p><strong>LSTM</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>Consistencia folds</p></td>
-<td><p>Moderada</p></td>
-<td><p>Moderada</p></td>
-<td><p><strong>Mejor</strong></p></td>
-<td><p><strong>LSTM</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Hallazgo importante:</strong> Contrario a lo observado en el grid search (donde MLP tenía mejor val_rmse), en <strong>test</strong> el LSTM supera ligeramente al MLP cuando se evalúa en lag=14.</p>
-<hr class="docutils" />
-<p><strong>Análisis del test de BDS</strong></p>
-<p><strong>Resultado:</strong> 100% de las configuraciones pasan el test (p &gt; 0.05)</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Interpretación</p></th>
-<th class="head"><p>Implicancia</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Los residuos son i.i.d.</p></td>
-<td><p>No hay estructura no lineal remanente</p></td>
-</tr>
-<tr class="row-odd"><td><p>El modelo capturó la dinámica</p></td>
-<td><p>Adecuado para propósito predictivo</p></td>
-</tr>
-<tr class="row-even"><td><p>No se justifica modelo más complejo</p></td>
-<td><p>MLP/LSTM/RNN son suficientes</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Esto es un éxito del modelado</strong> — los residuos se comportan como ruido blanco.</p>
-<hr class="docutils" />
-<p><strong>Análisis de varianza entre folds</strong>: Patrón consistente en todos los modelos y lags:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Fold</p></th>
-<th class="head"><p>Desempeño relativo</p></th>
-<th class="head"><p>Posible explicación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>fold0</p></td>
-<td><p>Mejor (RMSE más bajo)</p></td>
-<td><p>Período de menor volatilidad (2018-2019?)</p></td>
-</tr>
-<tr class="row-odd"><td><p>fold1-2</p></td>
-<td><p>Intermedio</p></td>
-<td><p>Períodos normales</p></td>
-</tr>
-<tr class="row-even"><td><p>fold3</p></td>
-<td><p><strong>Peor consistentemente</strong></p></td>
-<td><p>Período de alta volatilidad (crash?)</p></td>
-</tr>
-<tr class="row-odd"><td><p>fold4</p></td>
-<td><p>Variable</p></td>
-<td><p>Período más reciente (2024-2025)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr class="docutils" />
-<p><strong>Evolución del MAPE por lag</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Lag →    7d       14d      21d      28d
-MLP:    41.8% → 45.3% → 41.4% → 51.9%
-RNN:    42.1% → 44.8% → 45.2% → 51.7%
-LSTM:   43.0% → 43.8% → 42.3% → 49.5%
-</pre></div>
-</div>
-<p><strong>Observación interesante:</strong> MAPE mejora en lag=21 para MLP y LSTM, sugiriendo que ventanas más largas ayudan a reducir el error porcentual aunque el RMSE aumente.</p>
 </section>
-<section id="consolidacion-de-resultados-y-generacion-de-tablas-comparativas">
-<h2>10. Consolidación de resultados y generación de tablas comparativas<a class="headerlink" href="#consolidacion-de-resultados-y-generacion-de-tablas-comparativas" title="Permalink to this heading">#</a></h2>
-<p>Se consolidan los resultados de la validación cruzada completa en una tabla resumen que compara el desempeño de los tres modelos (MLP, RNN, LSTM) a través de los cuatro lags temporales evaluados (7, 14, 21, 28 días). Para cada combinación de modelo y lag, se calculan la media y desviación estándar del RMSE y MAPE sobre los 5 folds, junto con el promedio del p-valor del test de BDS y el conteo de folds donde el test supera el umbral de significancia (p &gt; 0.05). La tabla resultante se guarda como <code class="docutils literal notranslate"><span class="pre">summary_comparison.csv</span></code> y se visualiza en el notebook. Adicionalmente, para cada modelo y lag, se genera un archivo CSV detallado (<code class="docutils literal notranslate"><span class="pre">metrics_{modelo}_lag{lag}.csv</span></code>) que contiene, para cada fold, las métricas desagregadas por horizonte de predicción (MAPE_h1 a MAPE_h7 y RMSE_h1 a RMSE_h7), los promedios globales (MAPE_mean, MAE_mean, RMSE_mean, MSE_mean) y el p-valor del test de BDS sobre los residuos del primer horizonte. Cada archivo incluye una fila final con la media y desviación estándar de cada métrica, permitiendo evaluar la variabilidad del desempeño entre folds.</p>
+<section id="tabla-comparativa-y-tablas-por-fold">
+<h2>10. Tabla comparativa y tablas por fold<a class="headerlink" href="#tabla-comparativa-y-tablas-por-fold" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">comp_rows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2004,7 +1208,7 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
         <span class="n">df_t</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Mean +/- Std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">col</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">means</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">stds</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_t</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
         <span class="n">df_t</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/metrics_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">_lag</span><span class="si">{</span><span class="n">lag</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tablas guardadas en results/&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ Tablas guardadas en results/&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2151,472 +1355,9 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
 </div>
 </div>
 </div>
-<p><strong>Ranking de desempeño por RMSE (mejor a peor)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Ranking</p></th>
-<th class="head"><p>Modelo</p></th>
-<th class="head"><p>Lag</p></th>
-<th class="head"><p>RMSE (mean)</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Estabilidad (std RMSE)</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p><strong>LSTM</strong></p></td>
-<td><p>14</p></td>
-<td><p>0.2200</p></td>
-<td><p>43.78%</p></td>
-<td><p>0.0252</p></td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p><strong>LSTM</strong></p></td>
-<td><p>21</p></td>
-<td><p>0.2279</p></td>
-<td><p>42.31%</p></td>
-<td><p>0.0226</p></td>
-</tr>
-<tr class="row-even"><td><p>3</p></td>
-<td><p><strong>MLP</strong></p></td>
-<td><p>14</p></td>
-<td><p>0.2245</p></td>
-<td><p>45.34%</p></td>
-<td><p>0.0275</p></td>
-</tr>
-<tr class="row-odd"><td><p>4</p></td>
-<td><p><strong>MLP</strong></p></td>
-<td><p>21</p></td>
-<td><p>0.2323</p></td>
-<td><p>41.39%</p></td>
-<td><p>0.0208</p></td>
-</tr>
-<tr class="row-even"><td><p>5</p></td>
-<td><p><strong>LSTM</strong></p></td>
-<td><p>7</p></td>
-<td><p>0.2475</p></td>
-<td><p>43.00%</p></td>
-<td><p>0.0115</p></td>
-</tr>
-<tr class="row-odd"><td><p>6</p></td>
-<td><p><strong>MLP</strong></p></td>
-<td><p>7</p></td>
-<td><p>0.2483</p></td>
-<td><p>41.80%</p></td>
-<td><p>0.0128</p></td>
-</tr>
-<tr class="row-even"><td><p>7</p></td>
-<td><p><strong>RNN</strong></p></td>
-<td><p>7</p></td>
-<td><p>0.2511</p></td>
-<td><p>42.14%</p></td>
-<td><p>0.0111</p></td>
-</tr>
-<tr class="row-odd"><td><p>8</p></td>
-<td><p><strong>RNN</strong></p></td>
-<td><p>14</p></td>
-<td><p>0.2339</p></td>
-<td><p>44.75%</p></td>
-<td><p>0.0233</p></td>
-</tr>
-<tr class="row-even"><td><p>9</p></td>
-<td><p><strong>RNN</strong></p></td>
-<td><p>21</p></td>
-<td><p>0.2449</p></td>
-<td><p>45.23%</p></td>
-<td><p>0.0160</p></td>
-</tr>
-<tr class="row-odd"><td><p>10</p></td>
-<td><p><strong>LSTM</strong></p></td>
-<td><p>28</p></td>
-<td><p>0.3772</p></td>
-<td><p>49.53%</p></td>
-<td><p>0.0850</p></td>
-</tr>
-<tr class="row-even"><td><p>11</p></td>
-<td><p><strong>MLP</strong></p></td>
-<td><p>28</p></td>
-<td><p>0.3786</p></td>
-<td><p>51.92%</p></td>
-<td><p>0.0825</p></td>
-</tr>
-<tr class="row-odd"><td><p>12</p></td>
-<td><p><strong>RNN</strong></p></td>
-<td><p>28</p></td>
-<td><p>0.3941</p></td>
-<td><p>51.65%</p></td>
-<td><p>0.0868</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr class="docutils" />
-<p>**LSTM - <strong>Campeón general</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Lag</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-<th class="head"><p>Evaluación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>14</p></td>
-<td><p><strong>0.2200</strong></p></td>
-<td><p>43.78%</p></td>
-<td><p>0.0252</p></td>
-<td><p><strong>Mejor absoluto</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>21</p></td>
-<td><p>0.2279</p></td>
-<td><p><strong>42.31%</strong></p></td>
-<td><p>0.0226</p></td>
-<td><p>Excelente, MAPE más bajo</p></td>
-</tr>
-<tr class="row-even"><td><p>7</p></td>
-<td><p>0.2475</p></td>
-<td><p>43.00%</p></td>
-<td><p><strong>0.0115</strong></p></td>
-<td><p>Más estable</p></td>
-</tr>
-<tr class="row-odd"><td><p>28</p></td>
-<td><p>0.3772</p></td>
-<td><p>49.53%</p></td>
-<td><p>0.0850</p></td>
-<td><p>Degradado</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Fortalezas LSTM:</strong></p>
-<ul class="simple">
-<li><p>Mejor RMSE en lag=14 (0.2200).</p></li>
-<li><p>Mejor MAPE en lag=21 (42.31%).</p></li>
-<li><p>Mayor estabilidad en lag=7 (std más bajo).</p></li>
-<li><p>Consistente en top 3 para todas las métricas.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>MLP - Segundo lugar (muy cercano)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Lag</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-<th class="head"><p>Evaluación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>14</p></td>
-<td><p>0.2245</p></td>
-<td><p>45.34%</p></td>
-<td><p>0.0275</p></td>
-<td><p>Segundo en RMSE</p></td>
-</tr>
-<tr class="row-odd"><td><p>21</p></td>
-<td><p>0.2323</p></td>
-<td><p><strong>41.39%</strong></p></td>
-<td><p><strong>0.0208</strong></p></td>
-<td><p><strong>Mejor MAPE global</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>7</p></td>
-<td><p>0.2483</p></td>
-<td><p>41.80%</p></td>
-<td><p>0.0128</p></td>
-<td><p>MAPE competitivo</p></td>
-</tr>
-<tr class="row-odd"><td><p>28</p></td>
-<td><p>0.3786</p></td>
-<td><p>51.92%</p></td>
-<td><p>0.0825</p></td>
-<td><p>Degradado</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Fortalezas MLP:</strong></p>
-<ul class="simple">
-<li><p>Mejor MAPE en lag=21 (41.39%).</p></li>
-<li><p>Muy cerca del LSTM en RMSE (diferencia ~2%).</p></li>
-<li><p>Estabilidad competitiva.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>RNN - Tercer lugar</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Lag</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-<th class="head"><p>Evaluación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>14</p></td>
-<td><p>0.2339</p></td>
-<td><p>44.75%</p></td>
-<td><p>0.0233</p></td>
-<td><p>Tercero en lag=14</p></td>
-</tr>
-<tr class="row-odd"><td><p>7</p></td>
-<td><p>0.2511</p></td>
-<td><p>42.14%</p></td>
-<td><p>0.0111</p></td>
-<td><p>Estable pero RMSE más alto</p></td>
-</tr>
-<tr class="row-even"><td><p>21</p></td>
-<td><p>0.2449</p></td>
-<td><p>45.23%</p></td>
-<td><p>0.0160</p></td>
-<td><p>Consistentemente tercero</p></td>
-</tr>
-<tr class="row-odd"><td><p>28</p></td>
-<td><p>0.3941</p></td>
-<td><p>51.65%</p></td>
-<td><p>0.0868</p></td>
-<td><p>Degradado</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Debilidades RNN:</strong></p>
-<ul class="simple">
-<li><p>No logra superar a MLP o LSTM en ninguna métrica.</p></li>
-<li><p>RMSE consistentemente más alto.</p></li>
-<li><p>Única ventaja: std ligeramente menor en lag=7.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Lag = 7 días (ventana corta)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.2475</p></td>
-<td><p>43.00%</p></td>
-<td><p><strong>0.0115</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>MLP</p></td>
-<td><p>0.2483</p></td>
-<td><p><strong>41.80%</strong></p></td>
-<td><p>0.0128</p></td>
-</tr>
-<tr class="row-even"><td><p>RNN</p></td>
-<td><p>0.2511</p></td>
-<td><p>42.14%</p></td>
-<td><p>0.0111</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Conclusión:</strong> Los tres modelos son casi idénticos. MLP tiene mejor MAPE, LSTM mejor RMSE.</p>
-<hr class="docutils" />
-<p><strong>Lag = 14 días (ventana óptima)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-<th class="head"><p>Diferencia vs mejor</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>LSTM</strong></p></td>
-<td><p><strong>0.2200</strong></p></td>
-<td><p>43.78%</p></td>
-<td><p>0.0252</p></td>
-<td><p><strong>Referencia</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p>MLP</p></td>
-<td><p>0.2245</p></td>
-<td><p>45.34%</p></td>
-<td><p>0.0275</p></td>
-<td><p>+2.0% RMSE</p></td>
-</tr>
-<tr class="row-even"><td><p>RNN</p></td>
-<td><p>0.2339</p></td>
-<td><p>44.75%</p></td>
-<td><p>0.0233</p></td>
-<td><p>+6.3% RMSE</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Conclusión:</strong> LSTM es el claro ganador en lag=14.</p>
-<hr class="docutils" />
-<p><strong>Lag = 21 días (ventana larga)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.2279</p></td>
-<td><p>42.31%</p></td>
-<td><p>0.0226</p></td>
-</tr>
-<tr class="row-odd"><td><p>MLP</p></td>
-<td><p>0.2323</p></td>
-<td><p><strong>41.39%</strong></p></td>
-<td><p><strong>0.0208</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>RNN</p></td>
-<td><p>0.2449</p></td>
-<td><p>45.23%</p></td>
-<td><p>0.0160</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Conclusión:</strong> MLP tiene el mejor MAPE global (41.39%), pero LSTM tiene mejor RMSE.</p>
-<hr class="docutils" />
-<p><strong>Lag = 28 días (ventana muy larga)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>RMSE</p></th>
-<th class="head"><p>MAPE</p></th>
-<th class="head"><p>Std RMSE</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>0.3772</p></td>
-<td><p>49.53%</p></td>
-<td><p>0.0850</p></td>
-</tr>
-<tr class="row-odd"><td><p>MLP</p></td>
-<td><p>0.3786</p></td>
-<td><p>51.92%</p></td>
-<td><p>0.0825</p></td>
-</tr>
-<tr class="row-even"><td><p>RNN</p></td>
-<td><p>0.3941</p></td>
-<td><p>51.65%</p></td>
-<td><p>0.0868</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Conclusión:</strong> Todos los modelos degradan severamente. No recomendado.</p>
-<hr class="docutils" />
-<p><strong>Estabilidad entre folds (std RMSE)</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Modelo</p></th>
-<th class="head"><p>Lag más estable</p></th>
-<th class="head"><p>Std RMSE</p></th>
-<th class="head"><p>Interpretación</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>LSTM</p></td>
-<td><p>7</p></td>
-<td><p>0.0115</p></td>
-<td><p>Muy estable</p></td>
-</tr>
-<tr class="row-odd"><td><p>RNN</p></td>
-<td><p>7</p></td>
-<td><p>0.0111</p></td>
-<td><p>Muy estable</p></td>
-</tr>
-<tr class="row-even"><td><p>MLP</p></td>
-<td><p>7</p></td>
-<td><p>0.0128</p></td>
-<td><p>Estable</p></td>
-</tr>
-<tr class="row-odd"><td><p>LSTM</p></td>
-<td><p>14</p></td>
-<td><p>0.0252</p></td>
-<td><p>Moderada</p></td>
-</tr>
-<tr class="row-even"><td><p>MLP</p></td>
-<td><p>21</p></td>
-<td><p>0.0208</p></td>
-<td><p>Buena</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Todos</strong></p></td>
-<td><p><strong>28</strong></p></td>
-<td><p><strong>&gt;0.08</strong></p></td>
-<td><p>Inestable</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Observación:</strong> La estabilidad disminuye al aumentar el lag, alcanzando su punto crítico en lag=28.</p>
-<hr class="docutils" />
-<p><strong>Test de BDS - Todos pasan</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Métrica</p></th>
-<th class="head"><p>Resultado</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>BDS p mean</p></td>
-<td><p>0.942 - 0.977 (todos &gt; 0.05)</p></td>
-</tr>
-<tr class="row-odd"><td><p>BDS p&gt;0.05</p></td>
-<td><p>5/5 folds (100%)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Conclusión:</strong> Los residuos de todos los modelos y configuraciones se comportan como ruido blanco.</p>
-<hr class="docutils" />
-<p><strong>Resumen por objetivo de negocio</strong></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Si tu prioridad es…</p></th>
-<th class="head"><p>Elegir</p></th>
-<th class="head"><p>Configuración</p></th>
-<th class="head"><p>Valor</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><strong>Mínimo RMSE</strong></p></td>
-<td><p>LSTM</p></td>
-<td><p>lag=14</p></td>
-<td><p>0.2200</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Mínimo MAPE</strong></p></td>
-<td><p>MLP</p></td>
-<td><p>lag=21</p></td>
-<td><p>41.39%</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Máxima estabilidad</strong></p></td>
-<td><p>LSTM o RNN</p></td>
-<td><p>lag=7</p></td>
-<td><p>std ~0.011</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>Balance RMSE + MAPE</strong></p></td>
-<td><p>LSTM</p></td>
-<td><p>lag=14 o 21</p></td>
-<td><p>0.2200 / 42.3%</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>Simplicidad</strong></p></td>
-<td><p>MLP</p></td>
-<td><p>lag=14</p></td>
-<td><p>0.2245 / 45.34%</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 </section>
-<section id="seleccion-del-mejor-modelo-global-y-exportacion-para-despliegue-en-produccion">
-<h2>11. Selección del mejor modelo global y exportación para despliegue en producción<a class="headerlink" href="#seleccion-del-mejor-modelo-global-y-exportacion-para-despliegue-en-produccion" title="Permalink to this heading">#</a></h2>
-<p>Se identifica el mejor modelo global entre todas las combinaciones evaluadas de tipo de modelo, lag y fold, utilizando como criterio el menor RMSE en el conjunto de prueba. Se recorren sistemáticamente los resultados almacenados en <code class="docutils literal notranslate"><span class="pre">results_all</span></code> para localizar la configuración óptima. Una vez identificada, se recuperan los splits correspondientes a ese lag y fold, la arquitectura y máscara de dropout de la mejor configuración por tipo de modelo, y se reentrena el modelo desde cero con los datos de entrenamiento y validación completos (sin early stopping en este paso final, o con early stopping para restaurar mejores pesos). Se aplica el escalado estándar ajustado exclusivamente sobre el conjunto de entrenamiento. Para el modelo LSTM, se fuerza la ejecución en CPU debido a limitaciones de compatibilidad con DirectML. Finalmente, se exportan los artefactos necesarios para el despliegue en el directorio <code class="docutils literal notranslate"><span class="pre">app/</span></code>: el modelo en formato Keras (<code class="docutils literal notranslate"><span class="pre">model_keras.keras</span></code>), los escaladores de features y target junto con los metadatos de configuración (<code class="docutils literal notranslate"><span class="pre">scalers.joblib</span></code>), y un archivo pickle (<code class="docutils literal notranslate"><span class="pre">results.pkl</span></code>) que contiene todos los resultados del experimento, las mejores configuraciones, el modelo global óptimo y los metadatos para trazabilidad. Este conjunto de artefactos permite realizar inferencia en producción de manera reproducible y sin necesidad de reentrenar el modelo.</p>
+<section id="guardar-mejor-modelo">
+<h2>11. Guardar mejor modelo<a class="headerlink" href="#guardar-mejor-modelo" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
@@ -2676,9 +1417,9 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
         <span class="s1">&#39;dates&#39;</span><span class="p">:</span>          <span class="n">dates</span><span class="p">,</span>
     <span class="p">},</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">app/model_keras.keras guardado&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;app/scalers.joblib guardado&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results.pkl guardado&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">✅ app/model_keras.keras guardado&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ app/scalers.joblib guardado&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ results.pkl guardado&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2731,7 +1472,7 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Feature Engineering &amp; Cross-Validation Split</p>
+        <p class="prev-next-title">⚙️ Feature Engineering &amp; Cross-Validation Split</p>
       </div>
     </a>
     <a class="right-next"
@@ -2739,7 +1480,7 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Model Evaluation — MLP · RNN · LSTM</p>
+        <p class="prev-next-title">📊 Model Evaluation — MLP · RNN · LSTM</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2760,19 +1501,18 @@ LSTM:   43.0% → 43.8% → 42.3% → 49.5%
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-del-entorno-tensorflow-y-verificacion-de-hardware">Configuración del entorno TensorFlow y verificación de hardware</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#importacion-de-librerias-y-configuracion-de-reproducibilidad">Importación de librerías y configuración de reproducibilidad</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-del-artefacto-features-pkl-y-seleccion-de-configuracion-para-grid-search">1. Carga del artefacto features.pkl y selección de configuración para grid search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-funciones-de-evaluacion-y-test-de-no-linealidad-de-bds">2. Definición de funciones de evaluación y test de no linealidad de BDS</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-del-espacio-de-busqueda-para-grid-search-de-arquitectura-mlp">3. Definición del espacio de búsqueda para grid search de arquitectura MLP</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-constructores-de-arquitecturas-neuronales-mlp-rnn-y-lstm">4. Definición de constructores de arquitecturas neuronales (MLP, RNN y LSTM)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-del-grid-search-con-reanudacion-y-checkpoints">5. Implementación del grid search con reanudación y checkpoints</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extraccion-y-escalado-de-datos-para-el-grid-search-lag-14-fold-0">6. Extracción y escalado de datos para el grid search (lag=14, fold=0)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-search-con-checkpointing-y-reanudacion-automatica-para-mlp-rnn-y-lstm">7. Grid search con checkpointing y reanudación automática para MLP, RNN y LSTM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-mejores-configuraciones-por-tipo-de-modelo">8. Selección de mejores configuraciones por tipo de modelo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-cruzada-completa-de-las-mejores-configuraciones-por-modelo-y-lag">9. Validación cruzada completa de las mejores configuraciones por modelo y lag</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consolidacion-de-resultados-y-generacion-de-tablas-comparativas">10. Consolidación de resultados y generación de tablas comparativas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-del-mejor-modelo-global-y-exportacion-para-despliegue-en-produccion">11. Selección del mejor modelo global y exportación para despliegue en producción</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-gpu">0. Verificación de GPU</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-features-pkl">1. Cargar features.pkl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-y-bds-test">2. Metricas y BDS test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-del-grid-search">3. Configuracion del grid search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructores-mlp-rnn-lstm">4. Constructores — MLP · RNN · LSTM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-grid-search">5. Funcion de grid search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparar-datos-fold-0-lag-14d">6. Preparar datos — fold 0, lag=14d</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grid-search-con-checkpoints">7. Grid search con checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-automatica-de-arquitecturas">8. Seleccion automatica de arquitecturas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-completa-5-folds-4-lags-3-modelos">9. Evaluacion completa — 5 folds × 4 lags × 3 modelos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-y-tablas-por-fold">10. Tabla comparativa y tablas por fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guardar-mejor-modelo">11. Guardar mejor modelo</a></li>
 </ul>
   </nav></div>
 

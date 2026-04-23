@@ -2,7 +2,9 @@
 
 ## Deep Learning Project
 
-## Integrantes
+---
+
+## 👥 Integrantes
 - Luis David Peñaranda Pérez  
 - David Márquez  
 - Johan David Díaz López  
@@ -10,7 +12,7 @@
 
 ---
 
-## Objetivos del Proyecto
+## 🎯 Objetivos del Proyecto
 
 1. Predecir la volatilidad realizada de Bitcoin a 7 días usando histórico multi-resolución  
 2. Comparar arquitecturas de Deep Learning: **MLP, RNN y LSTM** con grid search y validación temporal  
@@ -20,16 +22,16 @@
 
 ---
 
-## Resultados Clave
+## 📊 Resultados Clave
 
-- Mejor modelo: **LSTM (lag=21)**  
-- RMSE en test: **0.1896**  
-- Validación estadística: **p-value = 0.018**  
-- API: **34/34 tests pasando en CI/CD**
+- 🧠 Mejor modelo: **LSTM (lag=21)**  
+- 📉 RMSE en test: **0.1896**  
+- 📈 Validación estadística: **p-value = 0.018**  
+- ⚙️ API: **34/34 tests pasando en CI/CD**
 
 ---
 
-## Estructura del Proyecto
+## 🗂️ Estructura del Proyecto
 
 - `1_eda_volatility_final.ipynb` → Análisis exploratorio multi-resolución  
 - `2_feature_engineering.ipynb` → Creación de lags y splits temporales  
@@ -39,7 +41,6 @@
 
 ---
 
-## Enlaces
+## 🔗 Enlaces
 
-- [Repositorio en GitHub](https://github.com/luispenaranda08/sigma-cast-DL)
-- Video de demostración: https://youtu.be/iY-_D5H02NM
+- 🔥 [Repositorio en GitHub](https://github.com/luispenaranda08/sigma-cast-DL)
