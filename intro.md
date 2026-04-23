@@ -2,8 +2,6 @@
 
 ## Deep Learning Project
 
----
-
 ##  Integrantes
 - Luis David Peñaranda Pérez  
 - David Márquez  
