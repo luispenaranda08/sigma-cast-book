@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>📊 Model Evaluation — MLP · RNN · LSTM &#8212; Sigma-Cast</title>
+    <title>Model Evaluation — MLP · RNN · LSTM &#8212; Sigma-Cast</title>
   
   
   
@@ -62,11 +62,13 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '4_model_evaluation';</script>
     <link rel="canonical" href="/sigma-cast-book/4_model_evaluation.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="🧠 Model Training — Grid Search MLP · RNN · LSTM" href="3_model_training.html" />
+    <link rel="prev" title="Model Training — Grid Search MLP · RNN · LSTM" href="3_model_training.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -168,10 +170,11 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_eda_volatility_final.html">🔬 BTC Volatility — Multi-Resolution EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_features_engineering.html">⚙️ Feature Engineering &amp; Cross-Validation Split</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_model_training.html">🧠 Model Training — Grid Search MLP · RNN · LSTM</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">📊 Model Evaluation — MLP · RNN · LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_eda_volatility_final.html">BTC Volatility — Multi-Resolution EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_features_engineering.html">Feature Engineering &amp; Cross-Validation Split</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_model_training.html">Model Training — Grid Search MLP · RNN · LSTM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Model Evaluation — MLP · RNN · LSTM</a></li>
+
 </ul>
 
     </div>
@@ -310,7 +313,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>📊 Model Evaluation — MLP · RNN · LSTM</h1>
+    <h1>Model Evaluation — MLP · RNN · LSTM</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -320,14 +323,33 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Model Evaluation — MLP · RNN · LSTM</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-resultados-y-setup">1. Carga de resultados y setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-por-horizonte-y-por-lag">2. Métricas por horizonte y por lag</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-bds-en-residuos-h-1">3. Test BDS en residuos (h=1)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-train-val-test-con-predicciones">4. Curvas train / val / test con predicciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rmse-por-fold-y-por-horizonte">5. RMSE por fold y por horizonte</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-modelo-global-y-conclusiones">6. Mejor modelo global y conclusiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-entorno-de-visualizacion-y-analisis-de-resultados">Configuración de entorno de visualización y análisis de resultados</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-resultados-y-metadatos-para-analisis-final">1. Carga de resultados y metadatos para análisis final</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-dataframe-largo-para-analisis-de-metricas-por-horizonte">2. Construcción del DataFrame largo para análisis de métricas por horizonte</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-lags-por-modelo-con-agregacion-de-folds-y-horizontes">3. Tabla comparativa de lags por modelo con agregación de folds y horizontes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-por-horizonte-de-prediccion-y-lag">4. Visualización del RMSE por horizonte de predicción y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-comparativo-de-rmse-promedio-por-modelo-y-lag">5. Heatmap comparativo de RMSE promedio por modelo y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportacion-de-tablas-detalladas-por-modelo-lag-y-fold">6. Exportación de tablas detalladas por modelo, lag y fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-del-test-de-bds-sobre-residuos-del-primer-horizonte">7. Análisis del test de BDS sobre residuos del primer horizonte</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-distribucion-de-p-valores-del-test-bds-por-modelo-y-lag">8. Visualización de la distribución de p-valores del test BDS por modelo y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-auxiliar-para-visualizacion-de-curvas-de-prediccion-vs-valores-reales">9. Función auxiliar para visualización de curvas de predicción vs valores reales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-auxiliar-para-ranking-de-folds-por-desempeno">10. Función auxiliar para ranking de folds por desempeño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-curvas-de-prediccion-para-mejor-mediano-y-peor-fold">11. Visualización de curvas de predicción para mejor, mediano y peor fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-promedio-por-fold-y-lag-para-cada-modelo">12. Visualización del RMSE promedio por fold y lag para cada modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-por-horizonte-desagregado-por-fold-lag-fijo">13. Visualización del RMSE por horizonte desagregado por fold (lag fijo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparativa-de-mape-por-horizonte-entre-modelos-lag-fijo">14. Comparativa de MAPE por horizonte entre modelos (lag fijo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-y-reporte-del-mejor-modelo-global">15. Identificación y reporte del mejor modelo global</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-resumen-final-mejor-lag-por-modelo-segun-rmse-promedio">16. Tabla resumen final — mejor lag por modelo según RMSE promedio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-las-curvas-de-prediccion-del-mejor-modelo-global">17. Visualización de las curvas de predicción del mejor modelo global</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grafica-comparativa-final-rmse-por-modelo-y-lag-con-barras-de-error">18. Gráfica comparativa final — RMSE por modelo y lag con barras de error</a></li>
+</ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -339,11 +361,11 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="model-evaluation-mlp-rnn-lstm">
-<h1>📊 Model Evaluation — MLP · RNN · LSTM<a class="headerlink" href="#model-evaluation-mlp-rnn-lstm" title="Permalink to this heading">#</a></h1>
+<h1>Model Evaluation — MLP · RNN · LSTM<a class="headerlink" href="#model-evaluation-mlp-rnn-lstm" title="Permalink to this heading">#</a></h1>
 <section id="deep-learning-project-bitcoin-volatility-forecasting">
 <h2>Deep Learning Project | Bitcoin Volatility Forecasting<a class="headerlink" href="#deep-learning-project-bitcoin-volatility-forecasting" title="Permalink to this heading">#</a></h2>
-<p><strong>Input:</strong> <code class="docutils literal notranslate"><span class="pre">results.pkl</span></code> — contiene <code class="docutils literal notranslate"><span class="pre">results_all</span></code>, <code class="docutils literal notranslate"><span class="pre">best_configs</span></code>, <code class="docutils literal notranslate"><span class="pre">best_global</span></code>, splits y metadata<br />
-<strong>Secciones:</strong></p>
+<p><strong>Input:</strong> <code class="docutils literal notranslate"><span class="pre">results.pkl</span></code> — contiene <code class="docutils literal notranslate"><span class="pre">results_all</span></code>, <code class="docutils literal notranslate"><span class="pre">best_configs</span></code>, <code class="docutils literal notranslate"><span class="pre">best_global</span></code>, splits y metadata</p>
+<p><strong>Secciones:</strong></p>
 <ol class="arabic simple">
 <li><p>Carga de resultados y setup</p></li>
 <li><p>Métricas por horizonte y por lag</p></li>
@@ -353,8 +375,9 @@ document.write(`
 <li><p>Mejor modelo global y conclusiones</p></li>
 </ol>
 </section>
-<section id="carga-de-resultados-y-setup">
-<h2>1. Carga de resultados y setup<a class="headerlink" href="#carga-de-resultados-y-setup" title="Permalink to this heading">#</a></h2>
+<section id="configuracion-de-entorno-de-visualizacion-y-analisis-de-resultados">
+<h2>Configuración de entorno de visualización y análisis de resultados<a class="headerlink" href="#configuracion-de-entorno-de-visualizacion-y-analisis-de-resultados" title="Permalink to this heading">#</a></h2>
+<p>Se configura el entorno de visualización para el análisis final de resultados, importando las librerías necesarias (<code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, <code class="docutils literal notranslate"><span class="pre">seaborn</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, <code class="docutils literal notranslate"><span class="pre">numpy</span></code>) y suprimiendo mensajes de advertencia no críticos para mantener la salida limpia. Se define una paleta de colores extendida que incluye tonos corporativos (navy, blue, teal, amber, coral, purple, gray) más colores adicionales (green, red) para visualización de residuos y métricas de error. Se establecen diccionarios de mapeo de colores para diferenciar visualmente los lags (7, 14, 21, 28 días), los folds (0 a 4) y los tipos de modelo (MLP, RNN, LSTM). Se configuran los parámetros globales de matplotlib para garantizar consistencia estética con los análisis previos: fondo blanco, cuadrícula sutil, eliminación de bordes superiores y derechos, y tamaños de fuente optimizados para legibilidad en reportes técnicos. Esta configuración unificada asegura que todas las visualizaciones generadas en esta fase final (curvas de error, comparativas por horizonte, análisis de residuos, etc.) mantengan la identidad visual del proyecto.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span><span class="o">,</span><span class="w"> </span><span class="nn">warnings</span>
@@ -366,7 +389,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-<span class="c1"># ── Estilo global ────────────────────────────────────────────────────────────</span>
+<span class="c1"># Estilo global</span>
 <span class="n">C</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;navy&#39;</span><span class="p">:</span>   <span class="s1">&#39;#0A1628&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">:</span>   <span class="s1">&#39;#185FA5&#39;</span><span class="p">,</span> <span class="s1">&#39;teal&#39;</span><span class="p">:</span>   <span class="s1">&#39;#1D9E75&#39;</span><span class="p">,</span>
     <span class="s1">&#39;amber&#39;</span><span class="p">:</span>  <span class="s1">&#39;#EF9F27&#39;</span><span class="p">,</span> <span class="s1">&#39;coral&#39;</span><span class="p">:</span>  <span class="s1">&#39;#D85A30&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">:</span> <span class="s1">&#39;#7F77DD&#39;</span><span class="p">,</span>
@@ -393,7 +416,7 @@ document.write(`
     <span class="s1">&#39;legend.framealpha&#39;</span><span class="p">:</span>    <span class="mf">0.85</span><span class="p">,</span>
 <span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Librerías cargadas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Librerías cargadas&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -403,11 +426,15 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="carga-de-resultados-y-metadatos-para-analisis-final">
+<h1>1. Carga de resultados y metadatos para análisis final<a class="headerlink" href="#carga-de-resultados-y-metadatos-para-analisis-final" title="Permalink to this heading">#</a></h1>
+<p>Se cargan los artefactos de resultados generados en la fase de entrenamiento y validación cruzada, priorizando el archivo completo <code class="docutils literal notranslate"><span class="pre">results.pkl</span></code> que contiene todos los metadatos del experimento (resultados por modelo/lag/fold, mejores configuraciones por tipo de modelo, modelo global óptimo, lista de lags, horizonte de predicción, serie temporal original y fechas). En caso de que este archivo no esté disponible, se recurre al checkpoint parcial <code class="docutils literal notranslate"><span class="pre">results_all_checkpoint.pkl</span></code> que contiene únicamente los resultados de validación, y se definen manualmente los metadatos faltantes (lags, horizonte, etc.) con valores por defecto consistentes con la ejecución previa. Se extraen los tipos de modelos disponibles (MLP, RNN, LSTM), la lista de lags evaluados (7, 14, 21, 28 días), los folds disponibles (0 a 4) y el horizonte de predicción (7 días). Se imprime un resumen de la configuración cargada para verificar que todos los componentes necesarios para el análisis final estén disponibles. Este paso prepara el terreno para la generación de visualizaciones comparativas, curvas de error por horizonte y análisis de residuos del mejor modelo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="c1"># Intenta results.pkl primero (completo), luego results_all_checkpoint.pkl</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;results.pkl&#39;</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;results.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -419,19 +446,18 @@ document.write(`
     <span class="n">TARGET_COL</span>        <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;target_col&#39;</span><span class="p">]</span>
     <span class="n">time_series</span>       <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;time_series&#39;</span><span class="p">]</span>
     <span class="n">dates</span>             <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dates&#39;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ results.pkl cargado&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;results.pkl cargado&#39;</span><span class="p">)</span>
 <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;results_all_checkpoint.pkl&#39;</span><span class="p">):</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;results_all_checkpoint.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">results_all</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="c1"># fallbacks manuales si solo hay el checkpoint parcial</span>
     <span class="n">LAGS_LIST</span>        <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">28</span><span class="p">]</span>
     <span class="n">N_STEPS_FORECAST</span> <span class="o">=</span> <span class="mi">7</span>
     <span class="n">TARGET_COL</span>       <span class="o">=</span> <span class="s1">&#39;RV_15m&#39;</span>
-    <span class="n">best_configs</span>     <span class="o">=</span> <span class="kc">None</span>   <span class="c1"># no disponible en checkpoint parcial</span>
+    <span class="n">best_configs</span>     <span class="o">=</span> <span class="kc">None</span>  
     <span class="n">best_global</span>      <span class="o">=</span> <span class="kc">None</span>
     <span class="n">time_series</span>      <span class="o">=</span> <span class="kc">None</span>
     <span class="n">dates</span>            <span class="o">=</span> <span class="kc">None</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;⚠️  Solo results_all_checkpoint.pkl — best_configs/best_global no disponibles&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Solo results_all_checkpoint.pkl — best_configs/best_global no disponibles&#39;</span><span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;No se encontró results.pkl ni results_all_checkpoint.pkl&#39;</span><span class="p">)</span>
 
@@ -454,12 +480,12 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="metricas-por-horizonte-y-por-lag">
-<h2>2. Métricas por horizonte y por lag<a class="headerlink" href="#metricas-por-horizonte-y-por-lag" title="Permalink to this heading">#</a></h2>
+<section id="construccion-del-dataframe-largo-para-analisis-de-metricas-por-horizonte">
+<h2>2. Construcción del DataFrame largo para análisis de métricas por horizonte<a class="headerlink" href="#construccion-del-dataframe-largo-para-analisis-de-metricas-por-horizonte" title="Permalink to this heading">#</a></h2>
+<p>Se construye un DataFrame en formato largo (tidy data) que desagrega las métricas de error por cada combinación de modelo, lag, fold y horizonte de predicción (días 1 a 7). Para cada registro en <code class="docutils literal notranslate"><span class="pre">results_all</span></code>, se extraen las métricas RMSE, MAE, MAPE y MSE correspondientes a cada uno de los 7 horizontes (h1 a h7), junto con el RMSE promedio del modelo para ese fold. Se añaden columnas identificadoras: tipo de modelo (MLP, RNN, LSTM), lag temporal (7, 14, 21, 28 días), número de fold (0 a 4) y horizonte (1 a 7). El DataFrame resultante permite realizar análisis agregados como: evolución del error a lo largo del horizonte de predicción (¿el modelo es más preciso para días cercanos o lejanos?), comparativa de desempeño entre modelos para un horizonte específico, y visualizaciones tipo boxplot o lineplot agrupadas por variables categóricas. Se imprime la dimensión del DataFrame y se muestran las primeras filas para verificar la correcta estructuración de los datos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Construir DataFrame largo ────────────────────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Construir DataFrame largo </span>
 <span class="c1"># Una fila por (mtype, lag, fold, horizon)</span>
 <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">MTYPES</span><span class="p">:</span>
@@ -560,9 +586,13 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+</section>
+<section id="tabla-comparativa-de-lags-por-modelo-con-agregacion-de-folds-y-horizontes">
+<h2>3. Tabla comparativa de lags por modelo con agregación de folds y horizontes<a class="headerlink" href="#tabla-comparativa-de-lags-por-modelo-con-agregacion-de-folds-y-horizontes" title="Permalink to this heading">#</a></h2>
+<p>Se genera una tabla resumen que compara el desempeño de cada tipo de modelo (MLP, RNN, LSTM) para los diferentes lags temporales evaluados (7, 14, 21, 28 días). A partir del DataFrame largo construido previamente, se agrupan los datos por modelo y lag, agregando las métricas RMSE, MAPE, MAE y MSE sobre todas las combinaciones de folds y horizontes de predicción (7 días × 5 folds = 35 observaciones por configuración). Para cada métrica, se calcula la media y la desviación estándar, proporcionando una medida tanto del desempeño central como de la variabilidad (estabilidad) de cada configuración. Los resultados se presentan en formato legible con notación “media ± desviación estándar”, permitiendo identificar rápidamente qué combinaciones de modelo y lag ofrecen el mejor equilibrio entre precisión (menor media) y robustez (menor desviación). La tabla se visualiza en el notebook y se guarda como <code class="docutils literal notranslate"><span class="pre">summary_lag_comparison.csv</span></code> para su inclusión en el informe final del proyecto.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tabla comparativa de lags por modelo ────────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tabla comparativa de lags por modelo </span>
 <span class="c1"># Agrega sobre folds y horizontes: muestra RMSE y MAPE promedio</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">df_long</span>
@@ -584,10 +614,10 @@ document.write(`
     <span class="p">})</span>
 
 <span class="n">df_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">display_rows</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">── Tabla comparativa de lags ────────────────────────────────────────&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Tabla comparativa de lags&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df_summary</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Lag (d)&#39;</span><span class="p">]))</span>
 <span class="n">df_summary</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;results/summary_lag_comparison.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/summary_lag_comparison.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/summary_lag_comparison.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -709,9 +739,13 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="visualizacion-del-rmse-por-horizonte-de-prediccion-y-lag">
+<h2>4. Visualización del RMSE por horizonte de predicción y lag<a class="headerlink" href="#visualizacion-del-rmse-por-horizonte-de-prediccion-y-lag" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura compuesta por tres paneles (uno por tipo de modelo: MLP, RNN, LSTM) que muestra la evolución del RMSE promedio a lo largo del horizonte de predicción de 7 días, diferenciando por color las curvas correspondientes a los cuatro lags temporales evaluados (7, 14, 21, 28 días). Para cada combinación de modelo, lag y horizonte, se calcula el RMSE promedio sobre los 5 folds de validación cruzada, agregando la variabilidad entre folds para obtener una estimación robusta del desempeño. Cada curva representa cómo el error de predicción se acumula o estabiliza a medida que se predice más lejos en el tiempo (día t+1 hasta t+7). Las gráficas permiten responder preguntas clave: ¿el error crece monótonamente con el horizonte? ¿Existe un horizonte donde el error se estabiliza? ¿Qué lag ofrece la curva más baja (menor error) para cada modelo? La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_rmse_por_horizonte.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code> para su uso en reportes y presentaciones.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Gráfica: RMSE por horizonte, curva por lag, faceta por modelo ────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gráfica: RMSE por horizonte, curva por lag, faceta por modelo</span>
 <span class="n">df_h</span> <span class="o">=</span> <span class="n">df_long</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Lag&#39;</span><span class="p">,</span> <span class="s1">&#39;Horizon&#39;</span><span class="p">])[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">MTYPES</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -732,7 +766,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_rmse_por_horizonte.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_rmse_por_horizonte.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_rmse_por_horizonte.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -743,9 +777,41 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>El Impacto Crítico del Lag de 28 Días</strong></p>
+<p>En las tres arquitecturas, la configuración de <strong>lag=28d</strong> (línea roja) muestra un comportamiento anómalo y contraproducente:</p>
+<ul class="simple">
+<li><p><strong>Error Inicial Altísimo:</strong> Comienza con el RMSE más elevado en el horizonte 1.</p></li>
+<li><p><strong>Curva Descendente:</strong> A medida que el horizonte se aleja, el error disminuye. Esto suele indicar que un exceso de historial (28 días) está introduciendo demasiado ruido o “memoria irrelevante” para predicciones de corto plazo, y el modelo solo logra estabilizarse en promedios de largo plazo.</p></li>
+<li><p><strong>Conclusión:</strong> Para Bitcoin, “más datos de pasado” no significa mejores predicciones; un lag tan largo parece confundir a los modelos.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Estabilidad en Lags Cortos (7d, 14d, 21d)</strong></p>
+<p>Las líneas azul, verde y amarilla están mucho más agrupadas en la parte inferior del gráfico (RMSE entre <strong>0.20 y 0.28</strong>).</p>
+<ul class="simple">
+<li><p><strong>Configuración Ganadora:</strong> El <strong>lag=14d</strong> (línea verde) parece ser el más consistente en las tres arquitecturas, manteniendo un error bajo y estable a lo largo de todos los horizontes.</p></li>
+<li><p><strong>Lag=21d (Amarillo):</strong> También presenta un desempeño sólido, compitiendo de cerca con el de 14 días.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa de Arquitecturas: MLP vs. Recurrentes</strong></p>
+<p>A pesar de la complejidad de las redes recurrentes (RNN y LSTM), los resultados son sorprendentemente similares:</p>
+<ul class="simple">
+<li><p><strong>MLP (Multilayer Perceptron):</strong> Muestra un desempeño extremadamente competitivo. Para horizontes de 1 a 4 días con lags cortos, el MLP es tan robusto como la LSTM.</p></li>
+<li><p><strong>LSTM (Long Short-Term Memory):</strong> Se comporta ligeramente mejor que la RNN pura en términos de estabilidad, pero no presenta una ventaja definitiva sobre el MLP en este dataset específico.</p></li>
+<li><p><strong>RNN:</strong> Muestra una ligera tendencia al alza en el error a medida que el horizonte aumenta (especialmente con el lag de 7 días), lo que sugiere que le cuesta más mantener la coherencia temporal que a la LSTM.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Sensibilidad al Horizonte</strong></p>
+<ul class="simple">
+<li><p>En los modelos con lags óptimos (7d-21d), el error tiende a subir levemente después del día 4 o 5. Esto es natural en series financieras: la incertidumbre aumenta con el tiempo.</p></li>
+<li><p>Sin embargo, el <strong>MLP</strong> con <strong>lag=14d</strong> logra mantener una línea casi plana, lo cual es ideal para un despliegue en <strong>MLOps</strong>, ya que indica un modelo predecible y confiable.</p></li>
+</ul>
+</section>
+<section id="heatmap-comparativo-de-rmse-promedio-por-modelo-y-lag">
+<h2>5. Heatmap comparativo de RMSE promedio por modelo y lag<a class="headerlink" href="#heatmap-comparativo-de-rmse-promedio-por-modelo-y-lag" title="Permalink to this heading">#</a></h2>
+<p>Se construye un mapa de calor (heatmap) que sintetiza visualmente el desempeño de los tres modelos (MLP, RNN, LSTM) a través de los cuatro lags temporales evaluados (7, 14, 21, 28 días). Para cada combinación de modelo y lag, se calcula el RMSE promedio agregando sobre todos los folds de validación cruzada y todos los horizontes de predicción (7 días), obteniendo una métrica única que resume la precisión general de cada configuración. Los valores se presentan en una matriz donde las filas corresponden a los modelos, las columnas a los lags, y la intensidad del color (escala YlOrRd: amarillo → naranja → rojo) es proporcional al RMSE: colores más claros indican menor error (mejor desempeño) y colores más oscuros indican mayor error (peor desempeño). El heatmap permite identificar de un vistazo la combinación óptima (celda con valor más bajo), así como patrones como: ¿todos los modelos se comportan similarmente frente al aumento del lag? ¿Existe un modelo consistentemente mejor en todas las configuraciones? La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_heatmap_rmse.png</span></code> para su inclusión en el informe ejecutivo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Heatmap: RMSE promedio por (modelo × lag) ────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Heatmap: RMSE promedio por (modelo × lag)</span>
 <span class="n">pivot</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">df_long</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Lag&#39;</span><span class="p">])[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span>
     <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -764,7 +830,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_heatmap_rmse.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_heatmap_rmse.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_heatmap_rmse.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -775,9 +841,53 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Identificación del Punto Óptimo</strong></p>
+<ul class="simple">
+<li><p><strong>El ganador absoluto:</strong> La combinación <strong>LSTM con un lag de 14 días</strong> obtiene el RMSE más bajo de todo el experimento (<strong>0.2200</strong>).</p></li>
+<li><p><strong>La alternativa eficiente:</strong> El <strong>MLP con lag de 14 días</strong> (<strong>0.2245</strong>) tiene un desempeño casi idéntico al de la LSTM. En un entorno de MLOps, la diferencia de <strong>0.0045</strong> en el RMSE suele no justificar la complejidad computacional y el tiempo de entrenamiento extra que requiere una red recurrente.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>El problema de los 28 Días</strong>
+El gráfico confirma de manera contundente lo que observamos en las curvas anteriores:</p>
+<ul class="simple">
+<li><p>Independientemente del modelo, <strong>un lag de 28 días degrada drásticamente el rendimiento</strong>, elevando el error a niveles de <strong>0.37 - 0.39</strong>.</p></li>
+<li><p><strong>Conclusión:</strong> Bitcoin tiene una “memoria útil” de corto/mediano plazo. Introducir un mes entero de historia solo añade ruido estadístico que dificulta la convergencia de las redes neuronales.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa de Modelos</strong></p>
+<ul class="simple">
+<li><p><strong>LSTM vs. MLP:</strong> La arquitectura LSTM es marginalmente superior en todos los lags útiles (7, 14 y 21). Esto sugiere que la capacidad de las celdas de memoria para gestionar secuencias temporales aporta un ligero beneficio.</p></li>
+<li><p><strong>RNN:</strong> Es consistentemente el modelo más débil de los tres. Al carecer de los mecanismos (gates) de la LSTM, sufre más con la inestabilidad de la serie del Bitcoin.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Resumen para el despliegue en MLOps</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Métrica</p></th>
+<th class="head text-left"><p>Recomendación Técnica</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Modelo Final</strong></p></td>
+<td class="text-left"><p><strong>MLP</strong> (por balance entre interpretabilidad, velocidad y bajo error) o <strong>LSTM</strong> (si el costo computacional no es restricción).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Ventana de Historial</strong></p></td>
+<td class="text-left"><p><strong>14 días</strong>. Es el balance perfecto entre contexto y ruido.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Estrategia de Datos</strong></p></td>
+<td class="text-left"><p>Descartar definitivamente ventanas superiores a 21 días para evitar el sobreajuste a patrones obsoletos.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Diagnóstico final:</strong> El modelo es robusto porque los resultados son consistentes entre arquitecturas: todas coinciden en que <strong>14 días es la memoria óptima</strong> para predecir la volatilidad del Bitcoin en este dataset.</p>
+</section>
+<section id="exportacion-de-tablas-detalladas-por-modelo-lag-y-fold">
+<h2>6. Exportación de tablas detalladas por modelo, lag y fold<a class="headerlink" href="#exportacion-de-tablas-detalladas-por-modelo-lag-y-fold" title="Permalink to this heading">#</a></h2>
+<p>Se generan tablas detalladas en formato CSV para cada tipo de modelo (MLP, RNN, LSTM) que contienen todas las métricas de evaluación desagregadas por lag temporal (7, 14, 21, 28 días) y fold de validación cruzada (0 a 4). Para cada combinación de modelo, lag y fold, se registran: las métricas MAPE y RMSE para cada uno de los 7 horizontes de predicción (h1 a h7), los promedios globales de MAPE, MAE, RMSE y MSE sobre todo el horizonte, y el p-valor del test de BDS aplicado a los residuos del primer horizonte (h1). Estas tablas permiten un análisis granular del desempeño, como identificar si ciertos folds (períodos temporales específicos) son sistemáticamente más difíciles de predecir, o si el error por horizonte varía significativamente entre folds. Los archivos se guardan con el patrón <code class="docutils literal notranslate"><span class="pre">metrics_{modelo}_full.csv</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, proporcionando trazabilidad completa de todos los experimentos realizados y facilitando auditorías externas o análisis adicionales por parte de otros investigadores.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tabla detallada por fold para cada (modelo, lag) ─────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Tabla detallada por fold para cada (modelo, lag)</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;results&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">MTYPES</span><span class="p">:</span>
@@ -799,7 +909,7 @@ document.write(`
     <span class="n">df_t</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows_t</span><span class="p">)</span>
     <span class="n">df_t</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/metrics_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">_full.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Tablas detalladas guardadas en results/metrics_</span><span class="si">{modelo}</span><span class="s1">_full.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Tablas detalladas guardadas en results/metrics_</span><span class="si">{modelo}</span><span class="s1">_full.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -810,11 +920,12 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="test-bds-en-residuos-h-1">
-<h2>3. Test BDS en residuos (h=1)<a class="headerlink" href="#test-bds-en-residuos-h-1" title="Permalink to this heading">#</a></h2>
+<section id="analisis-del-test-de-bds-sobre-residuos-del-primer-horizonte">
+<h2>7. Análisis del test de BDS sobre residuos del primer horizonte<a class="headerlink" href="#analisis-del-test-de-bds-sobre-residuos-del-primer-horizonte" title="Permalink to this heading">#</a></h2>
+<p>Se realiza un análisis sistemático de los resultados del test de Brock-Dechert-Scheinkman (BDS) aplicado a los residuos del primer horizonte de predicción (h1, día t+1) para todas las configuraciones evaluadas. Para cada combinación de modelo (MLP, RNN, LSTM), lag (7, 14, 21, 28 días) y fold (0 a 4), se extrae el p-valor del test y se clasifica el resultado: “OK” si p &gt; 0.05 (no se rechaza la hipótesis nula de que los residuos son i.i.d., indicando que el modelo capturó adecuadamente la estructura no lineal) o “ADVERTENCIA” en caso contrario. Se construye una tabla resumen que, para cada modelo y lag, presenta la media, mínimo y máximo del p-valor sobre los 5 folds, así como el conteo de folds que superan el umbral de significancia (formato X/5). Esta tabla permite verificar la robustez de cada configuración: un modelo ideal debería mostrar todos los folds con p &gt; 0.05. Los resultados individuales por fold se guardan en <code class="docutils literal notranslate"><span class="pre">bds_pvalues.csv</span></code> para trazabilidad. El test BDS complementa las métricas de error (RMSE, MAPE) al evaluar si el modelo ha capturado la dinámica no lineal subyacente o si aún queda estructura explotable en los residuos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tabla BDS: p-value por (modelo, lag, fold) ───────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tabla BDS: p-value por (modelo, lag, fold)</span>
 <span class="n">ALPHA</span> <span class="o">=</span> <span class="mf">0.05</span>
 
 <span class="n">bds_rows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -828,7 +939,7 @@ document.write(`
                 <span class="s1">&#39;Lag&#39;</span><span class="p">:</span>     <span class="n">lag</span><span class="p">,</span>
                 <span class="s1">&#39;Fold&#39;</span><span class="p">:</span>    <span class="n">fold</span><span class="p">,</span>
                 <span class="s1">&#39;BDS_pval&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">pval</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
-                <span class="s1">&#39;Result&#39;</span><span class="p">:</span>  <span class="s1">&#39;OK ✅&#39;</span> <span class="k">if</span> <span class="n">pval</span> <span class="o">&gt;</span> <span class="n">ALPHA</span> <span class="k">else</span> <span class="s1">&#39;WARN ⚠️&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Result&#39;</span><span class="p">:</span>  <span class="s1">&#39;OK&#39;</span> <span class="k">if</span> <span class="n">pval</span> <span class="o">&gt;</span> <span class="n">ALPHA</span> <span class="k">else</span> <span class="s1">&#39;ADVERTENCIA&#39;</span><span class="p">,</span>
             <span class="p">})</span>
 
 <span class="n">df_bds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">bds_rows</span><span class="p">)</span>
@@ -845,11 +956,11 @@ document.write(`
     <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;── Resumen BDS test (max_dim=2, h=1) ────────────────────────────────&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Resumen BDS test (max_dim=2, h=1)&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">bds_summary</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Lag&#39;</span><span class="p">]))</span>
 
 <span class="n">df_bds</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;results/bds_pvalues.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">✅ Guardado: results/bds_pvalues.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Guardado: results/bds_pvalues.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -985,9 +1096,179 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Resumen general del test BDS</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Métrica</p></th>
+<th class="head"><p>Resultado</p></th>
+<th class="head"><p>Evaluación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Rango p-valor</strong></p></td>
+<td><p>0.8630 - 0.9975</p></td>
+<td><p>Muy por encima de 0.05</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Folds OK</strong></p></td>
+<td><p>60/60 (100%)</p></td>
+<td><p>Todos los modelos, lags y folds pasan</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>p-valor medio mínimo</strong></p></td>
+<td><p>0.9423 (LSTM lag=7/21)</p></td>
+<td><p>Excelente</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>p-valor medio máximo</strong></p></td>
+<td><p>0.9775 (RNN lag=14)</p></td>
+<td><p>Sobresaliente</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Conclusión principal:</strong> Los residuos del primer horizonte (h1) se comportan como <strong>ruido blanco independiente e idénticamente distribuido (i.i.d.)</strong> para <strong>absolutamente todas</strong> las configuraciones evaluadas.</p>
+<hr class="docutils" />
+<p><strong>LSTM</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>p_mean</p></th>
+<th class="head"><p>p_min</p></th>
+<th class="head"><p>p_max</p></th>
+<th class="head"><p>OK_folds</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0.9423</p></td>
+<td><p>0.9075</p></td>
+<td><p>0.9943</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>0.9517</p></td>
+<td><p>0.9164</p></td>
+<td><p>0.9945</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>0.9423</p></td>
+<td><p>0.9122</p></td>
+<td><p>0.9831</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>0.9484</p></td>
+<td><p>0.9013</p></td>
+<td><p>0.9795</p></td>
+<td><p>5/5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones LSTM:</strong></p>
+<ul class="simple">
+<li><p>Consistencia excelente entre lags (p_mean ~0.94-0.95).</p></li>
+<li><p>p_min más bajo en lag=28 (0.9013) → aún muy por encima de 0.05.</p></li>
+<li><p>100% de los folds pasan el test.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>MLP</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>p_mean</p></th>
+<th class="head"><p>p_min</p></th>
+<th class="head"><p>p_max</p></th>
+<th class="head"><p>OK_folds</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0.9591</p></td>
+<td><p>0.9118</p></td>
+<td><p>0.9975</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>0.9644</p></td>
+<td><p>0.9086</p></td>
+<td><p>0.9919</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>0.9476</p></td>
+<td><p><strong>0.8630</strong></p></td>
+<td><p>0.9957</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>0.9712</p></td>
+<td><p>0.9378</p></td>
+<td><p>0.9968</p></td>
+<td><p>5/5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones MLP:</strong></p>
+<ul class="simple">
+<li><p>p_mean más alto en lag=28 (0.9712).</p></li>
+<li><p>p_min más bajo global (0.8630 en lag=21) → sigue siendo muy seguro (&gt;0.05).</p></li>
+<li><p>100% de los folds pasan el test.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>RNN</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>p_mean</p></th>
+<th class="head"><p>p_min</p></th>
+<th class="head"><p>p_max</p></th>
+<th class="head"><p>OK_folds</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>0.9451</p></td>
+<td><p>0.9024</p></td>
+<td><p>0.9945</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p><strong>0.9775</strong></p></td>
+<td><p><strong>0.9508</strong></p></td>
+<td><p>0.9953</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>0.9680</p></td>
+<td><p>0.9555</p></td>
+<td><p>0.9818</p></td>
+<td><p>5/5</p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>0.9585</p></td>
+<td><p>0.9148</p></td>
+<td><p>0.9910</p></td>
+<td><p>5/5</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones RNN:</strong></p>
+<ul class="simple">
+<li><p>Mejor p_mean global (0.9775 en lag=14).</p></li>
+<li><p>Mejor p_min global (0.9508 en lag=14).</p></li>
+<li><p>100% de los folds pasan el test.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Conclusión:</strong> El test BDS confirma que los modelos desarrollados (especialmente LSTM lag=14) han capturado exitosamente la estructura no lineal de la volatilidad de Bitcoin, produciendo residuos que se comportan como ruido blanco i.i.d. Este es un <strong>resultado excelente</strong> que valida la calidad del modelado y respalda la decisión de desplegar el modelo en producción.</p>
+</section>
+<section id="visualizacion-de-la-distribucion-de-p-valores-del-test-bds-por-modelo-y-lag">
+<h2>8. Visualización de la distribución de p-valores del test BDS por modelo y lag<a class="headerlink" href="#visualizacion-de-la-distribucion-de-p-valores-del-test-bds-por-modelo-y-lag" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura compuesta por dos paneles que visualizan la distribución de los p-valores del test de BDS (aplicado a residuos del primer horizonte, dimensión de embebido máxima=2) para todas las configuraciones evaluadas. En el panel izquierdo, se agrupan los p-valores por tipo de modelo (MLP, RNN, LSTM), mostrando un gráfico de dispersión con jitter (puntos ligeramente desplazados para evitar solapamiento) superpuesto sobre un diagrama de caja (boxplot) que resume la mediana, cuartiles y rango intercuartil de cada distribución. En el panel derecho, se realiza el mismo análisis pero agrupando por lag temporal (7, 14, 21, 28 días), utilizando los colores definidos previamente para cada lag. Ambos paneles incluyen una línea horizontal roja discontinua en el umbral de significancia α=0.05, permitiendo verificar visualmente que la totalidad de los p-valores se ubican muy por encima de este límite (rango observado: 0.86 a 0.99). Esta visualización complementa la tabla resumen de BDS al evidenciar la ausencia de valores atípicos o configuraciones problemáticas, confirmando que todos los modelos y lags producen residuos sin estructura no lineal remanente. La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_bds_pvalues.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Gráfica: distribución de p-values BDS ────────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gráfica: distribución de p-values BDS</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribución de p-values BDS (h=1, max_dim=2)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;500&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;navy&#39;</span><span class="p">])</span>
 
@@ -1034,7 +1315,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_bds_pvalues.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_bds_pvalues.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_bds_pvalues.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1045,12 +1326,25 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>El Éxito de la Modelación (p-values &gt; 0.05)</strong>
+La línea roja punteada marca el umbral de significancia estándar (<span class="math notranslate nohighlight">\(\alpha = 0.05\)</span>).</p>
+<ul class="simple">
+<li><p><strong>Interpretación:</strong> Todos los puntos (que representan diferentes ejecuciones y horizontes) se encuentran masivamente por encima de <strong>0.8</strong>.</p></li>
+<li><p><strong>Conclusión:</strong> No se puede rechazar la hipótesis nula de que los residuos son i.i.d. Esto es un <strong>resultado excelente</strong>; significa que tus modelos (MLP, RNN y LSTM) han logrado extraer prácticamente toda la estructura predecible de la serie de Bitcoin, dejando solo ruido aleatorio.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa por Modelo (Panel Izquierdo)</strong></p>
+<ul class="simple">
+<li><p><strong>Consistencia:</strong> No hay una diferencia significativa entre el MLP, la RNN y la LSTM en cuanto a la calidad de los residuos. Todos los modelos están “limpiando” la serie de manera efectiva.</p></li>
+<li><p><strong>MLP:</strong> Curiosamente, el MLP (azul) muestra una concentración muy alta de p-values cercanos a 1.0, lo que refuerza la idea de que para esta tarea de volatilidad, una red densa bien configurada es tan capaz como una recurrente compleja.</p></li>
+</ul>
 </section>
-<section id="curvas-train-val-test-con-predicciones">
-<h2>4. Curvas train / val / test con predicciones<a class="headerlink" href="#curvas-train-val-test-con-predicciones" title="Permalink to this heading">#</a></h2>
+<section id="funcion-auxiliar-para-visualizacion-de-curvas-de-prediccion-vs-valores-reales">
+<h2>9. Función auxiliar para visualización de curvas de predicción vs valores reales<a class="headerlink" href="#funcion-auxiliar-para-visualizacion-de-curvas-de-prediccion-vs-valores-reales" title="Permalink to this heading">#</a></h2>
+<p>Se define una función auxiliar <code class="docutils literal notranslate"><span class="pre">plot_forecast_curves</span></code> que genera gráficos comparativos entre los valores reales y las predicciones del modelo para una configuración específica (tipo de modelo, lag y fold). La función extrae los conjuntos de entrenamiento, validación y prueba del diccionario <code class="docutils literal notranslate"><span class="pre">results_all</span></code>, tomando únicamente el primer horizonte de predicción (h1, día t+1) para mantener la visualización en una dimensión temporal simple. En el gráfico resultante, se representan las series reales (en color navy) y las predicciones (en línea discontinua) para las tres particiones, diferenciadas por color: azul para entrenamiento, ámbar para validación y coral para prueba. Se añaden bandas de fondo coloreadas que identifican visualmente cada partición, líneas verticales punteadas que marcan los límites entre conjuntos, anotaciones de texto (“TRAIN”, “VAL”, “TEST”) y el RMSE de prueba como parte del título. Esta función será utilizada para generar visualizaciones detalladas del desempeño del mejor modelo global y de otras configuraciones de interés, permitiendo diagnosticar visualmente problemas como sobreajuste (brecha entre predicciones en train vs test), sesgos sistemáticos (predicciones consistentemente por encima o debajo de los reales) o fallos en la captura de picos de volatilidad.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Función auxiliar: gráfica de curvas para un (mtype, lag, fold) ───────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Función auxiliar: gráfica de curvas para un (mtype, lag, fold)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_forecast_curves</span><span class="p">(</span><span class="n">mtype</span><span class="p">,</span> <span class="n">lag</span><span class="p">,</span> <span class="n">fold</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plotea y_true vs yhat en train, val y test para un fold dado.</span>
 <span class="sd">    Usa el horizonte h=1 (primera columna) para mantener la serie 1-D.</span>
@@ -1107,7 +1401,7 @@ document.write(`
     <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mticker</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Función plot_forecast_curves definida&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Función plot_forecast_curves definida&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1117,11 +1411,14 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="funcion-auxiliar-para-ranking-de-folds-por-desempeno">
+<h2>10. Función auxiliar para ranking de folds por desempeño<a class="headerlink" href="#funcion-auxiliar-para-ranking-de-folds-por-desempeno" title="Permalink to this heading">#</a></h2>
+<p>Se define una función auxiliar <code class="docutils literal notranslate"><span class="pre">get_fold_ranking</span></code> que, para una combinación dada de tipo de modelo (MLP, RNN, LSTM) y lag temporal (7, 14, 21, 28 días), identifica cuáles folds de validación cruzada presentan el mejor, peor y mediano desempeño según el RMSE en el conjunto de prueba. La función recorre los 5 folds (0 a 4), extrae el RMSE de prueba de cada uno, y ordena los folds de menor a mayor error. Retorna un diccionario que contiene: el fold con menor RMSE (<code class="docutils literal notranslate"><span class="pre">best</span></code>), el fold en la posición mediana (<code class="docutils literal notranslate"><span class="pre">median</span></code>), el fold con mayor RMSE (<code class="docutils literal notranslate"><span class="pre">worst</span></code>), y el diccionario completo de RMSE por fold. Esta utilidad permite seleccionar casos representativos para visualización detallada (por ejemplo, graficar las curvas de predicción del mejor, mediano y peor fold de la mejor configuración global), facilitando el diagnóstico de la variabilidad del modelo a través de diferentes períodos temporales y la identificación de condiciones (regímenes de mercado) donde el modelo degrada su desempeño.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Función: identificar mejor, peor y mediano por (mtype, lag) ──────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Función: identificar mejor, peor y mediano por (mtype, lag)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_fold_ranking</span><span class="p">(</span><span class="n">mtype</span><span class="p">,</span> <span class="n">lag</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Devuelve dict con fold mejor, peor y mediano según rmse_test.&quot;&quot;&quot;</span>
     <span class="n">rmse_by_fold</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">f</span><span class="p">:</span> <span class="n">results_all</span><span class="p">[</span><span class="n">mtype</span><span class="p">][</span><span class="n">lag</span><span class="p">][</span><span class="n">f</span><span class="p">][</span><span class="s1">&#39;rmse_test&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">FOLDS</span>
@@ -1135,7 +1432,7 @@ document.write(`
         <span class="s1">&#39;rmse&#39;</span><span class="p">:</span>   <span class="n">rmse_by_fold</span><span class="p">,</span>
     <span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Función get_fold_ranking definida&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Función get_fold_ranking definida&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1145,15 +1442,18 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="visualizacion-de-curvas-de-prediccion-para-mejor-mediano-y-peor-fold">
+<h2>11. Visualización de curvas de predicción para mejor, mediano y peor fold<a class="headerlink" href="#visualizacion-de-curvas-de-prediccion-para-mejor-mediano-y-peor-fold" title="Permalink to this heading">#</a></h2>
+<p>Se generan figuras comparativas que muestran las curvas de predicción versus valores reales para los folds de mejor, mediano y peor desempeño de cada modelo, restringidos al lag óptimo de 14 días. Para cada tipo de modelo (MLP, RNN, LSTM), se calcula el ranking de folds según RMSE de prueba mediante la función <code class="docutils literal notranslate"><span class="pre">get_fold_ranking</span></code>, identificando el fold con menor error (MEJOR), el fold en la posición mediana (MEDIANO) y el fold con mayor error (PEOR). Para cada uno de estos tres folds, se genera un subgráfico vertical utilizando la función <code class="docutils literal notranslate"><span class="pre">plot_forecast_curves</span></code>, que muestra las series reales y predichas para las particiones de entrenamiento, validación y prueba (considerando únicamente el primer horizonte de predicción h1). La figura resultante permite comparar visualmente cómo varía el desempeño del modelo entre diferentes períodos temporales: el fold MEJOR representa condiciones favorables (baja volatilidad, comportamiento predecible), el fold MEDIANO es representativo del desempeño típico, y el fold PEOR muestra las condiciones más desafiantes (alta volatilidad, cambios de régimen abruptos). Las figuras se guardan con el patrón <code class="docutils literal notranslate"><span class="pre">fig_curves_{modelo}_lag14.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, proporcionando evidencia visual del comportamiento del modelo en diferentes escenarios de mercado.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Curvas para cada (modelo, lag) — mejor / mediano / peor ─────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Curvas para cada (modelo, lag) — mejor / mediano / peor</span>
 <span class="c1"># Genera una figura de 3 filas por cada combinación (modelo × lag)</span>
 <span class="c1"># Para no generar demasiadas figuras, se puede filtrar el lag de interés.</span>
-<span class="c1"># Cambiar LAG_PLOT y MODEL_PLOT para explorar otras combinaciones.</span>
 
-<span class="n">LAG_PLOT</span>   <span class="o">=</span> <span class="mi">14</span>          <span class="c1"># lag principal de interés</span>
-<span class="n">MODEL_PLOT</span> <span class="o">=</span> <span class="n">MTYPES</span>      <span class="c1"># todos los modelos; cambia a [&#39;MLP&#39;] para solo uno</span>
+<span class="n">LAG_PLOT</span>   <span class="o">=</span> <span class="mi">14</span>         
+<span class="n">MODEL_PLOT</span> <span class="o">=</span> <span class="n">MTYPES</span>     
 
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">MODEL_PLOT</span><span class="p">:</span>
     <span class="n">ranking</span> <span class="o">=</span> <span class="n">get_fold_ranking</span><span class="p">(</span><span class="n">mtype</span><span class="p">,</span> <span class="n">LAG_PLOT</span><span class="p">)</span>
@@ -1175,7 +1475,7 @@ document.write(`
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/fig_curves_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;✅ Guardado: results/fig_curves_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Guardado: results/fig_curves_</span><span class="si">{</span><span class="n">mtype</span><span class="si">}</span><span class="s1">_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1194,12 +1494,43 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Ajuste General: Captura de la “Base” vs. los “Picos”</strong></p>
+<p>En las tres arquitecturas se observa un patrón común muy claro:</p>
+<ul class="simple">
+<li><p><strong>El éxito:</strong> Los modelos son excelentes para seguir el “nivel” base de la volatilidad (la línea gris continua). La línea punteada (predicción) se solapa casi perfectamente en los periodos de baja y media agitación.</p></li>
+<li><p><strong>El desafío:</strong> Todos los modelos presentan un <strong>subajuste sistemático en los picos extremos</strong>. Cuando la volatilidad real (<span class="math notranslate nohighlight">\(RV\_15m\)</span>) salta por encima de 1.5 o 2.0, las redes neuronales tienden a predecir un movimiento al alza, pero se quedan “cortas” en magnitud.</p></li>
+<li><p><strong>Lección de MLOps:</strong> Esto confirma que el modelo es <strong>conservador</strong>. Para una gestión de riesgos, esto significa que el modelo avisará que la volatilidad va a subir, pero la magnitud real del shock podría ser mayor a la esperada.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa entre Modelos (Mejor Fold: RMSE ≈ 0.19)</strong></p>
+<p>Si comparamos el panel superior de las tres imágenes (Fold 0):</p>
+<ul class="simple">
+<li><p><strong>LSTM y MLP:</strong> Logran capturar con mucha mayor precisión los picos intermedios en el set de <strong>TEST</strong> (zona naranja). La línea roja punteada sigue las oscilaciones rápidas con mayor fidelidad.</p></li>
+<li><p><strong>RNN:</strong> Se nota una predicción ligeramente más “suavizada” o plana en comparación con las otras dos, lo que explica por qué su RMSE es marginalmente más alto.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Análisis del “Peor” Escenario (Fold 4: RMSE ≈ 0.27)</strong></p>
+<p>Este es el análisis más valioso para el despliegue, ya que muestra dónde falla el sistema:</p>
+<ul class="simple">
+<li><p>En el <strong>Fold 4</strong>, se observa un cambio brusco en la estructura de la serie durante el periodo de TEST. Hay picos de volatilidad muy erráticos y aislados.</p></li>
+<li><p><strong>Comportamiento del Modelo:</strong> Las predicciones (línea roja) en este fold muestran un ligero “desfase” o retardo. El modelo intenta reaccionar a la volatilidad del paso anterior, pero en este régimen de mercado, los shocks son menos persistentes y más aleatorios.</p></li>
+<li><p><strong>Diagnóstico:</strong> El error más alto aquí no es culpa de la arquitectura, sino de la naturaleza de la serie en ese periodo específico (posiblemente un cambio de régimen o un evento de noticias macro).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Estabilidad del Aprendizaje (Train vs. Val vs. Test)</strong></p>
+<ul class="simple">
+<li><p>Es notable que no hay signos de <strong>overfitting</strong> agresivo. El ajuste en el set de TRAIN (zona azul) es muy similar en calidad al de VAL y TEST.</p></li>
+<li><p>Esto valida la estrategia de <code class="docutils literal notranslate"><span class="pre">timeseries-cv</span></code>; el modelo está generalizando patrones reales de persistencia de volatilidad en lugar de memorizar el ruido.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Veredicto:</strong> Considerando que la <strong>LSTM</strong> tiene el mejor ajuste visual en los picos del set de Test (Fold 0 y 2) y el RMSE más bajo, es la ganadora técnica. Sin embargo, dada la simplicidad del <strong>MLP</strong> y que su “Peor Fold” es muy similar al de la LSTM, el MLP sigue siendo la opción más eficiente para producción si se busca velocidad de respuesta y menor costo computacional.</p>
 </section>
-<section id="rmse-por-fold-y-por-horizonte">
-<h2>5. RMSE por fold y por horizonte<a class="headerlink" href="#rmse-por-fold-y-por-horizonte" title="Permalink to this heading">#</a></h2>
+<section id="visualizacion-del-rmse-promedio-por-fold-y-lag-para-cada-modelo">
+<h2>12. Visualización del RMSE promedio por fold y lag para cada modelo<a class="headerlink" href="#visualizacion-del-rmse-promedio-por-fold-y-lag-para-cada-modelo" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura compuesta por tres paneles (uno por tipo de modelo: MLP, RNN, LSTM) que muestra el RMSE promedio (agregado sobre los 7 horizontes de predicción) desagregado por fold de validación cruzada (0 a 4) y diferenciado por color según el lag temporal (7, 14, 21, 28 días). Para cada combinación de modelo, lag y fold, se calcula la media del RMSE sobre los horizontes h1 a h7, obteniendo una métrica resumen del desempeño en cada partición temporal. En el gráfico de barras, el eje X representa los 5 folds (F0 a F4), el eje Y el RMSE promedio, y las barras se agrupan por lag con un desplazamiento (offset) que permite comparar visualmente las cuatro configuraciones de lag dentro de cada fold. La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_rmse_por_fold.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Panel 1: RMSE por fold (promedio sobre horizontes) ───────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Panel 1: RMSE por fold (promedio sobre horizontes)</span>
 <span class="c1"># Gráfica de barras: eje x = fold, eje y = RMSE promedio, color = lag</span>
 <span class="c1"># Facetas: un subplot por modelo</span>
 
@@ -1228,7 +1559,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_rmse_por_fold.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_rmse_por_fold.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_rmse_por_fold.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1239,9 +1570,32 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Robustez Temporal (F0 a F4)</strong></p>
+<p>En las tres arquitecturas (<strong>MLP, RNN, LSTM</strong>), se observa un patrón de error muy similar a lo largo de los folds:</p>
+<ul class="simple">
+<li><p><strong>Folds 0 y 4:</strong> Muestran los errores más bajos y estables. Esto sugiere que durante esos periodos, Bitcoin mantuvo una estructura de volatilidad que los modelos pudieron aprender con facilidad.</p></li>
+<li><p><strong>Fold 1, 2 y 3:</strong> Presenta un incremento notable en el error para todas las configuraciones, especialmente con el lag de 28 días (barra naranja). Esto suele indicar un <strong>cambio de régimen</strong> o un evento de alta turbulencia en el mercado que “sorprendió” a los modelos entrenados con datos previos.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Confirmación del Lag Óptimo por Fold</strong></p>
+<p>El gráfico de barras permite ver con mucha claridad la jerarquía de los <em>lags</em>:</p>
+<ul class="simple">
+<li><p><strong>Lag=14d (Verde):</strong> Es casi siempre la barra más baja en todos los folds. No solo es el mejor en promedio, sino que es el <strong>más estable</strong>. Incluso en los folds difíciles (F2 y F3), el lag de 14 días se mantiene competitivo, demostrando que es la ventana de historial que mejor generaliza.</p></li>
+<li><p><strong>Lag=28d (Naranja):</strong> Confirma su inestabilidad. En el <strong>Fold 3</strong>, su error se dispara por encima de 0.50, mientras que las otras barras se mantienen cerca de 0.25. Esto prueba que tener demasiada memoria de largo plazo es peligroso en periodos de crisis o cambios bruscos.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa de Arquitecturas</strong></p>
+<ul class="simple">
+<li><p><strong>Simetría:</strong> Los tres paneles son casi “espejos” entre sí. Esto refuerza la conclusión de que la <strong>calidad de los datos y la ingeniería de la ventana temporal (lag)</strong> influyen mucho más en el resultado final que la elección específica entre MLP, RNN o LSTM.</p></li>
+<li><p><strong>LSTM vs MLP:</strong> Si observas con detenimiento el Fold 4, la <strong>LSTM</strong> (lag=21d y lag=14d) parece tener una ligera ventaja de estabilidad sobre el MLP, manejando un poco mejor el ruido final de la serie.</p></li>
+</ul>
+</section>
+<section id="visualizacion-del-rmse-por-horizonte-desagregado-por-fold-lag-fijo">
+<h2>13. Visualización del RMSE por horizonte desagregado por fold (lag fijo)<a class="headerlink" href="#visualizacion-del-rmse-por-horizonte-desagregado-por-fold-lag-fijo" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura compuesta por tres paneles (uno por tipo de modelo: MLP, RNN, LSTM) que muestra la evolución del RMSE a lo largo del horizonte de predicción (días 1 a 7) para el lag fijo de 14 días (configuración óptima identificada previamente), desagregando por cada fold de validación cruzada (0 a 4). En cada panel, se representan curvas individuales para cada fold (diferenciadas por color) que muestran cómo el error de predicción se acumula o evoluciona a medida que se predice más lejos en el tiempo. Adicionalmente, se superpone una curva negra discontinua que representa el promedio de RMSE sobre los 5 folds, permitiendo visualizar la tendencia central y la dispersión entre folds. La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_rmse_horizonte_fold_lag14.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, complementando el análisis de estabilidad del modelo.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Panel 2: RMSE por horizonte (promedio sobre folds) ───────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Panel 2: RMSE por horizonte (promedio sobre folds)</span>
 <span class="c1"># Gráfica de líneas: eje x = horizonte, eje y = RMSE, color = fold</span>
 <span class="c1"># Facetas: un subplot por modelo; lag fijo en LAG_PLOT</span>
 
@@ -1255,7 +1609,7 @@ document.write(`
         <span class="n">sub</span> <span class="o">=</span> <span class="n">df_hf</span><span class="p">[(</span><span class="n">df_hf</span><span class="p">[</span><span class="s1">&#39;Model&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">mtype</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_hf</span><span class="p">[</span><span class="s1">&#39;Fold&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">fold</span><span class="p">)]</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s1">&#39;Horizon&#39;</span><span class="p">],</span> <span class="n">sub</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="n">FOLD_COLORS</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Fold </span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="c1"># Promedio sobre folds en negro</span>
+  
     <span class="n">mean_sub</span> <span class="o">=</span> <span class="n">df_hf</span><span class="p">[</span><span class="n">df_hf</span><span class="p">[</span><span class="s1">&#39;Model&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">mtype</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Horizon&#39;</span><span class="p">)[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mean_sub</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">mean_sub</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.2</span><span class="p">,</span>
             <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Promedio&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -1269,7 +1623,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/fig_rmse_horizonte_fold_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;✅ Guardado: results/fig_rmse_horizonte_fold_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Guardado: results/fig_rmse_horizonte_fold_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1280,9 +1634,26 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>El Desafío del “Fold 4” (Línea Púrpura)</strong></p>
+<p>Es evidente que el <strong>Fold 4</strong> es el más difícil para las tres arquitecturas.</p>
+<ul class="simple">
+<li><p><strong>Comportamiento:</strong> El error se dispara significativamente en el horizonte 2 (llegando a casi <strong>0.38</strong> en el MLP, RNN y LSTM).</p></li>
+<li><p><strong>Interpretación:</strong> Esto sugiere que en el bloque de tiempo más reciente (2024-2025), hubo un evento de volatilidad específico que ocurrió dos días después del inicio de la ventana de predicción que el modelo no pudo anticipar. Sin embargo, es notable cómo el error <em>baja</em> y se estabiliza después del día 4, lo que indica que el modelo recupera su capacidad predictiva para el mediano plazo.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Estabilidad de los Folds 0, 1 y 2</strong></p>
+<p>Estas líneas (azul, verde y naranja) se mantienen mayoritariamente por debajo del promedio (<strong>línea negra punteada</strong>).</p>
+<ul class="simple">
+<li><p><strong>Consistencia:</strong> El RMSE oscila en un rango saludable de <strong>0.16 a 0.25</strong>.</p></li>
+<li><p><strong>Observación clave:</strong> No hay una tendencia clara de que el error aumente linealmente con el horizonte. En series temporales financieras, esto es un hallazgo positivo; indica que el modelo no está simplemente “adivinando” el día siguiente, sino que ha capturado una estructura de volatilidad que es válida para toda la semana.</p></li>
+</ul>
+</section>
+<section id="comparativa-de-mape-por-horizonte-entre-modelos-lag-fijo">
+<h2>14. Comparativa de MAPE por horizonte entre modelos (lag fijo)<a class="headerlink" href="#comparativa-de-mape-por-horizonte-entre-modelos-lag-fijo" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura comparativa que muestra la evolución del MAPE (Error Absoluto Porcentual Medio) a lo largo del horizonte de predicción de 7 días para los tres modelos evaluados (MLP, RNN, LSTM), utilizando el lag óptimo de 14 días. Para cada modelo y horizonte, se calcula el MAPE promedio sobre los 5 folds de validación cruzada, obteniendo una estimación robusta del error porcentual en función de la distancia temporal de la predicción. En el gráfico de líneas, el eje X representa los horizontes (días 1 a 7), el eje Y el MAPE en porcentaje, y cada modelo se distingue por un color específico (azul para MLP, teal para RNN, coral para LSTM) con marcadores cuadrados. El gráfico se guarda como <code class="docutils literal notranslate"><span class="pre">fig_mape_horizonte_lag14.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Panel 3: MAPE por horizonte — comparativa de modelos ─────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Panel 3: MAPE por horizonte — comparativa de modelos </span>
 <span class="n">df_mape</span> <span class="o">=</span> <span class="n">df_long</span><span class="p">[</span><span class="n">df_long</span><span class="p">[</span><span class="s1">&#39;Lag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">LAG_PLOT</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="s1">&#39;Horizon&#39;</span><span class="p">])[</span><span class="s1">&#39;MAPE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
@@ -1300,7 +1671,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results/fig_mape_horizonte_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;✅ Guardado: results/fig_mape_horizonte_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Guardado: results/fig_mape_horizonte_lag</span><span class="si">{</span><span class="n">LAG_PLOT</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1311,12 +1682,25 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Desempeño por Arquitectura (MLP vs RNN vs LSTM)</strong></p>
+<ul class="simple">
+<li><p><strong>LSTM (Línea naranja):</strong> Es el modelo más consistente y preciso en horizontes cortos (días 1 a 5). Presenta la trayectoria de error más suave, lo que indica que su arquitectura de memoria de largo plazo gestiona mejor la propagación del error en el tiempo.</p></li>
+<li><p><strong>MLP (Línea azul):</strong> Aunque comienza con un error competitivo en el día 1 (~41%), presenta una volatilidad de error muy alta. Se observa un pico de error significativo en el día 6, superando el <strong>49% de MAPE</strong>, lo que sugiere que pierde capacidad predictiva drásticamente al final de la semana.</p></li>
+<li><p><strong>RNN (Línea verde):</strong> Se mantiene en un punto intermedio. Curiosamente, en el día 7 iguala el desempeño de la LSTM (~47.5%), mostrando ser más robusta que el MLP para el cierre del horizonte semanal.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Magnitud del Error y Horizonte Temporal</strong></p>
+<ul class="simple">
+<li><p><strong>Error Base:</strong> El error mínimo se encuentra en el día 1, rondando el <strong>41%</strong>. Esto es coherente con el análisis previo de la distribución de volatilidad, donde vimos que la diferencia entre la mediana y los picos extremos es difícil de cerrar por completo.</p></li>
+<li><p><strong>Degradación Predictiva:</strong> Hay una tendencia ascendente clara en los tres modelos a medida que el horizonte se aleja. El error pasa de un ~41% (día 1) a un rango de <strong>47.5% - 49% (día 7)</strong>. Esta subida de aproximadamente 7 u 8 puntos porcentuales en una semana es esperada en activos tan volátiles como el Bitcoin.</p></li>
+</ul>
 </section>
-<section id="mejor-modelo-global-y-conclusiones">
-<h2>6. Mejor modelo global y conclusiones<a class="headerlink" href="#mejor-modelo-global-y-conclusiones" title="Permalink to this heading">#</a></h2>
+<section id="identificacion-y-reporte-del-mejor-modelo-global">
+<h2>15. Identificación y reporte del mejor modelo global<a class="headerlink" href="#identificacion-y-reporte-del-mejor-modelo-global" title="Permalink to this heading">#</a></h2>
+<p>Se recalcula el mejor modelo global recorriendo sistemáticamente todos los resultados almacenados en <code class="docutils literal notranslate"><span class="pre">results_all</span></code> (combinaciones de tipo de modelo, lag y fold) y seleccionando la configuración con el menor RMSE en el conjunto de prueba. Una vez identificado, se extraen las métricas completas de evaluación para ese modelo, incluyendo RMSE, MAPE, MAE y el p-valor del test de BDS sobre los residuos del primer horizonte. Se imprime un reporte ejecutivo que resume la configuración óptima: tipo de modelo (LSTM, MLP o RNN), lag temporal (7, 14, 21 o 28 días), número de fold (0 a 4), y los valores de las métricas de error alcanzados. Adicionalmente, si está disponible el diccionario <code class="docutils literal notranslate"><span class="pre">best_configs</span></code>, se muestra la arquitectura de la red (lista de neuronas por capa) y la máscara de dropout asociada a esa configuración. Este reporte consolida en un único bloque de salida la información más relevante para la toma de decisiones sobre qué modelo desplegar en producción, proporcionando una validación final del desempeño y permitiendo documentar los resultados del proyecto de manera clara y concisa.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Recalcular best_global desde results_all ─────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recalcular best_global desde results_all</span>
 <span class="n">best</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rmse&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="s1">&#39;mtype&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;lag&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;fold&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">MTYPES</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">LAGS_LIST</span><span class="p">:</span>
@@ -1328,21 +1712,21 @@ document.write(`
 <span class="n">r_best</span> <span class="o">=</span> <span class="n">results_all</span><span class="p">[</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;mtype&#39;</span><span class="p">]][</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;lag&#39;</span><span class="p">]][</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;fold&#39;</span><span class="p">]]</span>
 <span class="n">m_best</span> <span class="o">=</span> <span class="n">r_best</span><span class="p">[</span><span class="s1">&#39;metrics_test&#39;</span><span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  MEJOR MODELO GLOBAL&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Tipo    : </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;mtype&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Lag     : </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;lag&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Fold    : </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;fold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  RMSE    : </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  MAPE    : </span><span class="si">{</span><span class="n">m_best</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">][</span><span class="s1">&#39;MAPE&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  MAE     : </span><span class="si">{</span><span class="n">m_best</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">][</span><span class="s1">&#39;MAE&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  BDS p   : </span><span class="si">{</span><span class="n">r_best</span><span class="p">[</span><span class="s1">&#39;bds_pval&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">&#39;OK ✅&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">r_best</span><span class="p">[</span><span class="s1">&#39;bds_pval&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.05</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;WARN ⚠️&#39;</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MEJOR MODELO GLOBAL&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Tipo: </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;mtype&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Lag: </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;lag&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">d&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Fold: </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;fold&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; RMSE: </span><span class="si">{</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; MAPE: </span><span class="si">{</span><span class="n">m_best</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">][</span><span class="s1">&#39;MAPE&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; MAE: </span><span class="si">{</span><span class="n">m_best</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">][</span><span class="s1">&#39;MAE&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; BDS p: </span><span class="si">{</span><span class="n">r_best</span><span class="p">[</span><span class="s1">&#39;bds_pval&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="s1">&#39;OK&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">r_best</span><span class="p">[</span><span class="s1">&#39;bds_pval&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.05</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;ADVERTENCIA&#39;</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">best_configs</span><span class="p">:</span>
     <span class="n">bc</span> <span class="o">=</span> <span class="n">best_configs</span><span class="p">[</span><span class="n">best</span><span class="p">[</span><span class="s1">&#39;mtype&#39;</span><span class="p">]]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Arch    : </span><span class="si">{</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;arquitectura&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Dropout : </span><span class="si">{</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dropout_mask&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Arch: </span><span class="si">{</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;arquitectura&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Dropout: </span><span class="si">{</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dropout_mask&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1364,9 +1748,158 @@ document.write(`
 </div>
 </div>
 </div>
+<p><strong>Configuración del modelo campeón</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parámetro</p></th>
+<th class="head"><p>Valor</p></th>
+<th class="head"><p>Evaluación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Tipo de modelo</strong></p></td>
+<td><p>LSTM</p></td>
+<td><p>Red recurrente con memoria de largo plazo</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Lag temporal</strong></p></td>
+<td><p>21 días</p></td>
+<td><p>Ventana de contexto amplia (3 semanas)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Fold</strong></p></td>
+<td><p>4</p></td>
+<td><p>Período de validación específico (2024-2025 aprox.)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Arquitectura</strong></p></td>
+<td><p>(32,)</p></td>
+<td><p>Una sola capa LSTM con 32 unidades</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Dropout</strong></p></td>
+<td><p>True</p></td>
+<td><p>Regularización activa (tasa 0.3)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Métricas de desempeño</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Métrica</p></th>
+<th class="head"><p>Valor</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>RMSE</strong></p></td>
+<td><p><strong>0.1896</strong></p></td>
+<td><p>Error cuadrático medio raíz (unidades de volatilidad anualizada)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MAPE</strong></p></td>
+<td><p><strong>41.11%</strong></p></td>
+<td><p>Error porcentual absoluto medio</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>MAE</strong></p></td>
+<td><p>0.1390</p></td>
+<td><p>Error absoluto medio</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>BDS p</strong></p></td>
+<td><p>0.9590</p></td>
+<td><p>Residuos sin estructura no lineal (p &gt; 0.05)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Análisis del RMSE = 0.1896</strong>: ¿Qué significa este valor?</p>
+<p>La variable objetivo <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> está en unidades de <strong>volatilidad anualizada</strong> (ej. 0.50 = 50% volatilidad anual).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Estadístico RV_15m</p></th>
+<th class="head"><p>Valor</p></th>
+<th class="head"><p>Comparación con RMSE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Media</p></td>
+<td><p>~0.485</p></td>
+<td><p>RMSE es 39% de la media</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mediana</p></td>
+<td><p>~0.409</p></td>
+<td><p>RMSE es 46% de la mediana</p></td>
+</tr>
+<tr class="row-even"><td><p>Desviación estándar</p></td>
+<td><p>~0.326</p></td>
+<td><p>RMSE es 58% de la std</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Interpretación práctica:</strong></p>
+<ul class="simple">
+<li><p>El error típico del modelo es de aproximadamente 19 puntos porcentuales de volatilidad anualizada.</p></li>
+<li><p>Para una volatilidad real del 40%, el modelo predice entre 21% y 59% (rango amplio pero útil).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Análisis del MAPE = 41.11%</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Contexto</p></th>
+<th class="head"><p>Evaluación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Para volatilidad financiera</p></td>
+<td><p>**Aceptable / Bueno</p></td>
+</tr>
+<tr class="row-odd"><td><p>Para activos de baja volatilidad (ej. acciones blue chip)</p></td>
+<td><p>Sería malo (&gt;10-15%)</p></td>
+</tr>
+<tr class="row-even"><td><p>Para Bitcoin (alta volatilidad)</p></td>
+<td><p>Muy bueno</p></td>
+</tr>
+<tr class="row-odd"><td><p>Benchmark típico en literatura financiera</p></td>
+<td><p>30-50% es rango estándar para volatilidad realizada</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Comparativa con otros folds/lags:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuración</p></th>
+<th class="head"><p>MAPE</p></th>
+<th class="head"><p>Diferencia vs mejor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mejor global (LSTM lag=21, fold4)</strong></p></td>
+<td><p><strong>41.11%</strong></p></td>
+<td><p><strong>Referencia</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>LSTM lag=14 promedio</p></td>
+<td><p>43.78%</p></td>
+<td><p>+2.67 p.p.</p></td>
+</tr>
+<tr class="row-even"><td><p>MLP lag=21 promedio</p></td>
+<td><p>41.39%</p></td>
+<td><p>+0.28 p.p.</p></td>
+</tr>
+<tr class="row-odd"><td><p>MLP lag=7 promedio</p></td>
+<td><p>41.80%</p></td>
+<td><p>+0.69 p.p.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>El MAPE de 41.11% es el más bajo registrado en todo el experimento.</p>
+</section>
+<section id="tabla-resumen-final-mejor-lag-por-modelo-segun-rmse-promedio">
+<h2>16. Tabla resumen final — mejor lag por modelo según RMSE promedio<a class="headerlink" href="#tabla-resumen-final-mejor-lag-por-modelo-segun-rmse-promedio" title="Permalink to this heading">#</a></h2>
+<p>Se construye una tabla resumen final que, para cada tipo de modelo (MLP, RNN, LSTM), identifica el lag temporal óptimo según el menor RMSE promedio sobre los 5 folds de validación cruzada. Para cada modelo, se calcula el RMSE medio de prueba para cada lag (7, 14, 21, 28 días) promediando sobre los folds, y se selecciona el lag con el valor más bajo. Una vez identificado el lag óptimo por modelo, se calculan las métricas consolidadas: el RMSE promedio y su desviación estándar (indicando variabilidad entre folds), el MAPE promedio y su desviación estándar, y los resultados del test de BDS (número de folds que pasan el test con p &gt; 0.05 y p-valor medio). La tabla resultante permite comparar el desempeño óptimo alcanzable por cada modelo cuando se selecciona su mejor configuración de lag, proporcionando una visión justa y balanceada para la selección final del modelo a desplegar. La tabla se visualiza en el notebook y se guarda como <code class="docutils literal notranslate"><span class="pre">summary_final.csv</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, constituyendo el entregable final de la fase de evaluación comparativa de modelos.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Tabla resumen final de los 3 modelos (lag óptimo por modelo) ─────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tabla resumen final de los 3 modelos (lag óptimo por modelo)</span>
 <span class="c1"># Para cada modelo: elige el lag con menor RMSE promedio sobre folds</span>
 <span class="n">final_rows</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">mtype</span> <span class="ow">in</span> <span class="n">MTYPES</span><span class="p">:</span>
@@ -1390,10 +1923,10 @@ document.write(`
     <span class="p">})</span>
 
 <span class="n">df_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">final_rows</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;── Tabla final — mejor lag por modelo ──────────────────────────────&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Tabla final — mejor lag por modelo&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">df_final</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">))</span>
 <span class="n">df_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;results/summary_final.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">✅ Guardado: results/summary_final.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Guardado: results/summary_final.csv&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1466,9 +1999,13 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="visualizacion-de-las-curvas-de-prediccion-del-mejor-modelo-global">
+<h2>17. Visualización de las curvas de predicción del mejor modelo global<a class="headerlink" href="#visualizacion-de-las-curvas-de-prediccion-del-mejor-modelo-global" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura que muestra las curvas de predicción versus valores reales para el mejor modelo global identificado (LSTM con lag=21 días, fold=4), utilizando la función <code class="docutils literal notranslate"><span class="pre">plot_forecast_curves</span></code>. El gráfico presenta las series temporales de volatilidad realizada (RV_15m) para los conjuntos de entrenamiento, validación y prueba, diferenciando visualmente cada partición con bandas de color de fondo y líneas discontinuas para las predicciones. La figura incluye anotaciones que identifican las regiones de entrenamiento, validación y prueba, líneas verticales que marcan los límites entre particiones, y el título muestra el tipo de modelo, lag, fold y el RMSE alcanzado en prueba (0.1896, el más bajo de todos los experimentos). Esta visualización permite verificar cualitativamente la calidad del ajuste: si las predicciones siguen la tendencia general de los valores reales, si existen sesgos sistemáticos (subestimación o sobreestimación consistente), y cómo se comporta el modelo en los picos de volatilidad (eventos extremos). La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_best_model_curves.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, constituyendo la evidencia visual principal del desempeño del modelo seleccionado para despliegue.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Curva del mejor modelo global ────────────────────────────────────────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Curva del mejor modelo global</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 <span class="n">plot_forecast_curves</span><span class="p">(</span>
     <span class="n">best</span><span class="p">[</span><span class="s1">&#39;mtype&#39;</span><span class="p">],</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;lag&#39;</span><span class="p">],</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;fold&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
@@ -1480,7 +2017,7 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_best_model_curves.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_best_model_curves.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_best_model_curves.png&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1491,9 +2028,13 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="grafica-comparativa-final-rmse-por-modelo-y-lag-con-barras-de-error">
+<h2>18. Gráfica comparativa final — RMSE por modelo y lag con barras de error<a class="headerlink" href="#grafica-comparativa-final-rmse-por-modelo-y-lag-con-barras-de-error" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura comparativa final que sintetiza el desempeño de los tres modelos (MLP, RNN, LSTM) a través de los cuatro lags temporales evaluados (7, 14, 21, 28 días), utilizando gráfico de barras agrupadas con barras de error que representan la desviación estándar del RMSE entre folds. Para cada combinación de modelo y lag, se calcula el RMSE promedio sobre los 5 folds de validación cruzada (altura de la barra) y su desviación estándar (longitud de la barra de error), proporcionando una visualización simultánea de la precisión central y la variabilidad (estabilidad) de cada configuración. Las barras se agrupan por lag en el eje X, con colores diferenciados por modelo (azul para MLP, teal para RNN, coral para LSTM), y un desplazamiento (offset) que permite comparar directamente los tres modelos dentro de cada lag. Esta gráfica permite identificar de un vistazo: (1) qué modelo-log ofrece el RMSE más bajo (barra más corta), (2) qué configuración es más estable (barra de error más pequeña), y (3) cómo evoluciona el desempeño al aumentar el lag. La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig_comparativa_final.png</span></code> en el directorio <code class="docutils literal notranslate"><span class="pre">results/</span></code>, constituyendo la visualización resumen final del proyecto para su inclusión en informes y presentaciones ejecutivas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── Gráfica comparativa de modelos — RMSE por lag (barras con error) ─────────</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gráfica comparativa de modelos — RMSE por lag (barras con error)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="n">bar_width</span> <span class="o">=</span> <span class="mf">0.22</span>
@@ -1519,8 +2060,8 @@ document.write(`
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;results/fig_comparativa_final.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;✅ Guardado: results/fig_comparativa_final.png&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">✅ Evaluación completa.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Guardado: results/fig_comparativa_final.png&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Evaluación completa.&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1572,7 +2113,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">🧠 Model Training — Grid Search MLP · RNN · LSTM</p>
+        <p class="prev-next-title">Model Training — Grid Search MLP · RNN · LSTM</p>
       </div>
     </a>
 </div>
@@ -1591,14 +2132,33 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Model Evaluation — MLP · RNN · LSTM</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-resultados-y-setup">1. Carga de resultados y setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metricas-por-horizonte-y-por-lag">2. Métricas por horizonte y por lag</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-bds-en-residuos-h-1">3. Test BDS en residuos (h=1)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#curvas-train-val-test-con-predicciones">4. Curvas train / val / test con predicciones</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rmse-por-fold-y-por-horizonte">5. RMSE por fold y por horizonte</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejor-modelo-global-y-conclusiones">6. Mejor modelo global y conclusiones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuracion-de-entorno-de-visualizacion-y-analisis-de-resultados">Configuración de entorno de visualización y análisis de resultados</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-resultados-y-metadatos-para-analisis-final">1. Carga de resultados y metadatos para análisis final</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-dataframe-largo-para-analisis-de-metricas-por-horizonte">2. Construcción del DataFrame largo para análisis de métricas por horizonte</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-lags-por-modelo-con-agregacion-de-folds-y-horizontes">3. Tabla comparativa de lags por modelo con agregación de folds y horizontes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-por-horizonte-de-prediccion-y-lag">4. Visualización del RMSE por horizonte de predicción y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heatmap-comparativo-de-rmse-promedio-por-modelo-y-lag">5. Heatmap comparativo de RMSE promedio por modelo y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportacion-de-tablas-detalladas-por-modelo-lag-y-fold">6. Exportación de tablas detalladas por modelo, lag y fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-del-test-de-bds-sobre-residuos-del-primer-horizonte">7. Análisis del test de BDS sobre residuos del primer horizonte</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-distribucion-de-p-valores-del-test-bds-por-modelo-y-lag">8. Visualización de la distribución de p-valores del test BDS por modelo y lag</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-auxiliar-para-visualizacion-de-curvas-de-prediccion-vs-valores-reales">9. Función auxiliar para visualización de curvas de predicción vs valores reales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-auxiliar-para-ranking-de-folds-por-desempeno">10. Función auxiliar para ranking de folds por desempeño</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-curvas-de-prediccion-para-mejor-mediano-y-peor-fold">11. Visualización de curvas de predicción para mejor, mediano y peor fold</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-promedio-por-fold-y-lag-para-cada-modelo">12. Visualización del RMSE promedio por fold y lag para cada modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-del-rmse-por-horizonte-desagregado-por-fold-lag-fijo">13. Visualización del RMSE por horizonte desagregado por fold (lag fijo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparativa-de-mape-por-horizonte-entre-modelos-lag-fijo">14. Comparativa de MAPE por horizonte entre modelos (lag fijo)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-y-reporte-del-mejor-modelo-global">15. Identificación y reporte del mejor modelo global</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-resumen-final-mejor-lag-por-modelo-segun-rmse-promedio">16. Tabla resumen final — mejor lag por modelo según RMSE promedio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-las-curvas-de-prediccion-del-mejor-modelo-global">17. Visualización de las curvas de predicción del mejor modelo global</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grafica-comparativa-final-rmse-por-modelo-y-lag-con-barras-de-error">18. Gráfica comparativa final — RMSE por modelo y lag con barras de error</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>
