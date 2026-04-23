@@ -1,9 +1,0 @@
-title: Sigma-Cast
-author: Luis David Peñaranda Pérez
-
-html:
-  theme: sphinx_book_theme
-  baseurl: /sigma-cast-book
-
-execute:
-  execute_notebooks: off
