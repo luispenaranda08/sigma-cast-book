@@ -2,7 +2,7 @@
 
 ## Deep Learning Project
 
-##  Integrantes
+## Integrantes
 - Luis David Peñaranda Pérez  
 - David Márquez  
 - Johan David Díaz López  
@@ -20,7 +20,7 @@
 
 ---
 
-##  Resultados Clave
+## Resultados Clave
 
 - Mejor modelo: **LSTM (lag=21)**  
 - RMSE en test: **0.1896**  
@@ -39,6 +39,7 @@
 
 ---
 
-## 🔗 Enlaces
+## Enlaces
 
 - [Repositorio en GitHub](https://github.com/luispenaranda08/sigma-cast-DL)
+- Video de demostración: https://youtu.be/iY-_D5H02NM
