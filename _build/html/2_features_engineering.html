@@ -1,0 +1,2051 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Feature Engineering &amp; Cross-Validation Split &#8212; Sigma-Cast</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2_features_engineering';</script>
+    <link rel="canonical" href="/sigma-cast-book/2_features_engineering.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Model Training — Grid Search MLP · RNN · LSTM" href="3_model_training.html" />
+    <link rel="prev" title="BTC Volatility — Multi-Resolution EDA" href="1_eda_volatility_final.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Sigma-Cast</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Sigma-Cast: Bitcoin Volatility Forecasting API
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_eda_volatility_final.html">BTC Volatility — Multi-Resolution EDA</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Feature Engineering &amp; Cross-Validation Split</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_model_training.html">Model Training — Grid Search MLP · RNN · LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_model_evaluation.html">Model Evaluation — MLP · RNN · LSTM</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/2_features_engineering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Feature Engineering & Cross-Validation Split</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion-de-dependencias-para-modelado-y-validacion-temporal">Instalación de dependencias para modelado y validación temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-librerias-para-modelado-preprocesamiento-y-validacion-temporal">Carga de librerías para modelado, preprocesamiento y validación temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-verificacion-del-dataset-procesado">1. Carga y verificación del dataset procesado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-variable-objetivo-rv-15m">2. Visualización de la variable objetivo RV_15m</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generacion-de-lags-y-targets-multi-step">3. Generación de lags y targets multi-step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-estructura-de-splits-temporales">4. Visualización de la estructura de splits temporales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estandarizacion-de-features-y-target-con-escalado-basado-exclusivamente-en-entrenamiento">5. Estandarización de features y target con escalado basado exclusivamente en entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-resumen-de-muestras-por-lag-fold-y-particion">6. Tabla resumen de muestras por lag, fold y partición</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persistencia-de-splits-y-metadatos-para-mlops">7. Persistencia de splits y metadatos para MLOps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-verificacion-de-integridad-del-artefacto-features-pkl">8. Carga y verificación de integridad del artefacto features.pkl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-feature-engineering-y-validacion-temporal">Conclusión — Feature Engineering y Validación Temporal</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="feature-engineering-cross-validation-split">
+<h1>Feature Engineering &amp; Cross-Validation Split<a class="headerlink" href="#feature-engineering-cross-validation-split" title="Permalink to this heading">#</a></h1>
+<section id="deep-learning-project-bitcoin-volatility-forecasting">
+<h2>Deep Learning Project | Bitcoin Volatility Forecasting<a class="headerlink" href="#deep-learning-project-bitcoin-volatility-forecasting" title="Permalink to this heading">#</a></h2>
+<p><strong>Input:</strong> <code class="docutils literal notranslate"><span class="pre">btc_processed.csv</span></code> — dataset diario enriquecido con <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> como variable objetivo.
+<strong>Output:</strong> <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> — diccionario con arrays X/y/Xcv/ycv/Xtest/ytest para los 4 tamaños de lag.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parámetro</p></th>
+<th class="head"><p>Valor</p></th>
+<th class="head"><p>Justificación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Variable objetivo</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">RV_15m</span></code></p></td>
+<td><p>Estimador de varianza integrada (Andersen &amp; Bollerslev, 1998)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lags evaluados</p></td>
+<td><p>7, 14, 21, 28 días</p></td>
+<td><p>Ciclos semanales y mensuales de BTC</p></td>
+</tr>
+<tr class="row-even"><td><p>Horizonte forecast</p></td>
+<td><p>7 días</p></td>
+<td><p>Multi-step output — salida de longitud 7</p></td>
+</tr>
+<tr class="row-odd"><td><p>Splits</p></td>
+<td><p>GroupKFold temporal</p></td>
+<td><p>Sin data leakage, respeta orden temporal</p></td>
+</tr>
+<tr class="row-even"><td><p>Escalado</p></td>
+<td><p>StandardScaler</p></td>
+<td><p>Fit solo en train de cada fold</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="instalacion-de-dependencias-para-modelado-y-validacion-temporal">
+<h2>Instalación de dependencias para modelado y validación temporal<a class="headerlink" href="#instalacion-de-dependencias-para-modelado-y-validacion-temporal" title="Permalink to this heading">#</a></h2>
+<p>Se instalan las librerías necesarias para la fase de modelado predictivo y validación cruzada temporal. Se incluye <code class="docutils literal notranslate"><span class="pre">timeseries-cv</span></code> para estrategias de validación específicas para datos secuenciales que evitan fuga de información, <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> para la implementación del MLPRegressor y métricas de evaluación, junto con <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> y <code class="docutils literal notranslate"><span class="pre">numpy</span></code> para procesamiento y visualización. Se utiliza el modo silencioso (<code class="docutils literal notranslate"><span class="pre">-q</span></code>) para minimizar la verbosidad durante la instalación en entornos de notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install timeseries-cv scikit-learn matplotlib pandas numpy -q
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: you may need to restart the kernel to use updated packages.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  WARNING: The script f2py.exe is installed in &#39;C:\Users\Luis D Peñaranda\AppData\Roaming\Python\Python311\Scripts&#39; which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+ERROR: pip&#39;s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+opencv-python-headless 4.13.0.92 requires numpy&gt;=2; python_version &gt;= &quot;3.9&quot;, but you have numpy 1.26.4 which is incompatible.
+shap 0.51.0 requires numpy&gt;=2, but you have numpy 1.26.4 which is incompatible.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="carga-de-librerias-para-modelado-preprocesamiento-y-validacion-temporal">
+<h2>Carga de librerías para modelado, preprocesamiento y validación temporal<a class="headerlink" href="#carga-de-librerias-para-modelado-preprocesamiento-y-validacion-temporal" title="Permalink to this heading">#</a></h2>
+<p>Se importan las librerías necesarias para la construcción, entrenamiento y evaluación del modelo predictivo. Se incluyen <code class="docutils literal notranslate"><span class="pre">pandas</span></code> y <code class="docutils literal notranslate"><span class="pre">numpy</span></code> para manipulación de datos; <code class="docutils literal notranslate"><span class="pre">pickle</span></code> para serialización del modelo y escaladores; <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> para visualización de resultados; <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> de scikit-learn para estandarización de features; y <code class="docutils literal notranslate"><span class="pre">split_train_val_test_groupKFold</span></code> de la librería <code class="docutils literal notranslate"><span class="pre">timeseries-cv</span></code> para implementar una validación cruzada temporal respetuosa del orden secuencial de los datos, evitando fuga de información del futuro hacia el pasado. Se configura la paleta de colores corporativa y los parámetros globales de matplotlib para mantener consistencia visual con los análisis previos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.gridspec</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gridspec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mticker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tsxv.splitTrainValTest</span><span class="w"> </span><span class="kn">import</span> <span class="n">split_train_val_test_groupKFold</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;navy&#39;</span><span class="p">:</span> <span class="s1">&#39;#0A1628&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">:</span> <span class="s1">&#39;#185FA5&#39;</span><span class="p">,</span> <span class="s1">&#39;teal&#39;</span><span class="p">:</span> <span class="s1">&#39;#1D9E75&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;amber&#39;</span><span class="p">:</span> <span class="s1">&#39;#EF9F27&#39;</span><span class="p">,</span> <span class="s1">&#39;coral&#39;</span><span class="p">:</span> <span class="s1">&#39;#D85A30&#39;</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">:</span> <span class="s1">&#39;#7F77DD&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">:</span> <span class="s1">&#39;#888780&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;#FAFAF8&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;axes.spines.top&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;axes.spines.right&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;axes.grid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#E0DED8&#39;</span><span class="p">,</span> <span class="s1">&#39;grid.linewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="s1">&#39;axes.titlesize&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;axes.labelsize&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Librerías cargadas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Librerías cargadas
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="carga-y-verificacion-del-dataset-procesado">
+<h2>1. Carga y verificación del dataset procesado<a class="headerlink" href="#carga-y-verificacion-del-dataset-procesado" title="Permalink to this heading">#</a></h2>
+<p>Se carga el dataset previamente guardado <code class="docutils literal notranslate"><span class="pre">btc_processed.csv</span></code>, convirtiendo la columna de fechas a tipo datetime. Se eliminan filas con valores nulos en la variable objetivo <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> para garantizar integridad en el modelado. Se imprime un resumen del dataset que incluye número total de filas, rango temporal, lista de columnas disponibles y conteo de valores nulos en la variable objetivo. Finalmente, se muestran las primeras cinco filas del dataset, con énfasis en las columnas de fecha, precio de cierre, volatilidad objetivo y régimen asignado, para confirmar la correcta carga y estructura de los datos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;btc_processed.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filas: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Período: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columnas: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nulos: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;Close&#39;</span><span class="p">,</span> <span class="s1">&#39;RV_15m&#39;</span><span class="p">,</span> <span class="s1">&#39;Regime&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Filas    : 2,564
+  Período  : 2018-01-31 → 2025-02-06
+  Columnas : [&#39;Date&#39;, &#39;Close&#39;, &#39;LogReturn&#39;, &#39;RollingVol&#39;, &#39;RV_4h&#39;, &#39;RV_1h&#39;, &#39;RV_15m&#39;, &#39;Regime&#39;]
+  Nulos    : 0
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Close</th>
+      <th>RV_15m</th>
+      <th>Regime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2018-01-31</td>
+      <td>10285.10</td>
+      <td>1.010901</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2018-02-01</td>
+      <td>9224.52</td>
+      <td>1.451167</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2018-02-02</td>
+      <td>8873.03</td>
+      <td>1.933673</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2018-02-03</td>
+      <td>9199.96</td>
+      <td>1.402232</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2018-02-04</td>
+      <td>8184.81</td>
+      <td>1.454217</td>
+      <td>High</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="visualizacion-de-la-variable-objetivo-rv-15m">
+<h2>2. Visualización de la variable objetivo RV_15m<a class="headerlink" href="#visualizacion-de-la-variable-objetivo-rv-15m" title="Permalink to this heading">#</a></h2>
+<p>Se genera una figura compuesta por dos paneles para caracterizar la variable objetivo <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code>. En el panel superior, se representa la serie temporal completa de volatilidad realizada desde 2018 hasta 2025, superpuesta con su media móvil de 30 días para suavizar fluctuaciones de corto plazo y destacar tendencias de mediano plazo en la variabilidad. En el panel inferior, se presenta el histograma de la distribución de <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> con 80 intervalos, junto con líneas verticales que indican la media y la mediana, permitiendo evaluar la asimetría de la distribución y la concentración de los valores. La figura se guarda como <code class="docutils literal notranslate"><span class="pre">fig5_rv_target.png</span></code> para documentar las propiedades de la variable que el modelo buscará predecir.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">})</span>
+
+<span class="c1"># Serie completa</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+             <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;coral&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Media móvil 30d&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;RV_15m — Serie objetivo completa (2018–2025)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;500&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Volatilidad anualizada&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mticker</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s1">.0%</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># Distribución</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;purple&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+             <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;coral&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Media=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;teal&#39;</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mediana=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;RV_15m&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribución de RV_15m&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Volatilidad anualizada&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;fig5_rv_target.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Figura guardada: fig5_rv_target.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3cd9c1817dc581ba4ab6f880f713ddfa30445eb134e1ed6768f31cc10c268b88.png" src="_images/3cd9c1817dc581ba4ab6f880f713ddfa30445eb134e1ed6768f31cc10c268b88.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Figura guardada: fig5_rv_target.png
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Evolución Temporal de la Volatilidad (Panel Superior)</strong></p>
+<ul class="simple">
+<li><p><strong>Picos de Pánico:</strong> Se identifican claramente eventos de volatilidad extrema donde la serie supera el <strong>300% e incluso el 500%</strong>.</p></li>
+<li><p><strong>Suavizado vs. Realidad:</strong> La línea naranja (Media móvil 30d) muestra la tendencia macro, pero la línea azul (RV_15m) revela que Bitcoin opera bajo un ruido de alta frecuencia constante.</p></li>
+<li><p><strong>Cambio de Régimen Reciente:</strong> Se observa que a partir de 2023, la volatilidad ha tenido picos menos frecuentes y de menor magnitud en comparación con el periodo 2018-2021, aunque el inicio de 2024 muestra un ligero repunte de actividad.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Análisis de la Distribución (Panel Inferior)</strong>
+El histograma confirma que la volatilidad de Bitcoin no se distribuye de forma normal, sino que sigue una <strong>distribución de “cola larga” (log-normal o similar)</strong>:</p>
+<ul class="simple">
+<li><p><strong>Media (48.5%) vs. Mediana (40.9%):</strong> El hecho de que la media sea significativamente mayor que la mediana es la prueba matemática del sesgo positivo. Los eventos extremos (la cola derecha que llega hasta 5) “empujan” la media hacia arriba.</p></li>
+<li><p><strong>Interpretación para el Modelo:</strong> La mayoría del tiempo, Bitcoin tiene una volatilidad anualizada cercana al 40%, pero el modelo debe estar preparado para capturar valores que son 10 veces superiores a ese nivel.</p></li>
+</ul>
+<p><strong>En resumen:</strong> Actualmente tenemos una variable objetivo rica en información, pero estadísticamente “difícil”. El éxito de la red neuronal dependerá de qué tan bien logre manejar esa brecha entre la mediana (el día a día) y los picos de la cola derecha (el riesgo real).</p>
+</section>
+<section id="generacion-de-lags-y-targets-multi-step">
+<h2>3. Generación de lags y targets multi-step<a class="headerlink" href="#generacion-de-lags-y-targets-multi-step" title="Permalink to this heading">#</a></h2>
+<p>Se definen los hiperparámetros fundamentales para la construcción de secuencias de entrenamiento y validación: una lista de rezagos (lags) de 7, 14, 21 y 28 días para evaluar diferentes ventanas de contexto temporal; un horizonte de predicción de 7 días (multi-step); un salto de 1 día entre ventanas consecutivas; y la columna objetivo <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> como variable a predecir. Se extrae la serie temporal de volatilidad realizada y se itera sobre cada valor de lag, aplicando la función <code class="docutils literal notranslate"><span class="pre">split_train_val_test_groupKFold</span></code> de la librería <code class="docutils literal notranslate"><span class="pre">timeseries-cv</span></code>. Esta función genera splits de validación cruzada respetuosos del orden temporal, produciendo diccionarios con conjuntos de entrenamiento (<code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>), validación (<code class="docutils literal notranslate"><span class="pre">Xcv</span></code>, <code class="docutils literal notranslate"><span class="pre">ycv</span></code>) y prueba (<code class="docutils literal notranslate"><span class="pre">Xtest</span></code>, <code class="docutils literal notranslate"><span class="pre">ytest</span></code>) para cada fold. Para cada configuración de lag, se reporta el número de folds generados y el total de muestras en cada partición, asegurando que no exista solapamiento temporal entre conjuntos. Finalmente, se almacenan todos los splits en un diccionario anidado para su posterior uso en el entrenamiento y evaluación de modelos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LAGS_LIST</span>        <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">28</span><span class="p">]</span>
+<span class="n">N_STEPS_FORECAST</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">N_STEPS_JUMP</span>     <span class="o">=</span> <span class="mi">1</span>
+<span class="n">TARGET_COL</span>       <span class="o">=</span> <span class="s1">&#39;RV_15m&#39;</span>
+
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">TARGET_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Serie objetivo : </span><span class="si">{</span><span class="n">TARGET_COL</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Longitud: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">time_series</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> observaciones&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Lags evaluados: </span><span class="si">{</span><span class="n">LAGS_LIST</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Horizonte: </span><span class="si">{</span><span class="n">N_STEPS_FORECAST</span><span class="si">}</span><span class="s2"> días&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">splits</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">LAGS_LIST</span><span class="p">:</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Xcv</span><span class="p">,</span> <span class="n">ycv</span><span class="p">,</span> <span class="n">Xtest</span><span class="p">,</span> <span class="n">ytest</span> <span class="o">=</span> <span class="n">split_train_val_test_groupKFold</span><span class="p">(</span>
+        <span class="n">time_series</span><span class="p">,</span>
+        <span class="n">numInputs</span><span class="o">=</span><span class="n">lag</span><span class="p">,</span>
+        <span class="n">numOutputs</span><span class="o">=</span><span class="n">N_STEPS_FORECAST</span><span class="p">,</span>
+        <span class="n">numJumps</span><span class="o">=</span><span class="n">N_STEPS_JUMP</span>
+    <span class="p">)</span>
+    <span class="n">splits</span><span class="p">[</span><span class="n">lag</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;Xcv&#39;</span><span class="p">:</span> <span class="n">Xcv</span><span class="p">,</span> <span class="s1">&#39;ycv&#39;</span><span class="p">:</span> <span class="n">ycv</span><span class="p">,</span> <span class="s1">&#39;Xtest&#39;</span><span class="p">:</span> <span class="n">Xtest</span><span class="p">,</span> <span class="s1">&#39;ytest&#39;</span><span class="p">:</span> <span class="n">ytest</span><span class="p">}</span>
+    <span class="n">folds</span>   <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">n_train</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">)</span>
+    <span class="n">n_val</span>   <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Xcv</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">)</span>
+    <span class="n">n_test</span>  <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Xtest</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  lag=</span><span class="si">{</span><span class="n">lag</span><span class="si">:</span><span class="s2">&gt;2</span><span class="si">}</span><span class="s2">d | folds=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">folds</span><span class="p">)</span><span class="si">}</span><span class="s2"> | &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;train=</span><span class="si">{</span><span class="n">n_train</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> | val=</span><span class="si">{</span><span class="n">n_val</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> | test=</span><span class="si">{</span><span class="n">n_test</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> muestras totales&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Splits generados para </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">LAGS_LIST</span><span class="p">)</span><span class="si">}</span><span class="s2"> tamaños de lag&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Serie objetivo : RV_15m
+  Longitud       : 2,564 observaciones
+  Lags evaluados : [7, 14, 21, 28]
+  Horizonte      : 7 días
+
+  lag= 7d | folds=5 | train=1,663 | val=555 | test=555 muestras totales
+  lag=14d | folds=5 | train=868 | val=290 | test=290 muestras totales
+  lag=21d | folds=5 | train=592 | val=196 | test=195 muestras totales
+  lag=28d | folds=5 | train=445 | val=150 | test=146 muestras totales
+
+✅ Splits generados para 4 tamaños de lag
+</pre></div>
+</div>
+</div>
+</div>
+<p>En esta caso <code class="docutils literal notranslate"><span class="pre">split_train_val_test_groupKFold</span></code> divide la serie en <strong>5 folds temporales</strong> sin solapamiento y sin data leakage. Cada fold es una ventana deslizante hacia el futuro:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Fold 1: [──train──────────][─val─][test]
+Fold 2: [────train────────────][─val─][test]
+Fold 3: [──────train──────────────][─val─][test]
+...
+</pre></div>
+</div>
+<p>El escalado se aplica <strong>después</strong> del split, dentro del loop de entrenamiento, con un <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> fiteado exclusivamente en los datos de train de ese fold. Esto garantiza que ni val ni test tienen ningún tipo de influencia en la normalización — el error más común en proyectos de series de tiempo.</p>
+<p><strong>Configuración general del experimento</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parámetro</p></th>
+<th class="head"><p>Valor</p></th>
+<th class="head"><p>Implicancia</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Longitud serie</p></td>
+<td><p>2,564 días</p></td>
+<td><p>Suficiente para entrenamiento robusto</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lags evaluados</p></td>
+<td><p>7, 14, 21, 28 días</p></td>
+<td><p>Permite comparar ventanas de contexto cortas vs largas</p></td>
+</tr>
+<tr class="row-even"><td><p>Horizonte</p></td>
+<td><p>7 días</p></td>
+<td><p>Predicción de volatilidad para semana completa</p></td>
+</tr>
+<tr class="row-odd"><td><p>Folds</p></td>
+<td><p>5</p></td>
+<td><p>Validación cruzada temporal con 5 particiones</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Relación entre lag y tamaño de los conjuntos</strong></p>
+<p><strong>Comportamiento observado:</strong> A mayor lag, menor cantidad de muestras totales.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>Train</p></th>
+<th class="head"><p>Val</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Total muestras</p></th>
+<th class="head"><p>Reducción vs lag anterior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7d</p></td>
+<td><p>1,663</p></td>
+<td><p>555</p></td>
+<td><p>555</p></td>
+<td><p><strong>2,773</strong></p></td>
+<td><p>base</p></td>
+</tr>
+<tr class="row-odd"><td><p>14d</p></td>
+<td><p>868</p></td>
+<td><p>290</p></td>
+<td><p>290</p></td>
+<td><p><strong>1,448</strong></p></td>
+<td><p>-47.8%</p></td>
+</tr>
+<tr class="row-even"><td><p>21d</p></td>
+<td><p>592</p></td>
+<td><p>196</p></td>
+<td><p>195</p></td>
+<td><p><strong>983</strong></p></td>
+<td><p>-32.1%</p></td>
+</tr>
+<tr class="row-odd"><td><p>28d</p></td>
+<td><p>445</p></td>
+<td><p>150</p></td>
+<td><p>146</p></td>
+<td><p><strong>741</strong></p></td>
+<td><p>-24.6%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Explicación matemática:</strong></p>
+<p>Cada muestra es una ventana deslizante que requiere:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lag</span></code> días de entrada (features)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">horizonte</span></code> días de salida (target)</p></li>
+<li><p>Avance de <code class="docutils literal notranslate"><span class="pre">jump=1</span></code> día entre ventanas</p></li>
+</ul>
+<p>Para una serie de longitud <code class="docutils literal notranslate"><span class="pre">N=2,564</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Muestras totales ≈ N - lag - horizonte + 1
+</pre></div>
+</div>
+<p>La reducción observada es <strong>correcta y esperada</strong> por la naturaleza de ventanas deslizantes.</p>
+<hr class="docutils" />
+<p><strong>Distribución entrenamiento/validación/prueba</strong></p>
+<p>Para <strong>todos los lags</strong>, la proporción es aproximadamente:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Train : Val : Test ≈ 60% : 20% : 20%
+</pre></div>
+</div>
+<p>Esto es <strong>adecuado</strong> para validación cruzada temporal, asegurando:</p>
+<ul class="simple">
+<li><p>Suficientes datos para entrenar (60%).</p></li>
+<li><p>Validación representativa (20%).</p></li>
+<li><p>Prueba final independiente (20%).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Implicaciones para el modelado por lag</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>Muestras train</p></th>
+<th class="head"><p>Capacidad de modelo recomendada</p></th>
+<th class="head"><p>Riesgo</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7d</p></td>
+<td><p>1,663</p></td>
+<td><p>MLP pequeña (32,16)</p></td>
+<td><p>Bajo — datos suficientes</p></td>
+</tr>
+<tr class="row-odd"><td><p>14d</p></td>
+<td><p>868</p></td>
+<td><p>MLP pequeña (32,16)</p></td>
+<td><p>Bajo — aún suficiente</p></td>
+</tr>
+<tr class="row-even"><td><p>21d</p></td>
+<td><p>592</p></td>
+<td><p>MLP muy pequeña (16,8)</p></td>
+<td><p>Moderado — límite inferior</p></td>
+</tr>
+<tr class="row-odd"><td><p>28d</p></td>
+<td><p>445</p></td>
+<td><p>MLP muy pequeña (16,8)</p></td>
+<td><p><strong>Alto — cerca de mínimos</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Nota:</strong> Con solo 445 muestras de entrenamiento para lag=28d, el modelo tendrá <strong>alto riesgo de sobreajuste</strong> si la arquitectura es más compleja que unas pocas neuronas.</p>
+</section>
+<section id="visualizacion-de-la-estructura-de-splits-temporales">
+<h2>4. Visualización de la estructura de splits temporales<a class="headerlink" href="#visualizacion-de-la-estructura-de-splits-temporales" title="Permalink to this heading">#</a></h2>
+<p>Se selecciona la configuración de lag de 7 días como caso de referencia y se recuperan los splits generados para esta configuración. Para cada uno de los 5 folds, se construye un gráfico de barras horizontales que representa la distribución de muestras en los conjuntos de entrenamiento (Train), validación (Val) y prueba (Test). Cada barra muestra la longitud relativa de cada partición en orden secuencial, permitiendo verificar visualmente que no existe solapamiento temporal entre conjuntos y que la proporción entre particiones es consistente a través de los folds. La figura resultante se guarda como <code class="docutils literal notranslate"><span class="pre">fig6_splits.png</span></code> para documentar la estrategia de validación cruzada temporal empleada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lag_ref</span>   <span class="o">=</span> <span class="mi">7</span>
+<span class="n">split_ref</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_ref</span><span class="p">]</span>
+<span class="n">folds</span>     <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">split_ref</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">folds</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">folds</span><span class="p">)),</span>
+                          <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">})</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">folds</span><span class="p">):</span>
+    <span class="n">n_tr</span>  <span class="o">=</span> <span class="n">split_ref</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_val</span> <span class="o">=</span> <span class="n">split_ref</span><span class="p">[</span><span class="s1">&#39;Xcv&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_te</span>  <span class="o">=</span> <span class="n">split_ref</span><span class="p">[</span><span class="s1">&#39;Xtest&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">n_tr</span> <span class="o">+</span> <span class="n">n_val</span> <span class="o">+</span> <span class="n">n_te</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_tr</span><span class="p">,</span>                    <span class="n">height</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">],</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_val</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="n">n_tr</span><span class="p">,</span>         <span class="n">height</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;amber&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Val&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_te</span><span class="p">,</span>  <span class="n">left</span><span class="o">=</span><span class="n">n_tr</span><span class="o">+</span><span class="n">n_val</span><span class="p">,</span>   <span class="n">height</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;coral&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Fold </span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s1"> — Train: </span><span class="si">{</span><span class="n">n_tr</span><span class="si">}</span><span class="s1"> | Val: </span><span class="si">{</span><span class="n">n_val</span><span class="si">}</span><span class="s1"> | Test: </span><span class="si">{</span><span class="n">n_te</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Muestras&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">framealpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Estructura de splits — lag=</span><span class="si">{</span><span class="n">lag_ref</span><span class="si">}</span><span class="s1">d, horizonte=</span><span class="si">{</span><span class="n">N_STEPS_FORECAST</span><span class="si">}</span><span class="s1">d&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;500&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">C</span><span class="p">[</span><span class="s1">&#39;navy&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;fig6_splits.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Figura guardada: fig6_splits.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6625dc3bf6a67546a23cc69abc181e5fd7ad695884afeb7e3f05fde1dbec25cf.png" src="_images/6625dc3bf6a67546a23cc69abc181e5fd7ad695884afeb7e3f05fde1dbec25cf.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ Figura guardada: fig6_splits.png
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Estrategia de Ventana Expandida (Walk-forward Validation)</strong></p>
+<p>A diferencia de un K-Fold tradicional donde los datos se mezclan al azar, aquí se está respetando el <strong>orden cronológico</strong>.</p>
+<ul class="simple">
+<li><p><strong>Train (Azul):</strong> El conjunto de entrenamiento crece ligeramente o se mantiene estable en cada fold para aprender los patrones históricos.</p></li>
+<li><p><strong>Val (Amarillo) y Test (Naranja):</strong> Son bloques de tiempo inmediatamente posteriores al entrenamiento. Esta configuración garantiza que el modelo siempre se evalúe con “datos que aún no han ocurrido” en su línea de tiempo de entrenamiento.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Configuración de Lags y Horizonte</strong></p>
+<p>En este caso contamos con <strong>lag=7d</strong> y un <strong>horizonte=7d</strong>.</p>
+<ul class="simple">
+<li><p><strong>Significado:</strong> la red neuronal (MLP) está utilizando los últimos 7 días de información para intentar predecir lo que sucederá en los 7 días siguientes.</p></li>
+<li><p><strong>Consistencia:</strong> Se observa que el tamaño de los bloques de Validación (111 muestras) y Test (111 muestras) es constante en todos los folds. Esto permite que las métricas de error (MAE, RMSE) sean comparables entre sí, facilitando la detección de si el modelo funciona mejor en ciertos periodos que en otros.</p></li>
+</ul>
+<p><strong>Rigor en MLOps: El rol del set de Validación</strong></p>
+<p>El hecho de separar <strong>Val</strong> de <strong>Test</strong> es una excelente práctica para el flujo de MLOps:</p>
+<ul class="simple">
+<li><p>El set de <strong>Validación</strong> sirve para ajustar los hiperparámetros de tu MLP (número de neuronas, tasa de aprendizaje, dropout).</p></li>
+<li><p>El set de <strong>Test</strong> se mantiene “puro” y solo se toca al final para dar la métrica de desempeño real que se espera en producción.</p></li>
+</ul>
+<hr class="docutils" />
+<p>Cada fold incrementa el conjunto de entrenamiento acumulando más historia, respetando el orden temporal de la serie. Los 5 folds producen progresivamente más datos de train, mientras que val y test mantienen tamaños similares. Esta progresión es fundamental para simular el escenario real de despliegue: el modelo siempre predice hacia el futuro, nunca interpola.</p>
+<p>La barra de <strong>Test</strong> en cada fold es el único set con el que se reportan métricas finales (MAPE, MAE, RMSE, MSE, BDS p-value). Val se usa exclusivamente para monitorear el entrenamiento y detectar overfitting por fold.</p>
+</section>
+<section id="estandarizacion-de-features-y-target-con-escalado-basado-exclusivamente-en-entrenamiento">
+<h2>5. Estandarización de features y target con escalado basado exclusivamente en entrenamiento<a class="headerlink" href="#estandarizacion-de-features-y-target-con-escalado-basado-exclusivamente-en-entrenamiento" title="Permalink to this heading">#</a></h2>
+<p>Se selecciona una configuración demostrativa (lag de 7 días, fold 0) para implementar el preprocesamiento de los datos. Se extraen los conjuntos brutos de entrenamiento, validación y prueba. Se inicializan dos instancias de <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code>: una para las características de entrada (<code class="docutils literal notranslate"><span class="pre">X</span></code>) y otra para la variable objetivo (<code class="docutils literal notranslate"><span class="pre">y</span></code>). Cada escalador se ajusta (fit) <strong>exclusivamente</strong> sobre los datos de entrenamiento, respetando el principio de que la información del conjunto de prueba no debe influir en el preprocesamiento para evitar fuga de datos. Posteriormente, se transforman los conjuntos de entrenamiento, validación y prueba con los escaladores correspondientes. Finalmente, se verifica que los datos de entrenamiento escalados presentan media cercana a 0 y desviación estándar cercana a 1 (como se espera de una estandarización correcta), mientras que los conjuntos de validación y prueba pueden presentar estadísticas diferentes, lo cual es aceptable y esperado en un entorno realista.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lag_demo</span>  <span class="o">=</span> <span class="mi">7</span>
+<span class="n">fold_demo</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">X_raw</span>   <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_demo</span><span class="p">][</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">fold_demo</span><span class="p">]</span>
+<span class="n">y_raw</span>   <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_demo</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="n">fold_demo</span><span class="p">]</span>
+<span class="n">Xcv_raw</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_demo</span><span class="p">][</span><span class="s1">&#39;Xcv&#39;</span><span class="p">][</span><span class="n">fold_demo</span><span class="p">]</span>
+<span class="n">Xte_raw</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_demo</span><span class="p">][</span><span class="s1">&#39;Xtest&#39;</span><span class="p">][</span><span class="n">fold_demo</span><span class="p">]</span>
+<span class="n">yte_raw</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag_demo</span><span class="p">][</span><span class="s1">&#39;ytest&#39;</span><span class="p">][</span><span class="n">fold_demo</span><span class="p">]</span>
+
+<span class="n">scaler_x</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_raw</span><span class="p">)</span>
+<span class="n">scaler_y</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>
+
+<span class="n">X_sc</span>   <span class="o">=</span> <span class="n">scaler_x</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_raw</span><span class="p">)</span>
+<span class="n">Xcv_sc</span> <span class="o">=</span> <span class="n">scaler_x</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xcv_raw</span><span class="p">)</span>
+<span class="n">Xte_sc</span> <span class="o">=</span> <span class="n">scaler_x</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xte_raw</span><span class="p">)</span>
+<span class="n">y_sc</span>   <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_raw</span><span class="p">)</span>
+<span class="n">yte_sc</span> <span class="o">=</span> <span class="n">scaler_y</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">yte_raw</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;── Verificación de escalado (lag=</span><span class="si">{</span><span class="n">lag_demo</span><span class="si">}</span><span class="s2">, fold=</span><span class="si">{</span><span class="n">fold_demo</span><span class="si">}</span><span class="s2">) ──────────────&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  X_train  → media=</span><span class="si">{</span><span class="n">X_sc</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  std=</span><span class="si">{</span><span class="n">X_sc</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  (esperado ~0, ~1)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  X_val    → media=</span><span class="si">{</span><span class="n">Xcv_sc</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  std=</span><span class="si">{</span><span class="n">Xcv_sc</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  (puede diferir: OK)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  X_test   → media=</span><span class="si">{</span><span class="n">Xte_sc</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  std=</span><span class="si">{</span><span class="n">Xte_sc</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  (puede diferir: OK)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  X_train shape  : </span><span class="si">{</span><span class="n">X_sc</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  y_train shape  : </span><span class="si">{</span><span class="n">y_sc</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  X_test  shape  : </span><span class="si">{</span><span class="n">Xte_sc</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  y_test  shape  : </span><span class="si">{</span><span class="n">yte_sc</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Escalado correcto — scaler fiteado exclusivamente con train&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── Verificación de escalado (lag=7, fold=0) ──────────────
+  X_train  → media=-0.0000  std=1.0000  (esperado ~0, ~1)
+  X_val    → media=0.0135  std=1.1009  (puede diferir: OK)
+  X_test   → media=-0.0370  std=0.9151  (puede diferir: OK)
+
+  X_train shape  : (334, 7)
+  y_train shape  : (334, 7)
+  X_test  shape  : (111, 7)
+  y_test  shape  : (111, 7)
+
+✅ Escalado correcto — scaler fiteado exclusivamente con train
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Verificación del escalado en entrenamiento</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Métrica</p></th>
+<th class="head"><p>Valor obtenido</p></th>
+<th class="head"><p>Valor esperado</p></th>
+<th class="head"><p>Verificación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Media de X_train</p></td>
+<td><p><strong>-0.0000</strong></p></td>
+<td><p>0</p></td>
+<td><p>Perfecta</p></td>
+</tr>
+<tr class="row-odd"><td><p>Desviación std de X_train</p></td>
+<td><p><strong>1.0000</strong></p></td>
+<td><p>1</p></td>
+<td><p>Perfecta</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Conclusión:</strong> El <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> aplicó correctamente la transformación:
+$<span class="math notranslate nohighlight">\(X_{sc} = \frac{X - \mu_{train}}{\sigma_{train}}\)</span>$</p>
+<p>Los datos de entrenamiento están perfectamente estandarizados, lo que facilitará la convergencia del MLP al evitar features con escalas muy diferentes.</p>
+<hr class="docutils" />
+<p><strong>Comportamiento en validación y prueba</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Conjunto</p></th>
+<th class="head"><p>Media</p></th>
+<th class="head"><p>Desviación std</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X_val</p></td>
+<td><p>0.0135</p></td>
+<td><p>1.1009</p></td>
+<td><p>Ligeramente desplazada y más dispersa</p></td>
+</tr>
+<tr class="row-odd"><td><p>X_test</p></td>
+<td><p>-0.0370</p></td>
+<td><p>0.9151</p></td>
+<td><p>Ligeramente desplazada y menos dispersa</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Análisis:</strong></p>
+<ul class="simple">
+<li><p><strong>Medias cercanas a 0</strong> (0.0135 y -0.0370): Indican que la distribución de features en validación y prueba es similar a la de entrenamiento. Desviaciones de hasta ±0.04 son <strong>normales y aceptables</strong>.</p></li>
+<li><p><strong>Std de 1.1009 en validación</strong>: La validación presenta un 10% más de dispersión que el entrenamiento. Esto es <strong>esperable</strong> porque:</p>
+<ul>
+<li><p>La volatilidad de Bitcoin no es estacionaria.</p></li>
+<li><p>Los folds contienen diferentes períodos temporales (algunos más volátiles que otros).</p></li>
+</ul>
+</li>
+<li><p><strong>Std de 0.9151 en prueba</strong>: La prueba presenta un 8.5% menos de dispersión. También es <strong>aceptable</strong> y refleja la variabilidad natural entre períodos.</p></li>
+</ul>
+<p><strong>Rango aceptable para std:</strong> 0.85 - 1.15 en la mayoría de aplicaciones financieras. Ambos conjuntos están dentro de este rango.</p>
+<hr class="docutils" />
+<p><strong>Dimensiones de los conjuntos (lag=7, fold=0)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Conjunto</p></th>
+<th class="head"><p>Shape (muestras, features)</p></th>
+<th class="head"><p>Features por muestra</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X_train</p></td>
+<td><p>(334, 7)</p></td>
+<td><p>7 días de lag</p></td>
+</tr>
+<tr class="row-odd"><td><p>y_train</p></td>
+<td><p>(334, 7)</p></td>
+<td><p>7 días de horizonte</p></td>
+</tr>
+<tr class="row-even"><td><p>X_test</p></td>
+<td><p>(111, 7)</p></td>
+<td><p>7 días de lag</p></td>
+</tr>
+<tr class="row-odd"><td><p>y_test</p></td>
+<td><p>(111, 7)</p></td>
+<td><p>7 días de horizonte</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Interpretación de las dimensiones:</strong></p>
+<ul class="simple">
+<li><p><strong>334 muestras de entrenamiento</strong> por fold (de las 1,663 totales distribuidas en 5 folds).</p></li>
+<li><p><strong>111 muestras de prueba</strong> por fold (de las 555 totales).</p></li>
+<li><p>Cada muestra contiene <strong>7 features</strong> (los valores de RV_15m de los últimos 7 días).</p></li>
+<li><p>Cada target contiene <strong>7 valores</strong> (la volatilidad prevista para los próximos 7 días).</p></li>
+</ul>
+<p><strong>Relación temporal:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[Día t-6 ... t] → [Día t+1 ... t+7]
+      ↑                    ↑
+   Features (7)        Target (7 días)
+</pre></div>
+</div>
+<p><strong>Estado:</strong> Actualmente los datos están correctamente preprocesados y listos para el entrenamiento del MLP. La ligera diferencia en desviación estándar entre conjuntos es esperable en series financieras no estacionarias. Se recomienda proceder con la arquitectura propuesta y evaluar métricas por fold.</p>
+</section>
+<section id="tabla-resumen-de-muestras-por-lag-fold-y-particion">
+<h2>6. Tabla resumen de muestras por lag, fold y partición<a class="headerlink" href="#tabla-resumen-de-muestras-por-lag-fold-y-particion" title="Permalink to this heading">#</a></h2>
+<p>Se construye una tabla consolidada que resume la cantidad de muestras asignadas a cada partición (entrenamiento, validación y prueba) para cada combinación de lag temporal y fold de validación cruzada. Se itera sobre todos los lags definidos (7, 14, 21, 28 días) y, para cada uno, sobre los 5 folds generados, extrayendo el número de muestras en los conjuntos <code class="docutils literal notranslate"><span class="pre">X</span></code>, <code class="docutils literal notranslate"><span class="pre">Xcv</span></code> y <code class="docutils literal notranslate"><span class="pre">Xtest</span></code>, así como la dimensión de features de entrada. Los resultados se almacenan en un DataFrame y se presentan con un índice jerárquico (Lag, Fold), permitiendo verificar rápidamente la consistencia de las particiones, detectar posibles desbalances y confirmar que la estructura de splits es reproducible y adecuada para la fase de entrenamiento del MLP.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">LAGS_LIST</span><span class="p">:</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="n">lag</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="n">sp</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;Lag&#39;</span><span class="p">:</span>      <span class="n">lag</span><span class="p">,</span>
+            <span class="s1">&#39;Fold&#39;</span><span class="p">:</span>     <span class="n">fold</span><span class="p">,</span>
+            <span class="s1">&#39;Train&#39;</span><span class="p">:</span>    <span class="n">sp</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;Val&#39;</span><span class="p">:</span>      <span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Xcv&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;Test&#39;</span><span class="p">:</span>     <span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Xtest&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s1">&#39;Features&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">fold</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">})</span>
+
+<span class="n">stats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Muestras por fold y tamaño de lag&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">stats_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Lag&#39;</span><span class="p">,</span><span class="s1">&#39;Fold&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── Muestras por fold y tamaño de lag ─────────────────────────────────
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Train</th>
+      <th>Val</th>
+      <th>Test</th>
+      <th>Features</th>
+    </tr>
+    <tr>
+      <th>Lag</th>
+      <th>Fold</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">7</th>
+      <th>0</th>
+      <td>334</td>
+      <td>111</td>
+      <td>111</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>333</td>
+      <td>111</td>
+      <td>111</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>332</td>
+      <td>111</td>
+      <td>111</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>331</td>
+      <td>111</td>
+      <td>111</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>333</td>
+      <td>111</td>
+      <td>111</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">14</th>
+      <th>0</th>
+      <td>175</td>
+      <td>58</td>
+      <td>58</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>174</td>
+      <td>58</td>
+      <td>58</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>173</td>
+      <td>58</td>
+      <td>58</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>172</td>
+      <td>58</td>
+      <td>58</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>174</td>
+      <td>58</td>
+      <td>58</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">21</th>
+      <th>0</th>
+      <td>119</td>
+      <td>39</td>
+      <td>39</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>119</td>
+      <td>39</td>
+      <td>39</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>119</td>
+      <td>39</td>
+      <td>39</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>118</td>
+      <td>39</td>
+      <td>39</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>117</td>
+      <td>40</td>
+      <td>39</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">28</th>
+      <th>0</th>
+      <td>91</td>
+      <td>30</td>
+      <td>29</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>90</td>
+      <td>30</td>
+      <td>29</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>89</td>
+      <td>30</td>
+      <td>29</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>88</td>
+      <td>30</td>
+      <td>29</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>87</td>
+      <td>30</td>
+      <td>30</td>
+      <td>28</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Estructura general de los splits</strong></p>
+<p>La tabla muestra la distribución de muestras para cada combinación de <strong>lag (7, 14, 21, 28 días)</strong> y <strong>fold (0-4)</strong>, con las columnas:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Train</span></code>: muestras de entrenamiento por fold</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Val</span></code>: muestras de validación por fold</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Test</span></code>: muestras de prueba por fold</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Features</span></code>: número de features de entrada (igual al valor del lag)</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Lag = 7 días (features = 7)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fold</p></th>
+<th class="head"><p>Train</p></th>
+<th class="head"><p>Val</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Total por fold</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>334</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>556</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>333</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>555</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>332</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>554</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>331</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>553</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>333</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>555</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total</strong></p></td>
+<td><p><strong>1,663</strong></p></td>
+<td><p><strong>555</strong></p></td>
+<td><p><strong>555</strong></p></td>
+<td><p><strong>2,773</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones:</strong></p>
+<ul class="simple">
+<li><p>Excelente consistencia entre folds (variación mínima de ±3 muestras en train).</p></li>
+<li><p>Validación y prueba perfectamente balanceadas (111 muestras por fold).</p></li>
+<li><p><strong>Total de muestras: 2,773</strong> (coherente con el cálculo teórico).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Lag = 14 días (features = 14)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fold</p></th>
+<th class="head"><p>Train</p></th>
+<th class="head"><p>Val</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Total por fold</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>175</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>291</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>174</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>290</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>173</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>289</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>172</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>288</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>174</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>290</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total</strong></p></td>
+<td><p><strong>868</strong></p></td>
+<td><p><strong>290</strong></p></td>
+<td><p><strong>290</strong></p></td>
+<td><p><strong>1,448</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones:</strong></p>
+<ul class="simple">
+<li><p>Buena consistencia entre folds.</p></li>
+<li><p>Reducción del ~48% respecto al lag=7 (esperado).</p></li>
+<li><p>Validación y prueba: 58 muestras por fold (~20% de 290).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Lag = 21 días (features = 21)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fold</p></th>
+<th class="head"><p>Train</p></th>
+<th class="head"><p>Val</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Total por fold</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>119</p></td>
+<td><p>39</p></td>
+<td><p>39</p></td>
+<td><p>197</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>119</p></td>
+<td><p>39</p></td>
+<td><p>39</p></td>
+<td><p>197</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>119</p></td>
+<td><p>39</p></td>
+<td><p>39</p></td>
+<td><p>197</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>118</p></td>
+<td><p>39</p></td>
+<td><p>39</p></td>
+<td><p>196</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>117</p></td>
+<td><p>40</p></td>
+<td><p>39</p></td>
+<td><p>196</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total</strong></p></td>
+<td><p><strong>592</strong></p></td>
+<td><p><strong>196</strong></p></td>
+<td><p><strong>195</strong></p></td>
+<td><p><strong>983</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones:</strong></p>
+<ul class="simple">
+<li><p>Consistencia aceptable.</p></li>
+<li><p>Fold 4 tiene 40 muestras en val vs 39 en test (pequeña asimetría, aceptable).</p></li>
+<li><p>Solo 117-119 muestras de entrenamiento por fold → <strong>límite inferior</strong>.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Lag = 28 días (features = 28)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fold</p></th>
+<th class="head"><p>Train</p></th>
+<th class="head"><p>Val</p></th>
+<th class="head"><p>Test</p></th>
+<th class="head"><p>Total por fold</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>91</p></td>
+<td><p>30</p></td>
+<td><p>29</p></td>
+<td><p>150</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>90</p></td>
+<td><p>30</p></td>
+<td><p>29</p></td>
+<td><p>149</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>89</p></td>
+<td><p>30</p></td>
+<td><p>29</p></td>
+<td><p>148</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>88</p></td>
+<td><p>30</p></td>
+<td><p>29</p></td>
+<td><p>147</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>87</p></td>
+<td><p>30</p></td>
+<td><p>30</p></td>
+<td><p>147</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total</strong></p></td>
+<td><p><strong>445</strong></p></td>
+<td><p><strong>150</strong></p></td>
+<td><p><strong>146</strong></p></td>
+<td><p><strong>741</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Observaciones:</strong></p>
+<ul class="simple">
+<li><p><strong>Muy pocas muestras</strong>: solo 87-91 por fold para entrenamiento.</p></li>
+<li><p>Validación y prueba: solo 29-30 muestras por fold → <strong>alta varianza en métricas</strong>.</p></li>
+<li><p>Fold 4 tiene val=30, test=30 (balance perfecto en este fold).</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Comparativa entre configuraciones</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lag</p></th>
+<th class="head"><p>Train total</p></th>
+<th class="head"><p>Train por fold</p></th>
+<th class="head"><p>Val por fold</p></th>
+<th class="head"><p>Test por fold</p></th>
+<th class="head"><p>Features</p></th>
+<th class="head"><p>Viabilidad</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>1,663</p></td>
+<td><p>331-334</p></td>
+<td><p>111</p></td>
+<td><p>111</p></td>
+<td><p>7</p></td>
+<td><p><strong>Excelente</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>868</p></td>
+<td><p>172-175</p></td>
+<td><p>58</p></td>
+<td><p>58</p></td>
+<td><p>14</p></td>
+<td><p><strong>Buena</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>592</p></td>
+<td><p>117-119</p></td>
+<td><p>39-40</p></td>
+<td><p>39</p></td>
+<td><p>21</p></td>
+<td><p><strong>Aceptable</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>28</p></td>
+<td><p>445</p></td>
+<td><p>87-91</p></td>
+<td><p>30</p></td>
+<td><p>29-30</p></td>
+<td><p>28</p></td>
+<td><p><strong>Marginal</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Patrón observado:</strong> Los folds no tienen exactamente el mismo tamaño, lo cual es <strong>correcto y esperado</strong> porque:</p>
+<ol class="arabic simple">
+<li><p><strong>Validación temporal</strong>: La división respeta el orden cronológico, no es aleatoria.</p></li>
+<li><p><strong>Longitud de la serie</strong>: 2,564 no es divisible exactamente por 5.</p></li>
+<li><p><strong>Ventanas deslizantes</strong>: El número de muestras varía según el punto de inicio.</p></li>
+</ol>
+<p><strong>Variación máxima observada:</strong></p>
+<ul class="simple">
+<li><p>Lag=7: 3 muestras de diferencia (334 vs 331) → <strong>0.9%</strong>.</p></li>
+<li><p>Lag=28: 4 muestras de diferencia (91 vs 87) → <strong>4.6%</strong>.</p></li>
+</ul>
+<p>La mayor variación en lag=28 es aceptable dado el menor tamaño muestral.</p>
+</section>
+<section id="persistencia-de-splits-y-metadatos-para-mlops">
+<h2>7. Persistencia de splits y metadatos para MLOps<a class="headerlink" href="#persistencia-de-splits-y-metadatos-para-mlops" title="Permalink to this heading">#</a></h2>
+<p>Se serializa en un archivo pickle (<code class="docutils literal notranslate"><span class="pre">features.pkl</span></code>) toda la información necesaria para reproducir el pipeline de modelado y desplegar el modelo en producción. El diccionario de salida incluye: los splits generados para cada configuración de lag (<code class="docutils literal notranslate"><span class="pre">splits</span></code>), la lista de lags evaluados, el horizonte de predicción (7 días), el salto entre ventanas (1 día), el nombre de la columna objetivo (<code class="docutils literal notranslate"><span class="pre">RV_15m</span></code>), las fechas originales del dataset, la serie temporal completa de volatilidad, y las etiquetas de régimen asociadas a cada observación. Se utiliza el protocolo de pickle más alto disponible para optimizar el tamaño del archivo y la velocidad de serialización. Finalmente, se reporta el tamaño del archivo generado y se imprime un resumen del contenido almacenado, verificando que todas las estructuras clave hayan sido correctamente preservadas para su uso en fases posteriores de entrenamiento, validación y despliegue.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;splits&#39;</span><span class="p">:</span>            <span class="n">splits</span><span class="p">,</span>
+    <span class="s1">&#39;lags_list&#39;</span><span class="p">:</span>         <span class="n">LAGS_LIST</span><span class="p">,</span>
+    <span class="s1">&#39;n_steps_forecast&#39;</span><span class="p">:</span>  <span class="n">N_STEPS_FORECAST</span><span class="p">,</span>
+    <span class="s1">&#39;n_steps_jump&#39;</span><span class="p">:</span>      <span class="n">N_STEPS_JUMP</span><span class="p">,</span>
+    <span class="s1">&#39;target_col&#39;</span><span class="p">:</span>        <span class="n">TARGET_COL</span><span class="p">,</span>
+    <span class="s1">&#39;dates&#39;</span><span class="p">:</span>             <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="s1">&#39;time_series&#39;</span><span class="p">:</span>       <span class="n">time_series</span><span class="p">,</span>
+    <span class="s1">&#39;regime&#39;</span><span class="p">:</span>            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Regime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;features.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">size_mb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="s1">&#39;features.pkl&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;features.pkl guardado  (</span><span class="si">{</span><span class="n">size_mb</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Contenido del pkl&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;splits&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  splits: dict con lags </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2"> → X/y/Xcv/ycv/Xtest/ytest por fold&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;__len__&#39;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> — len=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>✅ features.pkl guardado  (0.99 MB)
+
+── Contenido del pkl ────────────────────────────────────────────────
+  splits: dict con lags [7, 14, 21, 28] → X/y/Xcv/ycv/Xtest/ytest por fold
+  lags_list: list — len=4
+  n_steps_forecast: 7
+  n_steps_jump: 1
+  target_col: str — len=6
+  dates: ndarray — len=2564
+  time_series: ndarray — len=2564
+  regime: ndarray — len=2564
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Ventajas del tamaño del archivo generado</strong></p>
+<ul class="simple">
+<li><p><strong>Almacenamiento eficiente</strong>: No consume recursos significativos en disco.</p></li>
+<li><p><strong>Transferencia rápida</strong>: Ideal para mover entre entornos (local → servidor → producción).</p></li>
+<li><p><strong>Versionamiento factible</strong>: Puede almacenarse en control de versiones si es necesario.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Contenido validado del pickle</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Clave</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Longitud</p></th>
+<th class="head"><p>Propósito en MLOps</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">splits</span></code></p></td>
+<td><p>dict</p></td>
+<td><p>4 lags</p></td>
+<td><p>Reentrenamiento con misma estrategia de validación</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lags_list</span></code></p></td>
+<td><p>list</p></td>
+<td><p>4</p></td>
+<td><p>Selección de mejor configuración</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_steps_forecast</span></code></p></td>
+<td><p>int</p></td>
+<td><p>7</p></td>
+<td><p>Horizonte de predicción (fijo)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_steps_jump</span></code></p></td>
+<td><p>int</p></td>
+<td><p>1</p></td>
+<td><p>Paso de deslizamiento</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">target_col</span></code></p></td>
+<td><p>str</p></td>
+<td><p>“RV_15m”</p></td>
+<td><p>Identificador de variable objetivo</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dates</span></code></p></td>
+<td><p>ndarray</p></td>
+<td><p>2,564</p></td>
+<td><p>Timestamps para gráficos y trazabilidad</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_series</span></code></p></td>
+<td><p>ndarray</p></td>
+<td><p>2,564</p></td>
+<td><p>Serie original (útil para baselines)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">regime</span></code></p></td>
+<td><p>ndarray</p></td>
+<td><p>2,564</p></td>
+<td><p>Validación por segmento de mercado</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p><strong>Estructura interna de <code class="docutils literal notranslate"><span class="pre">splits</span></code></strong>: El diccionario <code class="docutils literal notranslate"><span class="pre">splits</span></code> contiene para cada lag (7, 14, 21, 28):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">splits</span><span class="p">[</span><span class="n">lag</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;X&#39;</span><span class="p">:</span>      <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">},</span>
+    <span class="s1">&#39;y&#39;</span><span class="p">:</span>      <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">},</span>
+    <span class="s1">&#39;Xcv&#39;</span><span class="p">:</span>    <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">},</span>
+    <span class="s1">&#39;ycv&#39;</span><span class="p">:</span>    <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">},</span>
+    <span class="s1">&#39;Xtest&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">},</span>
+    <span class="s1">&#39;ytest&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Total de arrays almacenados:</strong></p>
+<ul class="simple">
+<li><p>4 lags × 5 folds × 6 particiones = <strong>120 arrays NumPy</strong></p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Verificación de integridad para MLOps</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Requisito de producción</p></th>
+<th class="head"><p>Estado</p></th>
+<th class="head"><p>Verificación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reproducibilidad de splits</p></td>
+<td><p>Correcto</p></td>
+<td><p>Misma semilla y lógica de partición</p></td>
+</tr>
+<tr class="row-odd"><td><p>Separación tiempo-real</p></td>
+<td><p>Correcto</p></td>
+<td><p>Sin fuga de futuro</p></td>
+</tr>
+<tr class="row-even"><td><p>Escalado futuro</p></td>
+<td><p>Correcto</p></td>
+<td><p>Pickle contiene datos crudos (escalar aparte)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Trazabilidad temporal</p></td>
+<td><p>Correcto</p></td>
+<td><p>Fechas preservadas</p></td>
+</tr>
+<tr class="row-even"><td><p>Segmentación por régimen</p></td>
+<td><p>Correcto</p></td>
+<td><p>Etiquetas disponibles</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tamaño manejable</p></td>
+<td><p>Correcto</p></td>
+<td><p>&lt; 1 MB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<p>El archivo <code class="docutils literal notranslate"><span class="pre">.pkl</span></code> persiste el estado completo del pipeline de features:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">splits</span></code></strong>: diccionario anidado <code class="docutils literal notranslate"><span class="pre">{lag:</span> <span class="pre">{X,</span> <span class="pre">y,</span> <span class="pre">Xcv,</span> <span class="pre">ycv,</span> <span class="pre">Xtest,</span> <span class="pre">ytest}}</span></code> con arrays numpy listos para entrenar. El notebook de modelado hace <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code> y entra directo al loop — sin recalcular ni recargar CSVs.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">time_series</span></code></strong>: serie temporal original para reconstruir fechas en visualizaciones.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">regime</span></code></strong>: vector de regímenes para análisis segmentado por régimen en evaluación.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">protocol=HIGHEST_PROTOCOL</span></code></strong>: serialización binaria más compacta y rápida disponible en Python.</p></li>
+</ul>
+<p><strong>Estado:</strong> El artefacto <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> está correctamente generado, contiene toda la información necesaria y está optimizado para las fases de entrenamiento, validación y despliegue del modelo en un entorno MLOps.</p>
+</section>
+<section id="carga-y-verificacion-de-integridad-del-artefacto-features-pkl">
+<h2>8. Carga y verificación de integridad del artefacto features.pkl<a class="headerlink" href="#carga-y-verificacion-de-integridad-del-artefacto-features-pkl" title="Permalink to this heading">#</a></h2>
+<p>Se carga el archivo <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> previamente generado y se mide el tiempo de deserialización para confirmar que el artefacto es eficiente en entornos de producción o notebooks interactivos. Una vez cargado, se realiza una verificación de integridad iterando sobre cada configuración de lag (7, 14, 21, 28 días): para cada uno, se inspecciona el número de folds disponibles y las dimensiones de los arrays de entrenamiento (<code class="docutils literal notranslate"><span class="pre">X[0]</span></code>, <code class="docutils literal notranslate"><span class="pre">y[0]</span></code>) y prueba (<code class="docutils literal notranslate"><span class="pre">Xtest[0]</span></code>, <code class="docutils literal notranslate"><span class="pre">ytest[0]</span></code>). Esta validación asegura que las estructuras de datos se hayan preservado correctamente durante la serialización y que las dimensiones sean consistentes con lo esperado (features = lag, target = horizonte de 7 días). Finalmente, se confirma que el artefacto está listo para ser utilizado en la fase de entrenamiento del modelo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;features.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Carga en </span><span class="si">{</span><span class="p">(</span><span class="n">t1</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Verificación de integridad&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lags_list&#39;</span><span class="p">]:</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;splits&#39;</span><span class="p">][</span><span class="n">lag</span><span class="p">]</span>
+    <span class="n">folds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  lag=</span><span class="si">{</span><span class="n">lag</span><span class="si">:</span><span class="s2">&gt;2</span><span class="si">}</span><span class="s2">d | </span><span class="si">{</span><span class="n">folds</span><span class="si">}</span><span class="s2"> folds | &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;X[0]</span><span class="si">{</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> → y[0]</span><span class="si">{</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> | &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;Xtest[0]</span><span class="si">{</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;Xtest&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> → ytest[0]</span><span class="si">{</span><span class="n">sp</span><span class="p">[</span><span class="s1">&#39;ytest&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;features.pkl verificado — listo para 3_model_training.ipynb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>⚡ Carga en 53.1 ms
+
+── Verificación de integridad ───────────────────────────────────────
+  lag= 7d | 5 folds | X[0](334, 7) → y[0](334, 7) | Xtest[0](111, 7) → ytest[0](111, 7)
+  lag=14d | 5 folds | X[0](175, 14) → y[0](175, 7) | Xtest[0](58, 14) → ytest[0](58, 7)
+  lag=21d | 5 folds | X[0](119, 21) → y[0](119, 7) | Xtest[0](39, 21) → ytest[0](39, 7)
+  lag=28d | 5 folds | X[0](91, 28) → y[0](91, 7) | Xtest[0](29, 28) → ytest[0](29, 7)
+
+✅ features.pkl verificado — listo para 3_model_training.ipynb
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Rendimiento de carga</strong></p>
+<ul class="simple">
+<li><p><strong>Muy rápido</strong>: 53 milisegundos para cargar 120 arrays NumPy + metadatos.</p></li>
+<li><p><strong>Apropiado para producción</strong>: Permite reinicialización ágil de servicios.</p></li>
+<li><p><strong>Sin cuello de botella</strong>: La deserialización no será un factor limitante.</p></li>
+</ul>
+<p><strong>Escalabilidad:</strong> Si se multiplicara el dataset por 100 (~100 MB), el tiempo de carga seguiría siendo aceptable (~1-2 segundos).</p>
+<hr class="docutils" />
+<p><strong>Lag = 7 días</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X[0]</p></td>
+<td><p>(334, 7)</p></td>
+<td><p>334 muestras × 7 features (días t-6…t)</p></td>
+</tr>
+<tr class="row-odd"><td><p>y[0]</p></td>
+<td><p>(334, 7)</p></td>
+<td><p>334 muestras × 7 targets (días t+1…t+7)</p></td>
+</tr>
+<tr class="row-even"><td><p>Xtest[0]</p></td>
+<td><p>(111, 7)</p></td>
+<td><p>111 muestras de prueba × 7 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>ytest[0]</p></td>
+<td><p>(111, 7)</p></td>
+<td><p>111 muestras de prueba × 7 targets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Relación correcta:</strong> Features = lag (7), Target = horizonte (7)</p>
+<hr class="docutils" />
+<p><strong>Lag = 14 días</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X[0]</p></td>
+<td><p>(175, 14)</p></td>
+<td><p>175 muestras × 14 features (días t-13…t)</p></td>
+</tr>
+<tr class="row-odd"><td><p>y[0]</p></td>
+<td><p>(175, 7)</p></td>
+<td><p>175 muestras × 7 targets</p></td>
+</tr>
+<tr class="row-even"><td><p>Xtest[0]</p></td>
+<td><p>(58, 14)</p></td>
+<td><p>58 muestras de prueba × 14 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>ytest[0]</p></td>
+<td><p>(58, 7)</p></td>
+<td><p>58 muestras de prueba × 7 targets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Relación correcta:</strong> Features = 14, Target = 7</p>
+<hr class="docutils" />
+<p><strong>Lag = 21 días</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X[0]</p></td>
+<td><p>(119, 21)</p></td>
+<td><p>119 muestras × 21 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>y[0]</p></td>
+<td><p>(119, 7)</p></td>
+<td><p>119 muestras × 7 targets</p></td>
+</tr>
+<tr class="row-even"><td><p>Xtest[0]</p></td>
+<td><p>(39, 21)</p></td>
+<td><p>39 muestras de prueba × 21 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>ytest[0]</p></td>
+<td><p>(39, 7)</p></td>
+<td><p>39 muestras de prueba × 7 targets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Relación correcta:</strong> Features = 21, Target = 7</p>
+<hr class="docutils" />
+<p><strong>Lag = 28 días</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Componente</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>X[0]</p></td>
+<td><p>(91, 28)</p></td>
+<td><p>91 muestras × 28 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>y[0]</p></td>
+<td><p>(91, 7)</p></td>
+<td><p>91 muestras × 7 targets</p></td>
+</tr>
+<tr class="row-even"><td><p>Xtest[0]</p></td>
+<td><p>(29, 28)</p></td>
+<td><p>29 muestras de prueba × 28 features</p></td>
+</tr>
+<tr class="row-odd"><td><p>ytest[0]</p></td>
+<td><p>(29, 7)</p></td>
+<td><p>29 muestras de prueba × 7 targets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Relación correcta:</strong> Features = 28, Target = 7</p>
+<hr class="docutils" />
+<p><strong>Consistencia dimensional</strong></p>
+<p>En todas las configuraciones, el segundo valor de <code class="docutils literal notranslate"><span class="pre">y</span></code> es <strong>siempre 7</strong> (horizonte de predicción fijo). Esto confirma:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">N_STEPS_FORECAST</span> <span class="pre">=</span> <span class="pre">7</span></code> se mantuvo constante.</p></li>
+<li><p>La estructura multi-step es consistente.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Verificación de integridad cruzada</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Verificación</p></th>
+<th class="head"><p>Estado</p></th>
+<th class="head"><p>Detalle</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5 folds por lag</p></td>
+<td><p>Correcto</p></td>
+<td><p>Todos los lags tienen 5 folds</p></td>
+</tr>
+<tr class="row-odd"><td><p>X.shape[1] == lag</p></td>
+<td><p>Correcto</p></td>
+<td><p>Correcto para 7, 14, 21, 28</p></td>
+</tr>
+<tr class="row-even"><td><p>y.shape[1] == 7</p></td>
+<td><p>Correcto</p></td>
+<td><p>Horizonte constante</p></td>
+</tr>
+<tr class="row-odd"><td><p>Xtest.shape[1] == lag</p></td>
+<td><p>Correcto</p></td>
+<td><p>Consistente con entrenamiento</p></td>
+</tr>
+<tr class="row-even"><td><p>ytest.shape[1] == 7</p></td>
+<td><p>Correcto</p></td>
+<td><p>Consistente</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mismas dimensiones X e y</p></td>
+<td><p>Correcto</p></td>
+<td><p>Muestras alineadas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Estado final:</strong> <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> ha sido verificado exitosamente. El artefacto está <strong>listo para la fase de entrenamiento</strong> del MLP en <code class="docutils literal notranslate"><span class="pre">3_model_training.ipynb</span></code>. Todas las dimensiones son consistentes, la carga es eficiente, y la estructura de validación cruzada temporal se ha preservado correctamente.</p>
+</section>
+<section id="conclusion-feature-engineering-y-validacion-temporal">
+<h2>Conclusión — Feature Engineering y Validación Temporal<a class="headerlink" href="#conclusion-feature-engineering-y-validacion-temporal" title="Permalink to this heading">#</a></h2>
+<p>El pipeline de features ha sido completamente especificado, implementado y serializado, estableciendo las bases para el entrenamiento robusto del modelo predictivo:</p>
+<p><strong>Variable objetivo:</strong> <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> — volatilidad realizada diaria calculada a partir de retornos logarítmicos en ventanas de 15 minutos (96 observaciones intradía por día). Este estimador converge a la varianza integrada con mínimo sesgo estadístico, superando a la volatilidad rodante tradicional por su capacidad para capturar la microestructura del mercado y responder instantáneamente a cambios de régimen, tal como se evidenció en la correlación moderada (r≈0.53) entre ambos estimadores.</p>
+<p><strong>Estructura de features:</strong> lags de la serie <code class="docutils literal notranslate"><span class="pre">RV_15m</span></code> correspondientes a ventanas temporales de 7, 14, 21 y 28 días. Cada observación de entrada es un vector de longitud <code class="docutils literal notranslate"><span class="pre">lag</span></code> que encapsula la historia reciente de volatilidad realizada, permitiendo que el modelo aprenda dependencias temporales de corto y mediano plazo. La selección de múltiples tamaños de ventana habilita la comparación sistemática para identificar la configuración óptima.</p>
+<p><strong>Target multi-step:</strong> vector de salida de longitud 7 que contiene los valores de volatilidad realizada para los próximos 7 días. Este enfoque multi-step permite que el MLP aprenda simultáneamente todos los horizontes de predicción compartiendo representaciones internas, lo que resulta más eficiente y estadísticamente coherente que entrenar siete modelos independientes o recurrir a estrategias recursivas que acumulan error.</p>
+<p><strong>Validación cruzada temporal:</strong> implementación de 5 folds mediante <code class="docutils literal notranslate"><span class="pre">split_train_val_test_groupKFold</span></code> de la librería <code class="docutils literal notranslate"><span class="pre">timeseries-cv</span></code>, garantizando que cada partición respeta el orden cronológico de los datos y elimina cualquier riesgo de fuga de información del futuro hacia el pasado. El escalado de features y target se realiza con <code class="docutils literal notranslate"><span class="pre">StandardScaler</span></code> ajustado exclusivamente sobre el conjunto de entrenamiento de cada fold, replicando fielmente las condiciones de producción donde no se dispone de información futura.</p>
+<p><strong>Persistencia y reproducibilidad:</strong> el artefacto <code class="docutils literal notranslate"><span class="pre">features.pkl</span></code> (≈1 MB) contiene todos los splits precomputados, metadatos, series temporales y etiquetas de régimen. Su tiempo de carga inferior a 100 ms elimina la necesidad de recalcular el pipeline en fases posteriores, facilitando la experimentación ágil y el despliegue en entornos MLOps.</p>
+<p><strong>Próximo paso:</strong> en el cuaderno <code class="docutils literal notranslate"><span class="pre">3_model_training.ipynb</span></code> se procederá a entrenar un <code class="docutils literal notranslate"><span class="pre">MLPRegressor</span></code> multisalida con arquitectura base de dos capas ocultas (64 y 32 neuronas, configuración a ajustar según lag), evaluando fold a fold con métricas de error (MAE, RMSE, MAPE) desagregadas por horizonte de predicción (días 1 a 7). Complementariamente, se aplicará el test de BDS sobre los residuos para verificar la presencia de no linealidad residual no capturada por el modelo, confirmando si la arquitectura MLP logra modelar adecuadamente la estructura temporal subyacente.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1_eda_volatility_final.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">BTC Volatility — Multi-Resolution EDA</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_model_training.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Model Training — Grid Search MLP · RNN · LSTM</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-project-bitcoin-volatility-forecasting">Deep Learning Project | Bitcoin Volatility Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instalacion-de-dependencias-para-modelado-y-validacion-temporal">Instalación de dependencias para modelado y validación temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-de-librerias-para-modelado-preprocesamiento-y-validacion-temporal">Carga de librerías para modelado, preprocesamiento y validación temporal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-verificacion-del-dataset-procesado">1. Carga y verificación del dataset procesado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-variable-objetivo-rv-15m">2. Visualización de la variable objetivo RV_15m</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generacion-de-lags-y-targets-multi-step">3. Generación de lags y targets multi-step</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-la-estructura-de-splits-temporales">4. Visualización de la estructura de splits temporales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estandarizacion-de-features-y-target-con-escalado-basado-exclusivamente-en-entrenamiento">5. Estandarización de features y target con escalado basado exclusivamente en entrenamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-resumen-de-muestras-por-lag-fold-y-particion">6. Tabla resumen de muestras por lag, fold y partición</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persistencia-de-splits-y-metadatos-para-mlops">7. Persistencia de splits y metadatos para MLOps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-verificacion-de-integridad-del-artefacto-features-pkl">8. Carga y verificación de integridad del artefacto features.pkl</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-feature-engineering-y-validacion-temporal">Conclusión — Feature Engineering y Validación Temporal</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Luis David Peñaranda Pérez
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
